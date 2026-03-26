@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useId, type InputHTMLAttributes } from 'react'
+import { useState, useRef, useId } from 'react'
 
 export interface TextFieldProps
   extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'onChange' | 'value' | 'maxLength'> {
@@ -119,6 +119,7 @@ export default function TextField({
             onChange={handleChange}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
+            aria-placeholder={placeholder}
             className={[
               'absolute inset-0 w-full h-full bg-transparent outline-none m-0 p-0 resize-none',
               heightVariant === 'large' ? 'overflow-y-auto custom-scrollbar pr-[4px]' : 'overflow-hidden',
