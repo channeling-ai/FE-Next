@@ -4,7 +4,7 @@ interface MetricCardProps {
   imageUrl?: string;
 }
 
-export default function MetricCardLarge({
+export default function MetricCardwithImage({
   channelname,
   subsriber,
   imageUrl,
