@@ -1,8 +1,12 @@
+'use client'
+import { useState } from 'react'
+
 export default function LandingPage() {
+  const [val, setVal] = useState('')
+
   return (
-    <main>
-      <h1>랜딩 페이지</h1>
-      <p>서비스 소개 및 구글 로그인</p>
+    <main className="min-h-screen bg-bg-0 flex flex-col items-center justify-center p-8 gap-8">
+
     </main>
   )
 }
