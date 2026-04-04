@@ -3,7 +3,15 @@
 import { useAuthStore } from "@/stores/authStore";
 import StatusBadge from "../../../../components/StatusBadge";
 
-export default function MetricCardSmall() {
+interface MetricCardSmallProps {
+  score: number;
+  range: string;
+}
+
+export default function MetricCardSmall({
+  score,
+  range,
+}: MetricCardSmallProps) {
   const { isLoggedIn } = useAuthStore();
   return (
     <div className="relative w-40">
@@ -23,11 +31,11 @@ export default function MetricCardSmall() {
           <StatusBadge status="최상" />
         </div>
         <div className="relative flex items-start self-stretch">
-          <div className="text-text-primary font-title-30r">8.5</div>
+          <div className="text-text-primary font-title-30r">{score}</div>
           <span className="text-text-secondary font-title-30r">점</span>
         </div>
         <div className="flex gap-[6.431px] font-caption-12m">
-          <div className="text-text-brand">+ 42</div>
+          <div className="text-text-brand">{range}</div>
           <span className="text-text-secondary">지난 달보다</span>
         </div>
       </div>
