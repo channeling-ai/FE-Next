@@ -25,9 +25,7 @@ export const Footer = () => {
                         문의하기
                     </a>
                 </div>
-                <div className="mt-6 font-caption-12r text-text-tertiary text-center">
-                    © 2025 Chaneling. All rights reserved.
-                </div>
+                <div className="mt-6 font-caption-12r">© 2025 Chaneling. All rights reserved.</div>
             </footer>
         </div>
     );
