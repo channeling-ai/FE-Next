@@ -2,29 +2,29 @@
 
 /* --- Pretendard 로컬 폰트 --- */
 @font-face {
-  font-family: 'Pretendard';
-  src: url('/fonts/Pretendard-Regular.woff2') format('woff2');
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Regular.woff2") format("woff2");
   font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Pretendard';
-  src: url('/fonts/Pretendard-Medium.woff2') format('woff2');
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Medium.woff2") format("woff2");
   font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Pretendard';
-  src: url('/fonts/Pretendard-Bold.woff2') format('woff2');
+  font-family: "Pretendard";
+  src: url("/fonts/Pretendard-Bold.woff2") format("woff2");
   font-weight: 600 700;
   font-display: swap;
 }
 
 @theme {
   /* 폰트 패밀리 */
-  --font-pretendard: 'Pretendard', sans-serif;
+  --font-pretendard: "Pretendard", sans-serif;
 
   /* 브레이크포인트 */
   --breakpoint-desktop: 1440px;
@@ -33,30 +33,30 @@
 
   /* 기본 컬러 칩 */
   --color-primary-5: #170305;
-  --color-primary-10: #2D060A;
-  --color-primary-30: #88111D;
-  --color-primary-40: #B61627;
-  --color-primary-50: #DA1B2E;
-  --color-primary-60: #E9495A;
-  --color-primary-70: #EE7783;
-  --color-primary-80: #F4A4AC;
-  --color-primary-90: #F9D2D6;
-  --color-primary-95: #FCE8EA;
+  --color-primary-10: #2d060a;
+  --color-primary-30: #88111d;
+  --color-primary-40: #b61627;
+  --color-primary-50: #da1b2e;
+  --color-primary-60: #e9495a;
+  --color-primary-70: #ee7783;
+  --color-primary-80: #f4a4ac;
+  --color-primary-90: #f9d2d6;
+  --color-primary-95: #fce8ea;
 
   --color-gray-0: #141415;
-  --color-gray-5: #19191B;
-  --color-gray-10: #1E1E20;
+  --color-gray-5: #19191b;
+  --color-gray-10: #1e1e20;
   --color-gray-20: #252527;
-  --color-gray-30: #37363A;
-  --color-gray-40: #6E6D73;
+  --color-gray-30: #37363a;
+  --color-gray-40: #6e6d73;
   --color-gray-50: #898990;
-  --color-gray-60: #94939A;
-  --color-gray-70: #B1B0B5;
-  --color-gray-80: #CBCACE;
-  --color-gray-90: #E5E5E6;
-  --color-gray-95: #F2F2F3;
+  --color-gray-60: #94939a;
+  --color-gray-70: #b1b0b5;
+  --color-gray-80: #cbcace;
+  --color-gray-90: #e5e5e6;
+  --color-gray-95: #f2f2f3;
 
-  --color-red-error: #FF4D4F;
+  --color-red-error: #ff4d4f;
 
   /* --- Semantic Tokens --- */
   /* Background */
@@ -115,7 +115,6 @@
  *   · 사용법: className="font-title-32r"
  ----------------------------------------------------------------- */
 @layer components {
-
   /* Title */
   /* 360: 40px R → 1440: 32px R */
   .font-title-40r {
@@ -200,7 +199,9 @@
     letter-spacing: -0.025em;
     @apply desktop:text-[14px];
   }
+}
 
+@layer utilities {
   /* 커스텀 컴포넌트 스크롤바 */
   .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
@@ -211,5 +212,19 @@
   }
   .custom-scrollbar::-webkit-scrollbar-track {
     background-color: transparent;
+  }
+
+  /* 커스텀 스크롤바 */
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  .animate-custom-wave {
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
   }
 }
