@@ -7,7 +7,7 @@ export default function Line({ variant }: LineProps) {
 
     const bgClass = variant === 'thick' ? 'bg-[#020202]' : 'bg-border-subtle';
 
-    const layoutClass = variant === 'thick' ? 'w-full self-stretch' : 'w-82';
+    const layoutClass = variant === 'thick' ? 'w-full self-stretch' : 'w-[328px]';
 
-    return <div className={`flex justify-center items-center ${heightClass} ${bgClass} ${layoutClass}`} />;
+    return <div className={`${heightClass} ${bgClass} ${layoutClass}`} />;
 }

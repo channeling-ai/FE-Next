@@ -1,10 +1,8 @@
-'use client';
-
 import Link from 'next/link';
 
 export const Footer = () => {
     return (
-        <div className="fixed bottom-0 w-full desktop:left-18 desktop:w-[calc(100%-72px)]">
+        <div className="fixed bottom-0 w-full desktop:left-[72px] desktop:w-[calc(100%-72px)]">
             <footer className="flex flex-col justify-center items-center py-8 desktop:rounded-lg font-caption-12r text-text-tertiary">
                 <div className="flex flex-wrap text-center">
                     <Link href="/docs/terms" className="px-4 border-r border-border-subtle last:border-none">

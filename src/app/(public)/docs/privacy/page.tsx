@@ -3,7 +3,7 @@ import path from 'path';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-export default function TermsPage() {
+export default function PrivacyPage() {
     const filePath = path.join(process.cwd(), 'src/app/content/privacy.md');
     const content = fs.readFileSync(filePath, 'utf-8');
 
