@@ -67,7 +67,7 @@
 
     /* Border */
     --color-border-default: var(--color-gray-20);
-    --color-border-subtle: var(--color-gray-10);
+    --color-border-subtitle: var(--color-gray-10);
     --color-border-strong: var(--color-primary-60);
     --color-border-active: var(--color-gray-95);
     --color-border-error: var(--color-red-error);
@@ -199,7 +199,9 @@
         letter-spacing: -0.025em;
         @apply desktop:text-[14px];
     }
+}
 
+@layer utilities {
     /* 커스텀 컴포넌트 스크롤바 */
     .custom-scrollbar::-webkit-scrollbar {
         width: 4px;
@@ -210,5 +212,19 @@
     }
     .custom-scrollbar::-webkit-scrollbar-track {
         background-color: transparent;
+    }
+
+    /* Skeleton 애니메이션 */
+    @keyframes shimmer {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+    .animate-custom-wave {
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite linear;
     }
 }
