@@ -1,5 +1,6 @@
-'use client'
-import { useState } from 'react'
+'use client';
+import { Footer } from '@/components/Footer';
+import { useState } from 'react';
 
 export default function LandingPage() {
     const [val, setVal] = useState('')
