@@ -89,6 +89,15 @@
     --color-icon-inverse: var(--color-gray-20);
 }
 
+@layer utilities {
+  .bg-video-card {
+    /* 그래디언트와 CSS 변수(--video-thumb)를 한 번에 묶어줍니다 */
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 50%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%),
+      var(--video-thumb, transparent) 50% / cover no-repeat;
+  }
+}
 /* --- 전역 기본 스타일 --- */
 @layer base {
     * {
