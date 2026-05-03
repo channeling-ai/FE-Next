@@ -3,16 +3,16 @@
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useAuthStore } from '@/stores/authStore'
+import { useLayoutStore } from '@/stores/layoutStore'
+import Sidebar from '@/components/layout/Sidebar'
 
-/**
- * Protected Layout
- * 로그인이 필요한 모든 페이지에 적용됩니다.
- * 미로그인 시 랜딩 페이지(/)로 리다이렉트합니다.
- */
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
     const router = useRouter()
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
 
+    const { isMobileSidebarOpen, closeSidebar } = useLayoutStore()
+
+    /* 
     useEffect(() => {
         if (!isLoggedIn) {
             router.replace('/')
@@ -20,6 +20,15 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
     }, [isLoggedIn, router])
 
     if (!isLoggedIn) return null
+    */
 
-    return <>{children}</>
+    return (
+        <div className="flex h-screen w-full bg-bg-0 overflow-hidden">
+            <Sidebar isOpen={isMobileSidebarOpen} onClose={closeSidebar} />
+
+            <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+                {children}
+            </div>
+        </div>
+    )
 }
