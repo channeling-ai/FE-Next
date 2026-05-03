@@ -17,15 +17,8 @@
 
 @font-face {
     font-family: 'Pretendard';
-    src: url('/fonts/Pretendard-SemiBold.woff2') format('woff2'); /* 파일이 있다면 추가 */
-    font-weight: 600;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Pretendard';
     src: url('/fonts/Pretendard-Bold.woff2') format('woff2');
-    font-weight: 700;
+    font-weight: 600 700;
     font-display: swap;
 }
 
@@ -206,7 +199,9 @@
         letter-spacing: -0.025em;
         @apply desktop:text-[14px];
     }
+}
 
+@layer utilities {
     /* 커스텀 컴포넌트 스크롤바 */
     .custom-scrollbar::-webkit-scrollbar {
         width: 4px;
@@ -217,5 +212,19 @@
     }
     .custom-scrollbar::-webkit-scrollbar-track {
         background-color: transparent;
+    }
+
+    /* Skeleton 애니메이션 */
+    @keyframes shimmer {
+        0% {
+            background-position: 200% 0;
+        }
+        100% {
+            background-position: -200% 0;
+        }
+    }
+    .animate-custom-wave {
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite linear;
     }
 }
