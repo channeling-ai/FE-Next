@@ -1,3 +1,4 @@
+import Scroll from '@/components/Scroll'
 import TextField from '@/components/TextField'
 import ActionRow from './_components/ActionRow'
 import NotificationRow from './_components/NotificationRow'
@@ -17,7 +18,7 @@ export default function SettingsPage() {
         <div className="flex h-full w-full flex-col bg-bg-0">
             <SettingHeader />
 
-            <main className="flex-1 overflow-y-auto custom-scrollbar">
+            <Scroll as="main" className="flex-1">
                 <section className="flex flex-col gap-8 pb-8">
                     <div className="flex w-full flex-col gap-[22px] px-4 pt-[17px] tablet:px-5 desktop:px-16 desktop:pt-0">
                         <SettingsProfileImage channelName={channel.name} />
@@ -82,7 +83,7 @@ export default function SettingsPage() {
                         />
                     </div>
                 </section>
-            </main>
+            </Scroll>
         </div>
     )
 }
