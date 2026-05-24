@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
 import MenuIcon from '@/assets/icons/menu.svg'
 import ProfileImage from '@/components/ProfileImage'
+import TextField from '@/components/TextField'
 import { useLayoutStore } from '@/stores/layoutStore'
 
 const channel = {
@@ -60,50 +60,6 @@ function SettingsProfileImage() {
             <ProfileImage size={120} aria-label={label} className="hidden tablet:block desktop:hidden" />
             <ProfileImage size={193} aria-label={label} className="hidden desktop:block" />
         </>
-    )
-}
-
-interface SettingTextAreaProps {
-    label: string
-    maxLength: number
-    placeholder: string
-    rows?: 'short' | 'large'
-}
-
-function SettingTextArea({ label, maxLength, placeholder, rows = 'short' }: SettingTextAreaProps) {
-    const [value, setValue] = useState('')
-    const heightClass = rows === 'large'
-        ? 'h-[151px]'
-        : 'min-h-[88px] desktop:min-h-[100px]'
-
-    return (
-        <label className={`flex w-full max-w-[calc(100vw-32px)] cursor-text flex-col gap-1 rounded-[20px] bg-bg-1 px-4 py-3 tablet:max-w-none ${heightClass}`}>
-            <span className="flex w-full items-start justify-between gap-4 font-caption-12m text-text-secondary desktop:font-body-14m">
-                <span className="truncate">{label}</span>
-                <span className="flex shrink-0 items-center font-caption-12r text-text-tertiary desktop:font-body-14r">
-                    <span className="font-caption-12m text-text-secondary desktop:font-body-14m">0</span>
-                    <span>/</span>
-                    <span>{maxLength}</span>
-                </span>
-            </span>
-            <span className="relative min-h-0 w-full flex-1 overflow-hidden">
-                {value.length === 0 && (
-                    <span
-                        className="pointer-events-none absolute inset-0 block w-full max-w-[calc(100vw-64px)] whitespace-normal font-body-14r text-text-secondary tablet:max-w-none desktop:font-body-16r"
-                        style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}
-                    >
-                        {placeholder}
-                    </span>
-                )}
-                <textarea
-                    className="absolute inset-0 size-full resize-none bg-transparent p-0 font-body-14r text-text-primary outline-none desktop:font-body-16r"
-                    value={value}
-                    onChange={(event) => setValue(event.target.value)}
-                    maxLength={maxLength}
-                    aria-label={label}
-                />
-            </span>
-        </label>
     )
 }
 
@@ -194,16 +150,23 @@ export default function SettingsPage() {
                         </div>
 
                         <div className="flex w-full flex-col gap-2">
-                            <SettingTextArea
+                            <TextField
                                 label="채널 타겟층"
                                 maxLength={50}
                                 placeholder="더욱 최적화된 분석 및 제안을 위해 채널 타겟층을 입력해주세요"
+                                fullWidth
+                                inputClassName="h-[88px] desktop:h-[100px]"
+                                labelClassName="desktop:font-body-14m"
+                                textareaClassName="desktop:font-body-16r"
                             />
-                            <SettingTextArea
+                            <TextField
                                 label="채널 컨셉"
                                 maxLength={150}
                                 placeholder="더욱 최적화된 분석 및 제안을 위해 채널 컨셉을 입력해주세요"
-                                rows="large"
+                                heightVariant="large"
+                                fullWidth
+                                labelClassName="desktop:font-body-14m"
+                                textareaClassName="desktop:font-body-16r"
                             />
                         </div>
                     </div>
