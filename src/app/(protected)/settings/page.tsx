@@ -1,118 +1,15 @@
-'use client'
-
-import MenuIcon from '@/assets/icons/menu.svg'
-import ProfileImage from '@/components/ProfileImage'
 import TextField from '@/components/TextField'
-import { useLayoutStore } from '@/stores/layoutStore'
-import Toggle from './_components/Toggle'
+import ActionRow from './_components/ActionRow'
+import NotificationRow from './_components/NotificationRow'
+import ProfileField from './_components/ProfileField'
+import SectionDivider from './_components/SectionDivider'
+import SettingHeader from './_components/SettingHeader'
+import SettingsProfileImage from './_components/SettingsProfileImage'
 
 const channel = {
     name: 'LeoJ Makeup',
     email: 'LeoJMakeup@gmail.com',
     loginId: 'kjh21351324390',
-}
-
-function SettingHeader() {
-    const openSidebar = useLayoutStore((state) => state.openSidebar)
-
-    return (
-        <header className="shrink-0 bg-bg-0 px-4 py-3 tablet:px-5 tablet:py-4 desktop:px-16 desktop:py-5">
-            <div className="flex h-8 items-center gap-2">
-                <button
-                    type="button"
-                    onClick={openSidebar}
-                    className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary desktop:hidden"
-                    aria-label="메뉴 열기"
-                >
-                    <MenuIcon />
-                </button>
-                <h1 className="font-title-18sb text-text-primary desktop:font-title-20sb">
-                    설정
-                </h1>
-            </div>
-        </header>
-    )
-}
-
-interface ProfileFieldProps {
-    label: string
-    value: string
-}
-
-function ProfileField({ label, value }: ProfileFieldProps) {
-    return (
-        <div className="flex w-full flex-col gap-0.5">
-            <span className="font-caption-12m text-text-secondary desktop:font-body-14m">
-                {label}
-            </span>
-            <span className="truncate font-body-16sb text-text-primary desktop:text-[18px] desktop:leading-[1.5]">
-                {value}
-            </span>
-        </div>
-    )
-}
-
-function SettingsProfileImage() {
-    const label = `${channel.name} 프로필 이미지`
-
-    return (
-        <>
-            <ProfileImage size={80} aria-label={label} className="tablet:hidden" />
-            <ProfileImage size={120} aria-label={label} className="hidden tablet:block desktop:hidden" />
-            <ProfileImage size={193} aria-label={label} className="hidden desktop:block" />
-        </>
-    )
-}
-
-interface NotificationRowProps {
-    title: string
-    description: string
-    checked?: boolean
-}
-
-function NotificationRow({ title, description, checked = false }: NotificationRowProps) {
-    return (
-        <div className="flex w-full flex-col gap-1">
-            <div className="flex w-full items-center justify-between gap-4">
-                <h2 className="min-w-0 truncate font-body-16sb text-text-primary desktop:text-[18px] desktop:leading-[1.5]">
-                    {title}
-                </h2>
-                <Toggle checked={checked} label={title} />
-            </div>
-            <p className="truncate font-caption-12r text-text-secondary desktop:font-body-14r">
-                {description}
-            </p>
-        </div>
-    )
-}
-
-interface ActionRowProps {
-    label: string
-    buttonLabel: string
-    danger?: boolean
-}
-
-function ActionRow({ label, buttonLabel, danger = false }: ActionRowProps) {
-    return (
-        <div className="flex w-full items-center justify-between gap-4">
-            <p className="min-w-0 truncate font-body-14m text-text-primary desktop:font-body-16m">
-                {label}
-            </p>
-            <button
-                type="button"
-                className={`shrink-0 rounded-[20px] border px-3 py-1.5 font-body-14m transition-colors desktop:font-body-16m ${danger
-                    ? 'border-border-error text-border-error hover:bg-border-error/10'
-                    : 'border-border-default text-text-primary hover:bg-bg-1'
-                    }`}
-            >
-                {buttonLabel}
-            </button>
-        </div>
-    )
-}
-
-function SectionDivider() {
-    return <div className="h-4 w-full shrink-0 bg-[#020202]" />
 }
 
 export default function SettingsPage() {
@@ -123,7 +20,7 @@ export default function SettingsPage() {
             <main className="flex-1 overflow-y-auto custom-scrollbar">
                 <section className="flex flex-col gap-8 pb-8">
                     <div className="flex w-full flex-col gap-[22px] px-4 pt-[17px] tablet:px-5 desktop:px-16 desktop:pt-0">
-                        <SettingsProfileImage />
+                        <SettingsProfileImage channelName={channel.name} />
 
                         <div className="flex w-full flex-col gap-2">
                             <ProfileField label="채널명" value={channel.name} />
