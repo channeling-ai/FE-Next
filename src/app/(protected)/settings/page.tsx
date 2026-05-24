@@ -69,6 +69,8 @@ interface ToggleProps {
 }
 
 function Toggle({ checked = false, label }: ToggleProps) {
+    const thumbPositionClass = checked ? 'left-[21.6px]' : 'left-[2.4px]'
+
     return (
         <button
             type="button"
@@ -77,7 +79,7 @@ function Toggle({ checked = false, label }: ToggleProps) {
             className={`relative h-6 w-[43.2px] shrink-0 rounded-3xl transition-colors ${checked ? 'bg-primary-60' : 'bg-bg-2'}`}
         >
             <span
-                className={`absolute top-[2.4px] size-[19.2px] rounded-full bg-gray-95 transition-transform ${checked ? 'translate-x-[21.6px]' : 'translate-x-[2.4px]'}`}
+                className={`absolute top-[2.4px] size-[19.2px] rounded-full bg-gray-95 transition-[left] ${thumbPositionClass}`}
             />
         </button>
     )
@@ -101,6 +103,27 @@ function NotificationRow({ title, description, checked = false }: NotificationRo
             <p className="truncate font-caption-12r text-text-secondary desktop:font-body-14r">
                 {description}
             </p>
+        </div>
+    )
+}
+
+function EmailNotificationSection() {
+    return (
+        <div className="flex w-full flex-col gap-2 px-4 tablet:px-5 desktop:px-16">
+            <p className="font-caption-12m text-text-secondary desktop:font-body-14m">
+                이메일 알림
+            </p>
+            <div className="flex w-full flex-col gap-4">
+                <NotificationRow
+                    title="마케팅 이메일 수신 동의"
+                    description="이벤트 또는 혜택과 관련된 마케팅 이메일 수신을 받아요"
+                    checked
+                />
+                <NotificationRow
+                    title="일일 콘텐츠 추천 메일 수신"
+                    description="프리미엄 요금제에서 제공되는 일일 콘텐츠를 추천 받아요"
+                />
+            </div>
         </div>
     )
 }
@@ -173,22 +196,7 @@ export default function SettingsPage() {
 
                     <SectionDivider />
 
-                    <div className="flex w-full flex-col gap-2 px-4 tablet:px-5 desktop:px-16">
-                        <p className="font-caption-12m text-text-secondary desktop:font-body-14m">
-                            이메일 알림
-                        </p>
-                        <div className="flex w-full flex-col gap-4">
-                            <NotificationRow
-                                title="마케팅 이메일 수신 동의"
-                                description="이벤트 또는 혜택과 관련된 마케팅 이메일 수신을 받아요"
-                                checked
-                            />
-                            <NotificationRow
-                                title="일일 콘텐츠 추천 메일 수신"
-                                description="프리미엄 요금제에서 제공되는 일일 콘텐츠를 추천 받아요"
-                            />
-                        </div>
-                    </div>
+                    <EmailNotificationSection />
 
                     <SectionDivider />
 
