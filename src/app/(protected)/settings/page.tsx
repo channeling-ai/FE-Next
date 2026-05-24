@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import MenuIcon from '@/assets/icons/menu.svg'
+import ProfileImage from '@/components/ProfileImage'
 import { useLayoutStore } from '@/stores/layoutStore'
 
 const channel = {
@@ -50,14 +51,15 @@ function ProfileField({ label, value }: ProfileFieldProps) {
     )
 }
 
-function ProfileAvatar() {
+function SettingsProfileImage() {
+    const label = `${channel.name} 프로필 이미지`
+
     return (
-        <div
-            className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full bg-primary-40 text-[20px] font-semibold leading-none text-text-primary tablet:size-[120px] tablet:text-[28px] desktop:size-[193px] desktop:text-[44px]"
-            aria-label={`${channel.name} 프로필 이미지`}
-        >
-            LJ
-        </div>
+        <>
+            <ProfileImage size={80} aria-label={label} className="tablet:hidden" />
+            <ProfileImage size={120} aria-label={label} className="hidden tablet:block desktop:hidden" />
+            <ProfileImage size={193} aria-label={label} className="hidden desktop:block" />
+        </>
     )
 }
 
@@ -184,7 +186,7 @@ export default function SettingsPage() {
             <main className="flex-1 overflow-y-auto custom-scrollbar">
                 <section className="flex flex-col gap-8 pb-8">
                     <div className="flex w-full flex-col gap-[22px] px-4 pt-[17px] tablet:px-5 desktop:px-16 desktop:pt-0">
-                        <ProfileAvatar />
+                        <SettingsProfileImage />
 
                         <div className="flex w-full flex-col gap-2">
                             <ProfileField label="채널명" value={channel.name} />
