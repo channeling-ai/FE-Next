@@ -4,6 +4,7 @@ import MenuIcon from '@/assets/icons/menu.svg'
 import ProfileImage from '@/components/ProfileImage'
 import TextField from '@/components/TextField'
 import { useLayoutStore } from '@/stores/layoutStore'
+import Toggle from './_components/Toggle'
 
 const channel = {
     name: 'LeoJ Makeup',
@@ -60,28 +61,6 @@ function SettingsProfileImage() {
             <ProfileImage size={120} aria-label={label} className="hidden tablet:block desktop:hidden" />
             <ProfileImage size={193} aria-label={label} className="hidden desktop:block" />
         </>
-    )
-}
-
-interface ToggleProps {
-    checked?: boolean
-    label: string
-}
-
-function Toggle({ checked = false, label }: ToggleProps) {
-    const thumbPositionClass = checked ? 'left-[21.6px]' : 'left-[2.4px]'
-
-    return (
-        <button
-            type="button"
-            aria-pressed={checked}
-            aria-label={label}
-            className={`relative h-6 w-[43.2px] shrink-0 rounded-3xl transition-colors ${checked ? 'bg-primary-60' : 'bg-bg-2'}`}
-        >
-            <span
-                className={`absolute top-[2.4px] size-[19.2px] rounded-full bg-gray-95 transition-[left] ${thumbPositionClass}`}
-            />
-        </button>
     )
 }
 
