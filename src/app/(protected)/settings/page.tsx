@@ -107,27 +107,6 @@ function NotificationRow({ title, description, checked = false }: NotificationRo
     )
 }
 
-function EmailNotificationSection() {
-    return (
-        <div className="flex w-full flex-col gap-2 px-4 tablet:px-5 desktop:px-16">
-            <p className="font-caption-12m text-text-secondary desktop:font-body-14m">
-                이메일 알림
-            </p>
-            <div className="flex w-full flex-col gap-4">
-                <NotificationRow
-                    title="마케팅 이메일 수신 동의"
-                    description="이벤트 또는 혜택과 관련된 마케팅 이메일 수신을 받아요"
-                    checked
-                />
-                <NotificationRow
-                    title="일일 콘텐츠 추천 메일 수신"
-                    description="프리미엄 요금제에서 제공되는 일일 콘텐츠를 추천 받아요"
-                />
-            </div>
-        </div>
-    )
-}
-
 interface ActionRowProps {
     label: string
     buttonLabel: string
@@ -196,7 +175,22 @@ export default function SettingsPage() {
 
                     <SectionDivider />
 
-                    <EmailNotificationSection />
+                    <div className="flex w-full flex-col gap-2 px-4 tablet:px-5 desktop:px-16">
+                        <p className="font-caption-12m text-text-secondary desktop:font-body-14m">
+                            이메일 알림
+                        </p>
+                        <div className="flex w-full flex-col gap-4">
+                            <NotificationRow
+                                title="마케팅 이메일 수신 동의"
+                                description="이벤트 또는 혜택과 관련된 마케팅 이메일 수신을 받아요"
+                                checked
+                            />
+                            <NotificationRow
+                                title="일일 콘텐츠 추천 메일 수신"
+                                description="프리미엄 요금제에서 제공되는 일일 콘텐츠를 추천 받아요"
+                            />
+                        </div>
+                    </div>
 
                     <SectionDivider />
 
