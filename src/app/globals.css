@@ -32,8 +32,10 @@
     --breakpoint-mobile: 360px;
 
     /* 기본 컬러 칩 */
+    --color-black: #020202;
     --color-primary-5: #170305;
     --color-primary-10: #2d060a;
+    --color-primary-20: #5b0b13;
     --color-primary-30: #88111d;
     --color-primary-40: #b61627;
     --color-primary-50: #da1b2e;
@@ -43,8 +45,7 @@
     --color-primary-90: #f9d2d6;
     --color-primary-95: #fce8ea;
 
-    --color-gray-0: #141415;
-    --color-gray-5: #19191b;
+    --color-gray-5: #141415;
     --color-gray-10: #1e1e20;
     --color-gray-20: #252527;
     --color-gray-30: #37363a;
@@ -55,8 +56,12 @@
     --color-gray-80: #cbcace;
     --color-gray-90: #e5e5e6;
     --color-gray-95: #f2f2f3;
+    --color-white: #fcfcfd;
 
-    --color-red-error: #ff4d4f;
+    --color-red-error: #f50019;
+
+    /* 기존 class 호환 alias */
+    --color-gray-0: var(--color-gray-5);
 
     /* --- Semantic Tokens --- */
     /* Background */
@@ -64,6 +69,7 @@
     --color-bg-1: var(--color-gray-10);
     --color-bg-2: var(--color-gray-20);
     --color-bg-3: var(--color-gray-30);
+    --color-bg-divider: var(--color-black);
 
     /* Border */
     --color-border-default: var(--color-gray-20);
