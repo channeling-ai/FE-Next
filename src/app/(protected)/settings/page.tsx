@@ -1,6 +1,8 @@
+'use client'
+
 import Scroll from '@/components/Scroll'
-import TextField from '@/components/TextField'
 import ActionRow from './_components/ActionRow'
+import EditableTextField from './_components/EditableTextField'
 import NotificationRow from './_components/NotificationRow'
 import ProfileField from './_components/ProfileField'
 import SectionDivider from './_components/SectionDivider'
@@ -29,16 +31,18 @@ export default function SettingsPage() {
                         </div>
 
                         <div className="flex w-full flex-col gap-2">
-                            <TextField
+                            <EditableTextField
                                 label="채널 타겟층"
                                 maxLength={50}
                                 placeholder="더욱 최적화된 분석 및 제안을 위해 채널 타겟층을 입력해주세요"
                                 fullWidth
                                 inputClassName="h-[88px] desktop:h-[100px]"
+                                activeInputClassName="h-[67px] desktop:h-[67px]"
+                                className="[&>div]:focus-within:h-[67px] desktop:[&>div]:focus-within:h-[67px]"
                                 labelClassName="desktop:font-body-14m"
                                 textareaClassName="desktop:font-body-16r"
                             />
-                            <TextField
+                            <EditableTextField
                                 label="채널 컨셉"
                                 maxLength={150}
                                 placeholder="더욱 최적화된 분석 및 제안을 위해 채널 컨셉을 입력해주세요"

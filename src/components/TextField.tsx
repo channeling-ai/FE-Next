@@ -11,6 +11,7 @@ export interface TextFieldProps
   showCounter?: boolean // 카운터 표시 여부 (기본: true)
   placeholder?: string
   helperText?: string
+  isActive?: boolean
   isError?: boolean
   errorMessage?: string
   className?: string
@@ -30,6 +31,7 @@ export default function TextField({
   showCounter = true,
   placeholder,
   helperText,
+  isActive = false,
   isError = false,
   errorMessage,
   className = '',
@@ -40,6 +42,8 @@ export default function TextField({
   sizeVariant = 'mobile',
   heightVariant = 'small',
   id: externalId,
+  onFocus: externalOnFocus,
+  onBlur: externalOnBlur,
   ...rest
 }: TextFieldProps) {
   // 제어/비제어 호환
@@ -75,12 +79,12 @@ export default function TextField({
         className={[
           'relative flex flex-col w-full px-[16px] py-[12px] bg-bg-1 rounded-[20px]',
           heightVariant === 'large' ? 'h-[151px]' : 'h-[88px]', // variant에 따른 높이 분기
-          isFocused
+          isActive || isFocused
             ? 'shadow-[inset_0_0_0_1px_var(--color-border-active)]'
               : isError
                 ? 'shadow-[inset_0_0_0_1px_var(--color-border-error)]'
                 : '',
-          'transition-colors duration-150 cursor-text',
+          'transition-colors duration-150 cursor-text focus-within:shadow-[inset_0_0_0_1px_var(--color-border-active)]',
           inputClassName,
         ].join(' ')}
         onClick={() => inputRef.current?.focus()}
@@ -135,8 +139,14 @@ export default function TextField({
             id={inputId}
             value={value}
             onChange={handleChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onFocus={(event) => {
+              setIsFocused(true)
+              externalOnFocus?.(event)
+            }}
+            onBlur={(event) => {
+              setIsFocused(false)
+              externalOnBlur?.(event)
+            }}
             aria-placeholder={placeholder}
             className={[
               'absolute inset-0 w-full h-full bg-transparent outline-none m-0 p-0 resize-none',
