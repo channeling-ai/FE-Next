@@ -60,7 +60,7 @@ export default function SettingsPage() {
                             <NotificationRow
                                 title="마케팅 이메일 수신 동의"
                                 description="이벤트 또는 혜택과 관련된 마케팅 이메일 수신을 받아요"
-                                checked
+                                defaultChecked
                             />
                             <NotificationRow
                                 title="일일 콘텐츠 추천 메일 수신"
