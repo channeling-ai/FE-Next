@@ -5,12 +5,10 @@ import TextField, { type TextFieldProps } from '@/components/TextField'
 
 interface EditableTextFieldProps extends Omit<TextFieldProps, 'value' | 'onChange'> {
     initialValue?: string
-    activeInputClassName?: string
 }
 
 export default function EditableTextField({
     initialValue = '',
-    activeInputClassName = '',
     inputClassName = '',
     onFocus,
     ...props
@@ -53,7 +51,7 @@ export default function EditableTextField({
                     setIsEditing(true)
                     onFocus?.(event)
                 }}
-                inputClassName={`${inputClassName} ${isEditing ? activeInputClassName : ''}`.trim()}
+                inputClassName={inputClassName}
             />
 
             <div className={`${isEditing ? 'flex' : 'hidden'} gap-1 pb-2 group-focus-within/editable:flex`}>

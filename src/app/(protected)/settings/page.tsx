@@ -37,8 +37,6 @@ export default function SettingsPage() {
                                 placeholder="더욱 최적화된 분석 및 제안을 위해 채널 타겟층을 입력해주세요"
                                 fullWidth
                                 inputClassName="h-[88px] desktop:h-[100px]"
-                                activeInputClassName="h-[67px] desktop:h-[67px]"
-                                className="[&>div]:focus-within:h-[67px] desktop:[&>div]:focus-within:h-[67px]"
                                 labelClassName="desktop:font-body-14m"
                                 textareaClassName="desktop:font-body-16r"
                             />
