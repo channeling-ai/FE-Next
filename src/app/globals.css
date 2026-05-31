@@ -90,13 +90,13 @@
 }
 
 @layer utilities {
-  .bg-video-card {
-    /* 그래디언트와 CSS 변수(--video-thumb)를 한 번에 묶어줍니다 */
-    background:
-      linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 50%),
-      linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%),
-      var(--video-thumb, transparent) 50% / cover no-repeat;
-  }
+    .bg-video-card {
+        /* 그래디언트와 CSS 변수(--video-thumb)를 한 번에 묶어줍니다 */
+        background:
+            linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0) 50%),
+            linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.5) 100%),
+            var(--video-thumb, transparent) 50% / cover no-repeat;
+    }
 }
 /* --- 전역 기본 스타일 --- */
 @layer base {
@@ -189,6 +189,11 @@
     }
 
     /* Caption */
+
+    .font-caption-14r {
+        @apply text-[14px] leading-[1.5] font-normal;
+        letter-spacing: -0.025em;
+    }
     /* 360: 12px SB → 1440: (미정의, 동일 유지) */
     .font-caption-12sb {
         @apply text-[12px] leading-[1.5] font-semibold;
