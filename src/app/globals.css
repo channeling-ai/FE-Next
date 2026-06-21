@@ -59,6 +59,13 @@
     --color-white: #fcfcfd;
 
     --color-red-error: #f50019;
+    --color-red-error-op8: #f5001914;
+    --color-blue: #60a5fa;
+    --color-blue-op8: #60a5fa14;
+    --color-green: #4ade80;
+    --color-green-op8: #4ade8014;
+    --color-amber: #ffd93d;
+    --color-amber-op8: #ffd93d14;
 
     /* 기존 class 호환 alias */
     --color-gray-0: var(--color-gray-5);
