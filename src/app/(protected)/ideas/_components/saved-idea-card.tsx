@@ -13,7 +13,10 @@ export default function SavedIdeaCard({ onClick }: SaveCardProps) {
     const [isBookmarked, setIsBookmarked] = useState(false)
 
     return (
-        <div className="relative p-5 space-y-2 w-full items-start rounded-[20px] bg-bg-1" onClick={onClick}>
+        <div
+            className="relative p-5 space-y-2 w-full items-start rounded-[20px] bg-bg-1 cursor-pointer"
+            onClick={onClick}
+        >
             <div className="flex flex-row justify-between">
                 <div className="text-text-tertiary font-caption-14r">26년 2월 15일 (19:35)</div>
                 <button onClick={handleBookmarkClick} className="cursor-pointer">

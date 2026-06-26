@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import SavedIdeaCard from './saved-idea-card'
 import SearchBar from './search-bar'
 import IdeaDetailView from './idea-detail-view'
-import DropdownOpen from '@/assets/icons/dropdown-open.svg'
+import Dropdown from '@/assets/icons/dropdown.svg'
 import DropdownOrder from './dropdown-order'
 
 export default function SavedIdea() {
@@ -40,16 +40,18 @@ export default function SavedIdea() {
                         <div className="text-text-secondary font-body-14m">개의 아이디어</div>
                     </div>
                     <div
-                        className="flex gap-1 py-2 pl-4 pr-3 bg-bg-1 rounded-[20px] relative z-100"
+                        className="flex items-center gap-1 py-2 pl-4 pr-3 bg-bg-1 rounded-[20px] relative z-100"
                         onClick={handleDropdownClick}
                         ref={dropdownOrderRef}
                     >
                         {selectedOption == '' && <div className="font-body-14m text-text-primary">최신순</div>}
-                        {selectedOption != '' && <div className="font-body-16m text-gray-900">{selectedOption}</div>}
-                        {!isDropdownOpen && <DropdownOpen className="cursor-pointer rotate-180 text-text-secondary" />}
+                        {selectedOption != '' && (
+                            <div className="font-body-16m text-text-primary">{selectedOption}</div>
+                        )}
+                        {!isDropdownOpen && <Dropdown className="cursor-pointer text-text-secondary" />}
                         {isDropdownOpen && (
                             <>
-                                <DropdownOpen className="cursor-pointer text-text-secondary" />
+                                <Dropdown className="cursor-pointer scale-y-[-1] text-text-secondary" />
 
                                 <DropdownOrder handleOptionValue={handleOrderOptionClick} />
                             </>

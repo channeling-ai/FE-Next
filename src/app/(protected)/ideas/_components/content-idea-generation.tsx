@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react'
 
-import DropdownOpen from '@/assets/icons/dropdown-open.svg'
+import Dropdown from '@/assets/icons/dropdown.svg'
 import { DropdownVideoType } from './dropdown-videotype'
 import TextField from '@/components/TextField'
+import GenerationButton from './generation-button'
 
 export default function ContentIdeaGeneration() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -35,24 +36,24 @@ export default function ContentIdeaGeneration() {
                             isDropdownOpen ? ' border-text-secondary' : 'border-transparent'
                         }`}
                     >
-                        <div className="font-caption-14m text-text-secondary">영상형식</div>
+                        <div className="font-caption-12m desktop:font-caption-14m text-text-secondary">영상형식</div>
                         <div
                             className="flex items-start justify-between self-stretch select-none cursor-pointer relative z-10"
                             onClick={handleDropdownClick}
                             ref={dropdownRef}
                         >
                             {selectedOption == '' && (
-                                <div className="font-body-16r text-text-secondary">영상 형식을 선택해 주세요.</div>
+                                <div className="font-body-14r desktop:font-body-16r text-text-secondary">
+                                    영상 형식을 선택해 주세요.
+                                </div>
                             )}
                             {selectedOption != '' && (
-                                <div className="font-body-16m text-gray-900">{selectedOption}</div>
+                                <div className="font-body-16m text-text-primary">{selectedOption}</div>
                             )}
-                            {!isDropdownOpen && (
-                                <DropdownOpen className="cursor-pointer rotate-180 text-text-secondary" />
-                            )}
+                            {!isDropdownOpen && <Dropdown className="cursor-pointer text-text-secondary" />}
                             {isDropdownOpen && (
                                 <>
-                                    <DropdownOpen className="cursor-pointer text-text-secondary" />
+                                    <Dropdown className="cursor-pointer scale-y-[-1] text-text-secondary" />
 
                                     <DropdownVideoType handleOptionValue={handleOptionClick} />
                                 </>
@@ -62,18 +63,19 @@ export default function ContentIdeaGeneration() {
                     <TextField
                         label="핵심 키워드"
                         className="w-full"
-                        placeholder="생각나는 키워드를 입력해주세요 <br/>(예: 바이브코딩, 도쿄 여행, 가을 메이크업)"
+                        placeholder="생각나는 키워드를 입력해주세요"
+                        helperText="(예: 바이브코딩, 도쿄 여행, 가을 메이크업)"
                     />
                     <TextField
                         label="추가 입력 사항"
                         maxLength={300}
+                        heightVariant="large"
                         className="w-full h-37.75"
-                        placeholder="어떤 점을 강조하고 싶으신가요? (예: 쉬운 설명, 유머, 영상미)"
+                        placeholder="어떤 점을 강조하고 싶으신가요?"
+                        helperText="(예: 쉬운 설명, 유머, 영상미)"
                     />
                 </div>
-                <button className="w-full px-2 py-4 rounded-[20px] items-center justify-center bg-primary-60 font-body-16sb text-text-primary">
-                    콘텐츠 아이디어 생성
-                </button>
+                <GenerationButton />
             </div>
         </div>
     )

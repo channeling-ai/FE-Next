@@ -64,12 +64,12 @@ export default function TextField({
     }
 
     return (
-        <div className={`flex flex-col gap-[4px] ${widthClass[sizeVariant]} ${className}`}>
+        <div className={`flex flex-col gap-1 w-full`}>
             {/* 메인 Input 래퍼 */}
             <div
                 className={[
-                    'relative flex flex-col w-full px-[16px] py-[12px] bg-bg-1 rounded-[20px]',
-                    heightVariant === 'large' ? 'h-[151px]' : 'h-[88px]', // variant에 따른 높이 분기
+                    `relative flex flex-col w-full px-4 py-3 bg-bg-1 rounded-[20px] ${className}`,
+                    heightVariant === 'large' ? 'h-[151px]' : 'h-22 desktop:h-25', // variant에 따른 높이 분기
                     isFocused
                         ? 'shadow-[inset_0_0_0_1px_var(--color-border-active)]'
                         : isError
@@ -81,16 +81,19 @@ export default function TextField({
             >
                 {/* 라벨, 카운터 */}
                 {(label || showCounter) && (
-                    <div className="flex items-start justify-between shrink-0 mb-[4px]">
+                    <div className="flex items-start justify-between shrink-0 mb-1">
                         {label ? (
-                            <label htmlFor={inputId} className="font-caption-12m text-text-secondary tracking-[-0.3px]">
+                            <label
+                                htmlFor={inputId}
+                                className="font-caption-12m desktop:font-caption-14m text-text-secondary tracking-[-0.3px]"
+                            >
                                 {label}
                             </label>
                         ) : (
                             <div />
                         )}
                         {showCounter && (
-                            <div className="flex items-center gap-[2px] font-caption-12r text-text-secondary tracking-[-0.3px]">
+                            <div className="flex items-center gap-0.5 font-caption-12r text-text-secondary tracking-[-0.3px]">
                                 <span
                                     className={
                                         textLength === 0 ? 'text-text-secondary font-caption-12m' : 'text-text-primary'
@@ -106,11 +109,11 @@ export default function TextField({
                 )}
 
                 {/* 텍스트 컨텐츠 */}
-                <div className="relative flex-1 flex flex-col justify-start">
+                <div className="relative flex flex-col justify-start">
                     {showPlaceholder && (
                         <div className="absolute inset-0 flex flex-col justify-start pointer-events-none text-text-secondary">
-                            <p className="font-body-14r tracking-[-0.35px]">{placeholder}</p>
-                            {helperText && <p className="font-body-14r tracking-[-0.35px]">{helperText}</p>}
+                            <p className="font-body-14r desktop:font-body-16r">{placeholder}</p>
+                            {helperText && <p className="font-body-14r desktop:font-body-16r">{helperText}</p>}
                         </div>
                     )}
 
@@ -126,7 +129,7 @@ export default function TextField({
                         className={[
                             'absolute inset-0 w-full h-full bg-transparent outline-none m-0 p-0 resize-none',
                             heightVariant === 'large' ? 'overflow-y-auto custom-scrollbar pr-[4px]' : 'overflow-hidden',
-                            'font-body-14r tracking-[-0.35px] text-text-primary caret-gray-90',
+                            'font-body-14r desktop:font-body-16r tracking-[-0.35px] text-text-primary caret-gray-90',
                             showPlaceholder ? 'text-transparent' : '',
                         ].join(' ')}
                         {...rest}
