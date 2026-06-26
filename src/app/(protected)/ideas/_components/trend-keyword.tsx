@@ -7,7 +7,7 @@ export default function TrendKeyword() {
     const [activeTab, setActiveTab] = useState<'live' | 'custom'>('live')
 
     return (
-        <div className="flex flex-col px-4 w-full">
+        <div className="flex flex-col w-full mt-2 tablet:mt-4 desktop:mt-2">
             <div className="flex flex-col py-1 items-start">
                 <div className="flex gap-1">
                     <h1 className="text-text-primary font-title-18sb">트렌드 키워드</h1>

@@ -30,7 +30,7 @@ export default function SavedIdea() {
         return <IdeaDetailView onBack={handleClose} />
     }
     return (
-        <div className="flex flex-col px-4 gap-2  justify-start w-full ">
+        <div className="flex flex-col gap-2 justify-start w-full  px-4 desktop:px-8">
             <h1 className="text-text-primary font-title-18sb">저장한 아이디어</h1>
             <div className="flex flex-col gap-4">
                 <SearchBar />

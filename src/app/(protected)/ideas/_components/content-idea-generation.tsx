@@ -21,7 +21,7 @@ export default function ContentIdeaGeneration() {
 
     const [selectedOption, setSelectedOption] = useState('')
     return (
-        <div className="flex flex-col px-4 w-full">
+        <div className="flex flex-col w-full">
             <div className="flex flex-col py-1 items-start gap-4">
                 <div className="flex flex-col gap-1">
                     <h1 className="text-text-primary font-title-18sb">콘텐츠 아이디어 생성</h1>
