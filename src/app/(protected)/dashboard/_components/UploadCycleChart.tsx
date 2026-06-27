@@ -59,13 +59,23 @@ function getMetricData(metric: Metric, period: Period) {
     }))
 }
 
-function ChartTooltip({ active, payload }: TooltipContentProps) {
+interface ChartTooltipProps extends TooltipContentProps {
+    dataLength: number
+}
+
+function ChartTooltip({ active, activeIndex, dataLength, payload }: ChartTooltipProps) {
     if (!active || !payload.length) return null
 
     const point = payload[0].payload as ChartPoint
+    const index = Number(activeIndex)
+    const alignment = index === 0
+        ? 'items-start text-left'
+        : index === dataLength - 1
+            ? '-translate-x-full items-end text-right'
+            : '-translate-x-1/2 items-center text-center'
 
     return (
-        <div className="flex -translate-y-1 flex-col items-center whitespace-nowrap text-center">
+        <div className={`flex -translate-y-1 flex-col whitespace-nowrap ${alignment}`}>
             <span className="font-caption-12r text-text-secondary desktop:text-[14px] desktop:leading-[1.5]">
                 {point.date}
             </span>
@@ -132,8 +142,10 @@ export default function UploadCycleChart() {
                         <Tooltip
                             defaultIndex={period === '1주' ? 0 : 8}
                             position={{ y: 0 }}
+                            offset={0}
+                            allowEscapeViewBox={{ x: true, y: false }}
                             cursor={{ stroke: 'var(--color-gray-40)', strokeWidth: 1 }}
-                            content={ChartTooltip}
+                            content={(props) => <ChartTooltip {...props} dataLength={data.length} />}
                             wrapperStyle={{ outline: 'none' }}
                             isAnimationActive={false}
                         />
