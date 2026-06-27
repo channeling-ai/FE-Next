@@ -76,10 +76,10 @@ function ChartTooltip({ active, activeIndex, dataLength, payload }: ChartTooltip
 
     return (
         <div className={`flex -translate-y-1 flex-col whitespace-nowrap ${alignment}`}>
-            <span className="font-caption-12r text-text-secondary desktop:text-[14px] desktop:leading-[1.5]">
+            <span className="font-caption-12r text-text-secondary">
                 {point.date}
             </span>
-            <strong className="font-body-16m text-text-primary desktop:text-[18px] desktop:leading-[1.5]">
+            <strong className="font-body-16m text-text-primary">
                 {Math.round(point.score)}점
             </strong>
         </div>
@@ -101,7 +101,7 @@ export default function UploadCycleChart() {
                                 key={metric}
                                 type="button"
                                 onClick={() => setActiveMetric(metric)}
-                                className={`shrink-0 border-b-2 px-2 py-2 font-body-14m transition-colors desktop:text-[16px] desktop:leading-[1.5] ${activeMetric === metric ? 'border-border-active text-text-primary' : 'border-transparent text-text-secondary hover:text-text-primary'}`}
+                                className={`shrink-0 border-b-2 px-2 py-2 font-body-14m transition-colors ${activeMetric === metric ? 'border-border-active text-text-primary' : 'border-transparent text-text-secondary hover:text-text-primary'}`}
                             >
                                 {metric}
                             </button>
@@ -115,7 +115,7 @@ export default function UploadCycleChart() {
                             key={item}
                             type="button"
                             onClick={() => setPeriod(item)}
-                            className={`rounded-[20px] px-2 py-1 font-body-14m transition-colors desktop:text-[16px] desktop:leading-[1.5] ${period === item ? 'bg-bg-3 text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
+                            className={`rounded-[20px] px-2 py-1 font-body-14m transition-colors ${period === item ? 'bg-bg-3 text-text-primary' : 'text-text-secondary hover:text-text-primary'}`}
                         >
                             {item}
                         </button>
