@@ -1,5 +1,4 @@
 import Scroll from '@/components/Scroll'
-import DashboardFooter from './_components/DashboardFooter'
 import DashboardHeader from './_components/DashboardHeader'
 import InsightCard from './_components/InsightCard'
 import MetricCardSmall from './_components/MetricCardSmall'
@@ -65,7 +64,6 @@ export default function DashboardPage() {
                         </div>
                     </section>
 
-                    <DashboardFooter />
                 </div>
             </Scroll>
         </div>
