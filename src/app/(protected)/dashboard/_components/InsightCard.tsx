@@ -1,4 +1,4 @@
-import PlaceholderIcon from '@/assets/icons/placeholder.svg'
+import ArrowIcon from '@/assets/icons/arrow.svg'
 
 interface InsightCardProps {
     description: string
@@ -13,7 +13,7 @@ export default function InsightCard({ description, tags, title }: InsightCardPro
                 <h3 className="min-w-0 truncate font-body-16sb text-text-primary desktop:text-[18px] desktop:leading-[1.5]">
                     {title}
                 </h3>
-                <PlaceholderIcon aria-hidden className="size-5 shrink-0 text-icon-secondary" />
+                <ArrowIcon aria-hidden className="size-5 shrink-0" />
             </div>
             <p className="font-body-14r text-text-secondary desktop:text-[16px] desktop:leading-[1.5]">{description}</p>
             <div className="h-px w-full bg-border-default" />
