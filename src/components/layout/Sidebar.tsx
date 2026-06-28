@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { type ReactNode, useState } from 'react'
 import DashboardIcon from '@/assets/icons/dashboard.svg'
-import ReportIcon from '@/assets/icons/report.svg'
-import IdeaIcon from '@/assets/icons/idea.svg'
-import CloseIcon from '@/assets/icons/sidebar-close.svg'
 import FeedbackIcon from '@/assets/icons/feedback.svg'
+import IdeaIcon from '@/assets/icons/idea.svg'
 import LogoIcon from '@/assets/icons/logo.svg'
+import ReportIcon from '@/assets/icons/report.svg'
+import CloseIcon from '@/assets/icons/sidebar-close.svg'
 import ProfileImage from '@/components/ProfileImage'
 
 interface SidebarProps {
@@ -15,8 +16,51 @@ interface SidebarProps {
     onClose?: () => void
 }
 
+interface SidebarItemProps {
+    href: string
+    icon: ReactNode
+    isActive?: boolean
+    isDesktopCollapsed: boolean
+    label: string
+    onNavigate?: () => void
+}
+
+function SidebarItem({
+    href,
+    icon,
+    isActive = false,
+    isDesktopCollapsed,
+    label,
+    onNavigate,
+}: SidebarItemProps) {
+    return (
+        <Link
+            href={href}
+            onClick={onNavigate}
+            aria-label={label}
+            className={`group relative flex h-10 w-full items-center gap-2 rounded-lg p-2 transition-colors desktop:shrink-0 ${isDesktopCollapsed ? 'desktop:w-10' : 'desktop:w-full'} ${isActive ? 'bg-bg-2' : 'bg-transparent hover:bg-bg-2'}`}
+        >
+            <span className="flex size-6 shrink-0 items-center justify-center text-icon-primary">
+                {icon}
+            </span>
+            <span className={`min-w-0 truncate font-body-14m text-text-primary ${isDesktopCollapsed ? 'desktop:hidden' : ''}`}>
+                {label}
+            </span>
+            {isDesktopCollapsed && (
+                <span
+                    aria-hidden
+                    className="pointer-events-none absolute left-12 top-1/2 z-50 hidden h-10 -translate-y-1/2 items-center whitespace-nowrap rounded-lg bg-bg-2 px-2 font-body-16m text-text-primary opacity-0 shadow-[2px_0_2px_rgba(20,20,21,0.5)] transition-opacity desktop:flex group-hover:opacity-100 group-focus-visible:opacity-100"
+                >
+                    {label}
+                </span>
+            )}
+        </Link>
+    )
+}
+
 export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     const pathname = usePathname()
+    const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false)
 
     const mainMenus = [
         { name: '대시보드', path: '/dashboard', icon: <DashboardIcon /> },
@@ -26,94 +70,97 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
     return (
         <>
-            {/* 오버레이 (모바일에서만 작동) */}
             {isOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 z-40 desktop:hidden transition-opacity"
+                    className="fixed inset-0 z-40 bg-black/50 transition-opacity desktop:hidden"
                     onClick={onClose}
                     aria-hidden="true"
                 />
             )}
 
-            {/* 사이드바 패널 */}
             <aside
-                className={`fixed top-0 left-0 w-[200px] h-screen bg-bg-1 shadow-[2px_0px_2px_0px_rgba(20,20,21,0.5)] z-50 flex flex-col px-4 pt-8 pb-6 transition-transform duration-300 
-                    desktop:static desktop:translate-x-0 desktop:z-0 desktop:shadow-none
-                    ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+                className={`fixed left-0 top-0 z-50 flex h-screen w-[200px] flex-col bg-bg-1 px-4 pb-6 pt-8 shadow-[2px_0_2px_0_rgba(20,20,21,0.5)] transition-[width,transform] duration-300 desktop:static desktop:z-20 desktop:h-screen desktop:translate-x-0 desktop:py-8 ${isDesktopCollapsed ? 'desktop:w-[72px]' : 'desktop:w-[200px]'} ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
                 style={{
                     height: '100dvh',
-                    maxHeight: 'min(100dvh, -webkit-fill-available)'
+                    maxHeight: 'min(100dvh, -webkit-fill-available)',
                 }}
             >
-                <div className="flex flex-col gap-2 w-full flex-1 overflow-y-auto pb-4 custom-scrollbar min-h-0">
-                    <div className="flex items-center justify-between w-full mb-2 shrink-0">
-                        <div className="flex items-center font-bold">
-                            <LogoIcon className="w-8 h-8 shrink-0" />
+                <div className={`custom-scrollbar flex min-h-0 w-full flex-1 flex-col gap-2 overflow-y-auto ${isDesktopCollapsed ? 'desktop:overflow-visible' : ''}`}>
+                    <div className={`flex h-8 w-full shrink-0 items-center justify-between ${isDesktopCollapsed ? 'desktop:justify-center' : ''}`}>
+                        <div className={`items-center font-bold ${isDesktopCollapsed ? 'flex desktop:hidden' : 'flex'}`}>
+                            <LogoIcon className="size-8 shrink-0" />
                             <span className="-ml-[1.33px] text-[17.616px] tracking-tight text-primary-50">Chaneling</span>
                         </div>
+
+                        {isDesktopCollapsed && (
+                            <div className="group/logo relative hidden size-8 shrink-0 desktop:block">
+                                <LogoIcon className="absolute inset-0 size-8 transition-opacity group-hover/logo:opacity-0 group-focus-within/logo:opacity-0" />
+                                <button
+                                    type="button"
+                                    onClick={() => setIsDesktopCollapsed(false)}
+                                    className="absolute inset-0 flex size-8 items-center justify-center text-icon-primary opacity-0 transition-opacity group-hover/logo:opacity-100 group-focus-within/logo:opacity-100"
+                                    aria-label="사이드바 펼치기"
+                                >
+                                    <CloseIcon />
+                                </button>
+                            </div>
+                        )}
+
                         <button
                             type="button"
                             onClick={onClose}
-                            className="p-1 text-icon-primary hover:text-text-primary transition-colors"
+                            className="flex size-8 items-center justify-center text-icon-primary desktop:hidden"
                             aria-label="사이드바 닫기"
                         >
                             <CloseIcon />
                         </button>
+
+                        {!isDesktopCollapsed && (
+                            <button
+                                type="button"
+                                onClick={() => setIsDesktopCollapsed(true)}
+                                className="hidden size-6 items-center justify-center text-icon-primary desktop:flex"
+                                aria-label="사이드바 접기"
+                            >
+                                <CloseIcon />
+                            </button>
+                        )}
                     </div>
 
-                    {/* 메인 메뉴 리스트 */}
-                    <nav className="flex flex-col gap-2 w-full shrink-0">
-                        {mainMenus.map((menu) => {
-                            const isActive = pathname === menu.path || pathname?.startsWith(menu.path + '/')
-                            return (
-                                <Link
-                                    key={menu.name}
-                                    href={menu.path}
-                                    className={`flex items-center gap-2 p-2 rounded-lg transition-colors w-full ${isActive
-                                        ? 'bg-bg-2 text-text-primary'
-                                        : 'bg-transparent text-text-secondary hover:bg-bg-2'
-                                        }`}
-                                >
-                                    <div className="shrink-0 text-icon-primary w-6 h-6 flex items-center justify-center">
-                                        {menu.icon}
-                                    </div>
-                                    <span className={`font-body-14m tracking-[-0.025em] ${isActive ? 'text-text-primary' : 'text-text-primary'}`}>
-                                        {menu.name}
-                                    </span>
-                                </Link>
-                            )
-                        })}
+                    <nav className="flex w-full shrink-0 flex-col gap-2" aria-label="주요 메뉴">
+                        {mainMenus.map((menu) => (
+                            <SidebarItem
+                                key={menu.name}
+                                href={menu.path}
+                                icon={menu.icon}
+                                isActive={pathname === menu.path || pathname?.startsWith(`${menu.path}/`)}
+                                isDesktopCollapsed={isDesktopCollapsed}
+                                label={menu.name}
+                                onNavigate={onClose}
+                            />
+                        ))}
                     </nav>
                 </div>
 
-                {/* 하단 섹션 (피드백 + 유저 프로필)*/}
-                <div className="flex flex-col gap-2 w-full shrink-0 pt-4 border-t border-white/5 mt-auto">
-                    {/* 피드백 */}
-                    <Link
+                <div className="mt-auto flex w-full shrink-0 flex-col gap-2">
+                    <SidebarItem
                         href="/feedback"
-                        className="flex items-center gap-2 p-2 rounded-lg bg-transparent hover:bg-bg-2 transition-colors w-full"
-                    >
-                        <div className="shrink-0 text-icon-primary w-6 h-6 flex items-center justify-center">
-                            <FeedbackIcon />
-                        </div>
-                        <span className="font-body-14m tracking-[-0.025em] text-text-primary">
-                            피드백 보내기
-                        </span>
-                    </Link>
-
-                    {/* 유저 프로필 */}
-                    <Link
+                        icon={<FeedbackIcon className="size-[18px]" />}
+                        isActive={pathname === '/feedback'}
+                        isDesktopCollapsed={isDesktopCollapsed}
+                        label="피드백 보내기"
+                        onNavigate={onClose}
+                    />
+                    <SidebarItem
                         href="/settings"
-                        className="flex items-center gap-2 p-2 rounded-lg bg-transparent hover:bg-bg-2 transition-colors w-full"
-                    >
-                        <ProfileImage size={24} />
-                        <span className="flex-1 font-body-14m tracking-[-0.025em] text-text-primary truncate">
-                            채널이름
-                        </span>
-                    </Link>
+                        icon={<ProfileImage size={24} />}
+                        isActive={pathname === '/settings'}
+                        isDesktopCollapsed={isDesktopCollapsed}
+                        label="채널이름"
+                        onNavigate={onClose}
+                    />
                 </div>
             </aside>
         </>
     )
 }
-
