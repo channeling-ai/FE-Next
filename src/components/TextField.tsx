@@ -15,7 +15,11 @@ export interface TextFieldProps
   errorMessage?: string
   className?: string
   sizeVariant?: 'mobile' | 'tablet' | 'desktop'
-  heightVariant?: 'small' | 'large' // 높이 크기 분기 (기본: small: 88px, large: 151px)
+  heightVariant?: 'large' | 'medium' | 'small' | 'xsmall' | {
+    mobile?: 'large' | 'medium' | 'small' | 'xsmall'
+    tablet?: 'large' | 'medium' | 'small' | 'xsmall'
+    desktop?: 'large' | 'medium' | 'small' | 'xsmall'
+  }
 }
 
 export default function TextField({
@@ -61,13 +65,33 @@ export default function TextField({
     desktop: 'w-[1312px]', // 향후 수정
   }
 
+  const heightClasses: Record<'large' | 'medium' | 'small' | 'xsmall', string> = {
+    large: 'h-[151px]',
+    medium: 'h-[100px]',
+    small: 'h-[88px]',
+    xsmall: 'h-[67px]'
+  }
+
+  let heightClass = ''
+  if (typeof heightVariant === 'string') {
+    heightClass = heightClasses[heightVariant]
+  } else if (heightVariant && typeof heightVariant === 'object') {
+    const { mobile, tablet, desktop } = heightVariant
+    const mobileClass = mobile ? heightClasses[mobile] : ''
+    const tabletClass = tablet ? heightClasses[tablet].replace('h-', 'tablet:h-') : ''
+    const desktopClass = desktop ? heightClasses[desktop].replace('h-', 'desktop:h-') : ''
+    heightClass = `${mobileClass} ${tabletClass} ${desktopClass}`.trim()
+  } else {
+    heightClass = heightClasses['small']
+  }
+
   return (
     <div className={`flex flex-col gap-[4px] ${widthClass[sizeVariant]} ${className}`}>
       {/* 메인 Input 래퍼 */}
       <div
         className={[
           'relative flex flex-col w-full px-[16px] py-[12px] bg-bg-1 rounded-[20px]',
-          heightVariant === 'large' ? 'h-[151px]' : 'h-[100px]', // variant에 따른 높이 분기
+          heightClass, // variant에 따른 높이 분기
           isFocused
             ? 'shadow-[inset_0_0_0_1px_var(--color-border-active)]'
             : isError
@@ -83,14 +107,14 @@ export default function TextField({
             {label ? (
               <label
                 htmlFor={inputId}
-                className="font-body-14m text-text-secondary tracking-[-0.3px]"
+                className="font-caption-12m desktop:font-body-14m text-text-secondary tracking-[-0.3px]"
               >
                 {label}
               </label>
             ) : <div />}
             {showCounter && (
-              <div className="flex items-center gap-[2px] font-body-14r text-text-secondary tracking-[-0.3px]">
-                <span className={textLength === 0 ? 'text-text-secondary font-body-14m' : 'text-text-primary'}>
+              <div className="hidden tablet:flex items-center gap-[2px] font-caption-12r desktop:font-body-14r text-text-secondary tracking-[-0.3px]">
+                <span className={textLength === 0 ? 'text-text-secondary font-caption-12m desktop:font-body-14m' : 'text-text-primary'}>
                   {textLength}
                 </span>
                 <span>/</span>
@@ -104,9 +128,9 @@ export default function TextField({
         <div className="relative flex-1 flex flex-col justify-start">
           {showPlaceholder && (
             <div className="absolute inset-0 flex flex-col justify-start pointer-events-none text-text-secondary">
-              <p className="font-body-16r tracking-[-0.35px]">{placeholder}</p>
+              <p className="font-body-14r desktop:font-body-16r tracking-[-0.35px]">{placeholder}</p>
               {helperText && (
-                <p className="font-body-16r tracking-[-0.35px]">{helperText}</p>
+                <p className="font-body-14r desktop:font-body-16r tracking-[-0.35px]">{helperText}</p>
               )}
             </div>
           )}
@@ -122,8 +146,8 @@ export default function TextField({
             aria-placeholder={placeholder}
             className={[
               'absolute inset-0 w-full h-full bg-transparent outline-none m-0 p-0 resize-none',
-              heightVariant === 'large' ? 'overflow-y-auto custom-scrollbar pr-[4px]' : 'overflow-hidden',
-              'font-body-14r tracking-[-0.35px] text-text-primary caret-gray-90',
+              (heightVariant === 'large' || (typeof heightVariant === 'object' && (heightVariant.mobile === 'large' || heightVariant.tablet === 'large' || heightVariant.desktop === 'large'))) ? 'overflow-y-auto custom-scrollbar pr-[4px]' : 'overflow-hidden',
+              'font-body-14r desktop:font-body-16r tracking-[-0.35px] text-text-primary caret-gray-90',
               showPlaceholder ? 'text-transparent' : '',
             ].join(' ')}
             {...rest}
