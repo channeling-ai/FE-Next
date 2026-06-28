@@ -57,8 +57,8 @@ export default function TextField({
 
   const widthClass: Record<Required<TextFieldProps>['sizeVariant'], string> = {
     mobile: 'w-[328px]',
-    tablet: 'w-[328px]', // 향후 수정
-    desktop: 'w-[328px]', // 향후 수정
+    tablet: 'w-[736px]', // 향후 수정
+    desktop: 'w-[1312px]', // 향후 수정
   }
 
   return (
@@ -67,7 +67,7 @@ export default function TextField({
       <div
         className={[
           'relative flex flex-col w-full px-[16px] py-[12px] bg-bg-1 rounded-[20px]',
-          heightVariant === 'large' ? 'h-[151px]' : 'h-[88px]', // variant에 따른 높이 분기
+          heightVariant === 'large' ? 'h-[151px]' : 'h-[100px]', // variant에 따른 높이 분기
           isFocused
             ? 'shadow-[inset_0_0_0_1px_var(--color-border-active)]'
             : isError
@@ -83,14 +83,14 @@ export default function TextField({
             {label ? (
               <label
                 htmlFor={inputId}
-                className="font-caption-12m text-text-secondary tracking-[-0.3px]"
+                className="font-body-14m text-text-secondary tracking-[-0.3px]"
               >
                 {label}
               </label>
             ) : <div />}
             {showCounter && (
-              <div className="flex items-center gap-[2px] font-caption-12r text-text-secondary tracking-[-0.3px]">
-                <span className={textLength === 0 ? 'text-text-secondary font-caption-12m' : 'text-text-primary'}>
+              <div className="flex items-center gap-[2px] font-body-14r text-text-secondary tracking-[-0.3px]">
+                <span className={textLength === 0 ? 'text-text-secondary font-body-14m' : 'text-text-primary'}>
                   {textLength}
                 </span>
                 <span>/</span>
@@ -104,9 +104,9 @@ export default function TextField({
         <div className="relative flex-1 flex flex-col justify-start">
           {showPlaceholder && (
             <div className="absolute inset-0 flex flex-col justify-start pointer-events-none text-text-secondary">
-              <p className="font-body-14r tracking-[-0.35px]">{placeholder}</p>
+              <p className="font-body-16r tracking-[-0.35px]">{placeholder}</p>
               {helperText && (
-                <p className="font-body-14r tracking-[-0.35px]">{helperText}</p>
+                <p className="font-body-16r tracking-[-0.35px]">{helperText}</p>
               )}
             </div>
           )}
