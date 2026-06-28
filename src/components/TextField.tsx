@@ -51,7 +51,6 @@ export default function TextField({
   const isControlled = controlledValue !== undefined
   const value = isControlled ? controlledValue : internalValue
 
-  const [isFocused, setIsFocused] = useState(false)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const autoId = useId()
   const inputId = externalId ?? autoId
@@ -79,7 +78,7 @@ export default function TextField({
         className={[
           'relative flex flex-col w-full px-[16px] py-[12px] bg-bg-1 rounded-[20px]',
           heightVariant === 'large' ? 'h-[151px]' : 'h-[88px]', // variant에 따른 높이 분기
-          isActive || isFocused
+          isActive
             ? 'shadow-[inset_0_0_0_1px_var(--color-border-active)]'
               : isError
                 ? 'shadow-[inset_0_0_0_1px_var(--color-border-error)]'
@@ -139,14 +138,8 @@ export default function TextField({
             id={inputId}
             value={value}
             onChange={handleChange}
-            onFocus={(event) => {
-              setIsFocused(true)
-              externalOnFocus?.(event)
-            }}
-            onBlur={(event) => {
-              setIsFocused(false)
-              externalOnBlur?.(event)
-            }}
+            onFocus={externalOnFocus}
+            onBlur={externalOnBlur}
             aria-placeholder={placeholder}
             className={[
               'absolute inset-0 w-full h-full bg-transparent outline-none m-0 p-0 resize-none',
