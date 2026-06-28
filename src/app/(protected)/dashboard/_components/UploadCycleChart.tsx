@@ -64,7 +64,7 @@ interface ChartTooltipProps extends TooltipContentProps {
 }
 
 function ChartTooltip({ active, activeIndex, dataLength, payload }: ChartTooltipProps) {
-    if (!active || !payload.length) return null
+    if (!active || !payload || !payload.length) return null
 
     const point = payload[0].payload as ChartPoint
     const index = Number(activeIndex)
