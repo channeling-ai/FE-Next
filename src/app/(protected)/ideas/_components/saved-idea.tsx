@@ -6,7 +6,7 @@ import Dropdown from '@/assets/icons/dropdown.svg'
 import DropdownOrder from './dropdown-order'
 
 export default function SavedIdea() {
-    const [selectedIdea, setSelectedIdea] = useState<any | null>(null)
+    const [selectedIdea, setSelectedIdea] = useState<boolean>(false)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     const handleDropdownClick = () => {
@@ -23,10 +23,11 @@ export default function SavedIdea() {
 
     const [selectedOption, setSelectedOption] = useState('')
     const handleClose = () => {
-        setSelectedIdea(null)
+        setSelectedIdea(false)
     }
 
     useEffect(() => {
+        if (!isDropdownOpen) return
         const handleClickOutside = (e: MouseEvent) => {
             if (dropdownOrderRef.current && !dropdownOrderRef.current.contains(e.target as Node)) {
                 setIsDropdownOpen(false)
@@ -38,7 +39,7 @@ export default function SavedIdea() {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
-    }, [])
+    }, [isDropdownOpen])
 
     if (selectedIdea) {
         return <IdeaDetailView onBack={handleClose} />
@@ -55,7 +56,7 @@ export default function SavedIdea() {
                         <div className="text-text-secondary font-body-14m">개의 아이디어</div>
                     </div>
                     <div
-                        className="flex items-center gap-1 py-2 pl-4 pr-3 bg-bg-1 rounded-[20px] relative z-100"
+                        className="flex items-center gap-1 py-2 pl-4 pr-3 bg-bg-1 rounded-[20px] cursor-pointer relative z-100"
                         onClick={handleDropdownClick}
                         ref={dropdownOrderRef}
                     >
@@ -63,10 +64,10 @@ export default function SavedIdea() {
                         {selectedOption != '' && (
                             <div className="font-body-16m text-text-primary">{selectedOption}</div>
                         )}
-                        {!isDropdownOpen && <Dropdown className="cursor-pointer text-text-secondary" />}
+                        {!isDropdownOpen && <Dropdown className="text-text-secondary" />}
                         {isDropdownOpen && (
                             <>
-                                <Dropdown className="cursor-pointer scale-y-[-1] text-text-secondary" />
+                                <Dropdown className="scale-y-[-1] text-text-secondary" />
 
                                 <DropdownOrder handleOptionValue={handleOrderOptionClick} />
                             </>

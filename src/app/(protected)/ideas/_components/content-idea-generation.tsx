@@ -23,6 +23,8 @@ export default function ContentIdeaGeneration() {
     const [selectedOption, setSelectedOption] = useState('')
 
     useEffect(() => {
+        if (!isDropdownOpen) return
+
         const handleClickOutside = (e: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
                 setIsDropdownOpen(false)
@@ -34,7 +36,7 @@ export default function ContentIdeaGeneration() {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside)
         }
-    }, [])
+    }, [isDropdownOpen])
 
     return (
         <div className="flex flex-col w-full">
@@ -85,7 +87,7 @@ export default function ContentIdeaGeneration() {
                         label="추가 입력 사항"
                         maxLength={300}
                         heightVariant="large"
-                        className="w-full h-37.75"
+                        className="w-full"
                         placeholder="어떤 점을 강조하고 싶으신가요?"
                         helperText="(예: 쉬운 설명, 유머, 영상미)"
                     />

@@ -57,11 +57,11 @@ export default function TextField({
         onChange?.(next)
     }
 
-    const widthClass: Record<Required<TextFieldProps>['sizeVariant'], string> = {
-        mobile: 'w-[328px]',
-        tablet: 'w-[328px]', // 향후 수정
-        desktop: 'w-[328px]', // 향후 수정
-    }
+    // const widthClass: Record<Required<TextFieldProps>['sizeVariant'], string> = {
+    //     mobile: 'w-[328px]',
+    //     tablet: 'w-[328px]', // 향후 수정
+    //     desktop: 'w-[328px]', // 향후 수정
+    // }
 
     return (
         <div className={`flex flex-col gap-1 w-full`}>

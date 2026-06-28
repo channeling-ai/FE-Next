@@ -18,8 +18,8 @@ export default function TrendKeyword() {
                 </div>
             </div>
             <div className="flex w-full border-b border-border-subtitle">
-                <Tab title="실시간" onclick={() => setActiveTab('live')} isActive={activeTab === 'live'} />
-                <Tab title="채널 맞춤형" onclick={() => setActiveTab('custom')} isActive={activeTab === 'custom'} />
+                <Tab title="실시간" onClick={() => setActiveTab('live')} isActive={activeTab === 'live'} />
+                <Tab title="채널 맞춤형" onClick={() => setActiveTab('custom')} isActive={activeTab === 'custom'} />
             </div>
             {activeTab === 'live' && (
                 <div className="flex flex-col mt-3.5 w-full">
