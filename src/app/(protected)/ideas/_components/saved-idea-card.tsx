@@ -7,7 +7,8 @@ interface SaveCardProps {
 }
 
 export default function SavedIdeaCard({ onClick }: SaveCardProps) {
-    const handleBookmarkClick = () => {
+    const handleBookmarkClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation()
         setIsBookmarked((prev) => !prev)
     }
     const [isBookmarked, setIsBookmarked] = useState(false)
