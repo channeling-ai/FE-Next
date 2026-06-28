@@ -8,7 +8,7 @@ export default function ReportTabs() {
     const [activeTab, setActiveTab] = useState<TabType>('overview')
 
     const tabBaseClass =
-        'flex flex-1 p-2 justify-center items-center rounded-2xl font-body-18sb cursor-pointer transition-colors'
+        'flex flex-1 p-2 justify-center items-center rounded-2xl font-body-16sb desktop:font-body-18sb cursor-pointer transition-colors'
 
     return (
         <div className="flex flex-col gap-4">
