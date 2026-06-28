@@ -1,3 +1,5 @@
+import { type CSSProperties } from 'react'
+
 interface MetricCardWithImageProps {
     channelName: string
     delta: number
@@ -14,7 +16,7 @@ export default function MetricCardWithImage({
     return (
         <article
             className="bg-video-card flex aspect-square w-full flex-col items-start justify-between overflow-hidden rounded-[20px] p-5"
-            style={{ '--video-thumb': `url('${imageUrl}')` } as React.CSSProperties}
+            style={{ '--video-thumb': `url('${imageUrl}')` } as CSSProperties}
         >
             <h2 className="font-body-16sb text-text-primary">
                 안녕하세요
