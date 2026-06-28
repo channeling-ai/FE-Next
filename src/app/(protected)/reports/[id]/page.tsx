@@ -1,5 +1,4 @@
 import Header from '@/components/layout/Header'
-import VideoCard from '../_components/VideoCard'
 import ReportTabs from '../_components/ReportTabs'
 
 interface ReportDetailPageProps {

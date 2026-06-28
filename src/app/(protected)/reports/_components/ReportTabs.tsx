@@ -4,6 +4,11 @@ import { useState } from 'react'
 
 type TabType = 'overview' | 'analysis'
 
+const TABS = [
+    { id: 'overview', label: '개요' },
+    { id: 'analysis', label: '분석' },
+] as const
+
 export default function ReportTabs() {
     const [activeTab, setActiveTab] = useState<TabType>('overview')
 
@@ -13,25 +18,20 @@ export default function ReportTabs() {
     return (
         <div className="flex flex-col gap-4">
             <div className="flex p-1 items-center rounded-[20px] bg-bg-1">
-                <button
-                    type="button"
-                    onClick={() => setActiveTab('overview')}
-                    className={`${tabBaseClass} ${
-                        activeTab === 'overview' ? 'bg-bg-2 text-text-primary' : 'bg-transparent text-text-tertiary'
-                    }`}
-                >
-                    개요
-                </button>
-
-                <button
-                    type="button"
-                    onClick={() => setActiveTab('analysis')}
-                    className={`${tabBaseClass} ${
-                        activeTab === 'analysis' ? 'bg-bg-2 text-text-primary' : 'bg-transparent text-text-tertiary'
-                    }`}
-                >
-                    분석
-                </button>
+                {TABS.map((tab) => (
+                    <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => setActiveTab(tab.id)}
+                        className={
+                            tabBaseClass +
+                            ' ' +
+                            (activeTab === tab.id ? 'bg-bg-2 text-text-primary' : 'bg-transparent text-text-tertiary')
+                        }
+                    >
+                        {tab.label}
+                    </button>
+                ))}
             </div>
 
             {activeTab === 'overview' && (
