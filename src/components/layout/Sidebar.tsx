@@ -38,7 +38,7 @@ function SidebarItem({
             href={href}
             onClick={onNavigate}
             aria-label={label}
-            className={`group relative flex h-10 w-full items-center gap-2 rounded-lg p-2 transition-colors desktop:shrink-0 ${isDesktopCollapsed ? 'desktop:w-10' : 'desktop:w-full'} ${isActive ? 'bg-bg-2' : 'bg-transparent hover:bg-bg-2'}`}
+            className={`group relative flex h-10 w-full items-center gap-2 rounded-lg p-2 transition-all duration-300 desktop:shrink-0 ${isDesktopCollapsed ? 'desktop:w-10' : 'desktop:w-full'} ${isActive ? 'bg-bg-2' : 'bg-transparent hover:bg-bg-2'}`}
         >
             <span className="flex size-6 shrink-0 items-center justify-center text-icon-primary">
                 {icon}
