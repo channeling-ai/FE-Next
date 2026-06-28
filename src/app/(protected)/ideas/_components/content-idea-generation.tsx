@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import Dropdown from '@/assets/icons/dropdown.svg'
 import { DropdownVideoType } from './dropdown-videotype'
@@ -21,6 +21,21 @@ export default function ContentIdeaGeneration() {
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     const [selectedOption, setSelectedOption] = useState('')
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setIsDropdownOpen(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
+
     return (
         <div className="flex flex-col w-full">
             <div className="flex flex-col py-1 items-start gap-4">

@@ -109,7 +109,7 @@ export default function TextField({
                 )}
 
                 {/* 텍스트 컨텐츠 */}
-                <div className="relative flex flex-col justify-start">
+                <div className="relative flex-1 flex flex-col justify-start">
                     {showPlaceholder && (
                         <div className="absolute inset-0 flex flex-col justify-start pointer-events-none text-text-secondary">
                             <p className="font-body-14r desktop:font-body-16r">{placeholder}</p>

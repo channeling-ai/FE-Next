@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SavedIdeaCard from './saved-idea-card'
 import SearchBar from './search-bar'
 import IdeaDetailView from './idea-detail-view'
@@ -26,9 +26,24 @@ export default function SavedIdea() {
         setSelectedIdea(null)
     }
 
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownOrderRef.current && !dropdownOrderRef.current.contains(e.target as Node)) {
+                setIsDropdownOpen(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
+
     if (selectedIdea) {
         return <IdeaDetailView onBack={handleClose} />
     }
+
     return (
         <div className="flex flex-col gap-2 justify-start w-full  px-4 desktop:px-8">
             <h1 className="text-text-primary font-title-18sb">저장한 아이디어</h1>
