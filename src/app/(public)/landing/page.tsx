@@ -11,6 +11,7 @@ import { Footer } from '@/components/Footer'
 import ArrowRightIcon from '@/assets/icons/arrow_right.svg'
 import FaqArrowIcon from '@/assets/icons/faq_arrow.svg'
 import GoogleIcon from '@/assets/icons/google.svg'
+import Link from 'next/link'
 
 // 헬퍼: 파일 크기 포맷
 const formatFileSize = (bytes: number) => {
@@ -189,7 +190,7 @@ export default function LandingPage() {
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col tablet:flex-row gap-4">
                             <div 
-                                className="w-full tablet:w-[316px] h-[178px] rounded-[20px] border border-white/5 shrink-0 relative overflow-hidden"
+                                className="w-full tablet:w-[316px] h-[178px] rounded-[20px] shrink-0 relative overflow-hidden"
                                 style={{
                                     backgroundImage: 'linear-gradient(45deg, #EAEAEA 25%, transparent 25%), linear-gradient(-45deg, #EAEAEA 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #EAEAEA 75%), linear-gradient(-45deg, transparent 75%, #EAEAEA 75%)',
                                     backgroundSize: '16px 16px',
@@ -246,7 +247,7 @@ export default function LandingPage() {
                                 <h4 className="font-body-16sb text-text-primary">리포트 요약</h4>
                                 <div className="flex flex-col gap-2">
                                     {/* 요약 카드 1 */}
-                                    <div className="bg-gray-5 rounded-[20px] p-5 flex flex-col gap-2">
+                                    <div className="bg-gray-10 rounded-[20px] p-5 flex flex-col gap-2">
                                         <div className="self-start px-1 py-0.5 bg-[#4ADE80]/8 text-[#4ADE80] font-body-14m rounded-[8px]">
                                             긍정
                                         </div>
@@ -257,7 +258,7 @@ export default function LandingPage() {
                                     </div>
 
                                     {/* 요약 카드 2 */}
-                                    <div className="bg-gray-5 rounded-[20px] p-5 flex flex-col gap-2">
+                                    <div className="bg-gray-10 rounded-[20px] p-5 flex flex-col gap-2">
                                         <div className="self-start px-1 py-0.5 bg-gray-20 text-text-secondary font-body-14m rounded-[8px]">
                                             양호
                                         </div>
@@ -268,7 +269,7 @@ export default function LandingPage() {
                                     </div>
 
                                     {/* 요약 카드 3 */}
-                                    <div className="bg-gray-5 rounded-[20px] p-5 flex flex-col gap-2">
+                                    <div className="bg-gray-10 rounded-[20px] p-5 flex flex-col gap-2">
                                         <div className="self-start px-1 py-0.5 bg-[#4ADE80]/8 text-[#4ADE80] font-body-14m rounded-[8px]">
                                             최적화 원활
                                         </div>
@@ -298,9 +299,9 @@ export default function LandingPage() {
                             </div>
                         )}
 
-                        <button
-                            onClick={handleGoogleLogin}
-                            className="relative w-full p-[2px] rounded-[20px] overflow-hidden cursor-pointer mt-2 group focus:outline-none"
+                        <Link
+                            href="/landing/report"
+                            className="relative block w-full p-[2px] rounded-[20px] overflow-hidden cursor-pointer mt-2 group focus:outline-none"
                         >
                         <div 
                             className="absolute inset-[-1000%] animate-[spin_6s_linear_infinite]"
@@ -313,7 +314,7 @@ export default function LandingPage() {
                         <div className="relative z-10 w-full py-3.5 bg-gray-10 hover:bg-gray-10/95 text-text-primary font-title-18sb rounded-[18px] transition-colors flex items-center justify-center">
                             실제 데이터로 정밀한 리포트 받기
                         </div>
-                    </button>
+                    </Link>
                 </div>
                 </section>
 
