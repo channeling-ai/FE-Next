@@ -27,9 +27,9 @@
     --font-pretendard: 'Pretendard', sans-serif;
 
     /* 브레이크포인트 */
-    --breakpoint-desktop: 1440px;
-    --breakpoint-tablet: 768px;
     --breakpoint-mobile: 360px;
+    --breakpoint-tablet: 768px;
+    --breakpoint-desktop: 1440px;
 
     /* 기본 컬러 칩 */
     --color-primary-5: #170305;
