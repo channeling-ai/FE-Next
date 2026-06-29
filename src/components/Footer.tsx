@@ -1,8 +1,12 @@
 import Link from 'next/link';
 
-export const Footer = () => {
+interface FooterProps {
+    isFixed?: boolean;
+}
+
+export const Footer = ({ isFixed = true }: FooterProps) => {
     return (
-        <div className="fixed bottom-0 w-full desktop:left-[72px] desktop:w-[calc(100%-72px)]">
+        <div className={isFixed ? "fixed bottom-0 w-full desktop:left-[72px] desktop:w-[calc(100%-72px)] z-50 bg-gray-0" : "w-full mt-24 bg-gray-0"}>
             <footer className="flex flex-col justify-center items-center py-8 desktop:rounded-lg font-caption-12r text-text-tertiary">
                 <div className="flex flex-wrap text-center">
                     <Link href="/docs/terms" className="px-4 border-r border-border-subtle last:border-none">
