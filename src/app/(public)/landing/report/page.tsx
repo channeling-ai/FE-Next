@@ -26,7 +26,7 @@ export default function ReportPage() {
     return (
         <div className="min-h-screen bg-[#141415] text-text-primary flex flex-col">
             {/* 상단 헤더 */}
-            <header className="h-[72px] border-b border-white/5 flex items-center justify-between bg-[#141415] sticky top-0 z-40 px-6 tablet:px-16 max-w-[1440px] w-full mx-auto">
+            <header className="h-[72px] flex items-center justify-between bg-[#141415] sticky top-0 z-40 tablet:px-16 max-w-[1440px] w-full mx-auto">
                 <div className="flex items-center gap-3">
                     <Link 
                         href="/landing"
@@ -42,7 +42,7 @@ export default function ReportPage() {
             </header>
 
             {/* 메인 콘텐츠 바디 */}
-            <main className="flex-1 max-w-[1440px] w-full mx-auto px-6 tablet:px-16 py-8 flex flex-col gap-10">
+            <main className="flex-1 max-w-[1440px] w-full mx-auto px-6 tablet:px-16 py-8 flex flex-col gap-10 pb-16">
                 {/* 1. 영상 메타 정보 영역 */}
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col tablet:flex-row gap-4">
@@ -273,9 +273,9 @@ export default function ReportPage() {
                                 <h4 className="font-body-16sb text-text-primary">댓글 반응</h4>
                                 <div className="bg-gray-10 rounded-[20px] p-5 flex flex-col gap-8">
                                     {/* 상단: 도넛 차트 및 감정 분석 탭/해설 */}
-                                    <div className="flex flex-col desktop:flex-row gap-7 items-stretch">
+                                    <div className="flex flex-col tablet:flex-row gap-7 items-start">
                                         {/* 도넛 차트 */}
-                                        <div className="w-full desktop:w-[352px] flex flex-col items-center justify-center shrink-0 relative">
+                                        <div className="w-full tablet:w-[352px] flex flex-col items-center justify-center shrink-0 relative">
                                             <div className="relative w-88 h-88 flex items-center justify-center">
                                                 <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                                                     {/* 기타 (10%) - 회색 */}
@@ -300,7 +300,7 @@ export default function ReportPage() {
                                         {/* 상세 분류 탭 및 감정 해설 */}
                                         <div className="flex-1 flex flex-col gap-4">
                                             {/* 감정 서브 탭 */}
-                                            <div className="grid grid-cols-2 tablet:grid-cols-4 desktop:grid-cols-1">
+                                            <div className="grid grid-cols-2 tablet:grid-cols-1">
                                                 <button
                                                     onClick={() => setSentimentTab('positive')}
                                                     className={`py-4 px-6 rounded-[12px] border text-center transition-all cursor-pointer flex items-center gap-1 border-box ${
@@ -415,21 +415,224 @@ export default function ReportPage() {
                             </div>
                         </div>
                     ) : (
-                        <div className="flex flex-col gap-10 mt-2">
-                            {/* 심층 반응 분석 */}
-                            <div className="flex flex-col gap-4">
-                                <h4 className="font-body-16sb text-text-primary">심층 반응 분석</h4>
-                                <div className="flex flex-col gap-4 bg-gray-5 rounded-[20px] p-6 border border-white/5">
-                                    <div className="flex justify-between items-center pb-4 border-b border-white/5 mb-2">
-                                        <span className="font-body-14sb text-text-primary">가장 높은 호감 키워드</span>
-                                        <span className="font-body-14m text-primary-60">{`"힐링", "요리", "음악"`}</span>
+                        <div className="flex flex-col gap-8 mt-2">
+                            {/* 시청자 이탈 분석 */}
+                            <div className="flex flex-col gap-2">
+                                <h4 className="font-body-18sb text-text-primary">시청자 이탈 분석</h4>
+                                <div className="bg-gray-10 rounded-[20px] p-5 flex flex-col gap-4 relative overflow-hidden">
+                                    {/* 구간 요약 정보 */}
+                                    <div className="flex flex-col gap-1">
+                                        <span className="font-body-16m text-text-brand">
+                                            0분 00초(00:00~00:00) 구간 이탈 요약
+                                        </span>
+                                        <span className="font-body-16r text-text-secondary">
+                                            채널링이 분석한 가장 개선이 시급한 구간입니다.
+                                        </span>
                                     </div>
-                                    <p className="font-body-14r text-text-secondary leading-relaxed whitespace-pre-line">
-                                        {`시청자들은 요리하는 소리와 배경 음악의 조화에 큰 편안함을 느꼈다고 언급했습니다.\n특히 "힐링된다", "위로받는다"는 키워드가 감정 분석 상위권에 랭크되었습니다.`}
-                                    </p>
-                                    <div className="mt-4 pt-4 border-t border-white/5 flex justify-between items-center text-[13px] font-normal text-text-tertiary">
-                                        <span>분석 댓글 수: 100개</span>
-                                        <span>신뢰도: 매우 높음 (94%)</span>
+
+                                    {/* 이탈 분석 그래프 */}
+                                    <div className="w-full h-[205px] relative">
+                                        <svg className="w-full h-full" viewBox="0 0 1272 160" preserveAspectRatio="none">
+                                            {/* 그라데이션 정의 */}
+                                            <defs>
+                                                <linearGradient id="area-grad" x1="0" y1="0" x2="0" y2="1">
+                                                    <stop offset="5%" stopColor="#E9495A" stopOpacity={0.4} />
+                                                    <stop offset="95%" stopColor="#DA1B2E" stopOpacity={0} />
+                                                </linearGradient>
+                                            </defs>
+
+                                            {/* 이탈 하이라이트 세로 구역 (0:15 ~ 0:45 부근) */}
+                                            <rect x="90" y="0" width="100" height="160" fill="rgba(233, 73, 90, 0.08)" />
+                                            <line x1="90" y1="0" x2="90" y2="160" stroke="#E9495A" strokeWidth="1" strokeDasharray="3 3" />
+                                            <line x1="190" y1="0" x2="190" y2="160" stroke="#E9495A" strokeWidth="1" strokeDasharray="3 3" />
+
+                                            {/* 배경 보조 가로선 */}
+                                            <line x1="0" y1="40" x2="1272" y2="40" stroke="white" strokeOpacity={0.05} />
+                                            <line x1="0" y1="80" x2="1272" y2="80" stroke="white" strokeOpacity={0.05} />
+                                            <line x1="0" y1="120" x2="1272" y2="120" stroke="white" strokeOpacity={0.05} />
+
+                                            {/* 차트 영역 채우기 (Area) */}
+                                            <path
+                                                d="M 0 30 Q 150 15 300 110 T 600 40 T 900 60 T 1200 45 L 1272 45 L 1272 160 L 0 160 Z"
+                                                fill="url(#area-grad)"
+                                            />
+
+                                            {/* 차트 선 (Line) */}
+                                            <path
+                                                d="M 0 30 Q 150 15 300 110 T 600 40 T 900 60 T 1200 45 L 1272 45"
+                                                fill="transparent"
+                                                stroke="#E9495A"
+                                                strokeWidth="2"
+                                            />
+                                        </svg>
+
+                                        {/* X축 라벨들 */}
+                                        <div className="flex justify-between font-body-14r text-text-tertiary mt-2 px-1">
+                                            <span>0:00</span>
+                                            <span>0:30</span>
+                                            <span>1:00</span>
+                                            <span>1:30</span>
+                                            <span>2:00</span>
+                                            <span>2:30</span>
+                                            <span>3:00</span>
+                                            <span>3:30</span>
+                                        </div>
+                                    </div>
+
+                                    {/* 하단 상세 분석 (원인, 개선방안, 기대효과) */}
+                                    <div className="mt-8">
+                                        <div className="flex flex-col gap-6">
+                                            {/* 이탈 원인 */}
+                                            <div className="flex flex-col gap-2">
+                                                <span className="font-body-16sb text-text-secondary">이탈 원인</span>
+                                                <div className="flex flex-col gap-1 text-text-primary font-body-14r">
+                                                    <p>• 예상 뷰어 수치: 해당 구간에서 시청자가 지루함을 느낄 수 있는 반복적인 내용이 30초 이상 지속됨</p>
+                                                    <p>• 중복된 내용: 앞서 1분 15초에 언급했던 내용과 유사한 주장이 반복되어 정보값이 낮아짐</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="h-[1px] bg-gray-20" />
+
+                                            {/* 개선 방안 */}
+                                            <div className="flex flex-col gap-1">
+                                                <span className="font-body-16sb text-text-secondary">개선 방안</span>
+                                                <div className="flex flex-col gap-1 text-text-primary font-body-14r">
+                                                    <p>• 진행 속도 조절: 2분 6초부터 2분 30초까지의 부연 설명 구간을 컷편집하여 10초 이내로 단축</p>
+                                                    <p>• 그래픽 활용: 설명이 길어지는 부분에 핵심 키워드 자막이나 자료 화면을 삽입하여 시각적 변화 주기</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="h-[1px] bg-gray-20" />
+
+                                            {/* 기대 효과 */}
+                                            <div className="flex flex-col gap-1">
+                                                <span className="font-body-16sb text-text-secondary">기대 효과</span>
+                                                <p className="text-text-primary font-body-14r">
+                                                    위 개선사항 적용 시, 해당 구간 이탈율을 약 40% 감소시킬 수 있으며, 전체 영상 평균 시청 시간을 1분 30초 이상 증가시킬 수 있을 것으로 예상됩니다.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* 블러 페이월 오버레이 (컨테이너 전체 가로폭 및 하단 곡률 100% 동기화) */}
+                                    <div className="absolute left-0 right-0 bottom-0 h-[319px] bg-white/1 backdrop-blur-[10px] z-10 flex flex-col items-center justify-center p-6 text-center transition-all duration-300">
+                                        <span className="font-body-16m text-text-primary">
+                                            로그인 시, 본인 영상의 분석에서 확인할 수 있어요
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 알고리즘 최적화 */}
+                            <div className="flex flex-col gap-2">
+                                <h4 className="font-body-18sb text-text-primary">알고리즘 최적화</h4>
+                                <div className="bg-gray-10 rounded-[20px] p-5 flex flex-col gap-4">
+                                    {/* 제목 관련 */}
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex justify-between items-center">
+                                            <span className="font-body-16m text-text-secondary">1. 제목 관련</span>
+                                            <span className="px-1 py-0.5 rounded-[8px] bg-[#F50019]/8 text-[#F50019] font-body-14r">
+                                                3점 / 10점 | 개선 필요
+                                            </span>
+                                        </div>
+                                        <div className="flex flex-col font-body-14r text-text-primary leading-relaxed">
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex">
+                                                    <span className="font-body-16r mr-2">•</span>
+                                                    <p className="font-body-16sb text-text-primary mr-1">문제:</p>
+                                                    <p className="font-body-16r">제목이 너무 평범하고 클릭을 유도하는 요소 부족</p>
+                                                </div>
+                                                <div className="flex">
+                                                    <span className="font-body-16r mr-2">•</span>
+                                                    <p className="font-body-16sb text-text-primary mr-1">개선:</p>
+                                                    <p className="font-body-16r">감정적 트리거와 호기심을 자극하는 키워드 추가</p>
+                                                </div>
+                                            </div>
+                                            <p className="font-body-16r text-text-secondary flex ml-6">
+                                                <span>•</span>
+                                                <span className="ml-2">
+                                                    예: “20대 혼자 사는 법 | 진짜 현실적인 월세 절약 팁 3가지"
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="h-[1px] w-[292px] bg-border-default" />
+
+                                    {/* 설명란 관련 */}
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex justify-between items-center">
+                                            <span className="font-body-16m text-text-secondary">2. 설명란 관련</span>
+                                            <span className="px-1 py-0.5 rounded-[8px] bg-gray-20 text-text-secondary font-body-14r">
+                                                5점 / 10점 | 보통
+                                            </span>
+                                        </div>
+                                        <div className="flex flex-col font-body-14r text-text-primary leading-relaxed">
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex">
+                                                    <span className="font-body-16r mr-2">•</span>
+                                                    <p className="font-body-16sb text-text-primary mr-1">문제:</p>
+                                                    <p className="font-body-16r">타임스태프와 구독 유도 문구 미흡</p>
+                                                </div>
+                                                <div className="flex">
+                                                    <span className="font-body-16r mr-2">•</span>
+                                                    <p className="font-body-16sb text-text-primary mr-1">개선:</p>
+                                                    <p className="font-body-16r">1~2줄 요약 + 타임스탬프 추가</p>
+                                                </div>
+                                            </div>
+                                            <p className="font-body-16r text-text-secondary flex ml-6">
+                                                <span>•</span>
+                                                <span className="ml-2">
+                                                    00:00 오늘의 주제 소개 / 00:45 팁 1 / 02:15 팁 2 / 03:40 팁 3
+                                                </span>
+                                            </p>
+                                            <p className="font-body-16r text-text-secondary flex ml-6">
+                                                <span>•</span>
+                                                <span className="ml-2">
+                                                    콜투액션("좋아요·구독", "댓글로 여러분의 생활 팁도 공유해주세요!")
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="h-[1px] w-[292px] bg-border-default" />
+
+                                    {/* 해시태그 관련 */}
+                                    <div className="flex flex-col gap-2">
+                                        <div className="flex justify-between items-center">
+                                            <span className="font-body-16m text-text-secondary">3. 해시태그 관련</span>
+                                            <span className="px-1 py-0.5 rounded-[8px] bg-[#4ADE80]/8 text-[#4ADE80] font-body-14r">
+                                                8점 / 10점 | 좋음
+                                            </span>
+                                        </div>
+                                        <div className="flex flex-col font-body-14r text-text-primary leading-relaxed">
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex">
+                                                    <span className="font-body-16r mr-2">•</span>
+                                                    <p className="font-body-16sb text-text-primary mr-1">현재 상태:</p>
+                                                    <p className="font-body-16r">적절한 해시태그 사용 중</p>
+                                                </div>
+                                                <div className="flex">
+                                                    <span className="font-body-16r mr-2">•</span>
+                                                    <p className="font-body-16sb text-text-primary mr-1">추가 제안:</p>
+                                                    <p className="font-body-16r">#20대일상 #직장인브이로그 #혼자사는법 #생활팁 #일상루틴</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="h-[1px] w-[292px] bg-border-default" />
+
+                                    {/* 추가 제안 */}
+                                    <div className="flex flex-col gap-2">
+                                        <span className="font-body-16m text-text-secondary">4. 추가 제안</span>
+                                        <ul className="list-disc list-inside flex flex-col gap-1 font-body-16r text-text-primary">
+                                            <p>• 챕터 타임스탬프 삽입</p>
+                                            <p>• 카드·엔드스크린(플레이리스트·구독 유도)</p>
+                                            <p>• 재생목록 섹션 생성("거리 인터뷰 시리즈")</p>
+                                            <p>• 자동 자막(.srt) 편집 → 접근성·SEO 강화</p>
+                                            <p>• 트랜스크립트 자동 분석 → 키워드 요약, 커뮤니티/블로그 활용</p>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
