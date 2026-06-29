@@ -309,21 +309,19 @@ export default function FeedbackPage() {
 
             {/* 업로드 실패 팝업 모달 */}
             {showErrorModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className="w-full max-w-sm bg-gray-10 border border-white/10 rounded-[24px] p-6 flex flex-col items-center gap-4 text-center shadow-2xl">
-                        <div className="w-12 h-12 bg-red-error/10 rounded-full flex items-center justify-center text-red-error">
-                            <XIcon className="w-6 h-6" />
-                        </div>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                    <div className="w-full max-w-[322px] bg-gray-30 rounded-[20px] p-6 flex flex-col gap-4">
                         <div className="flex flex-col gap-1">
-                            <h3 className="font-title-18sb text-gray-95">업로드 실패</h3>
-                            <p className="font-body-14r text-gray-50 leading-relaxed whitespace-pre-line">
-                                {uploadError}
+                            <h3 className="font-title-20sb text-gray-95">파일 업로드에 실패했습니다</h3>
+                            <p className="font-body-16m text-text-secondary whitespace-pre-line">
+                                첨부 파일은 최대 5개까지 업로드 가능하며,<br/>
+                                총 50MB 용량까지 가능해요.
                             </p>
                         </div>
                         <button
                             type="button"
                             onClick={() => setShowErrorModal(false)}
-                            className="w-full h-11 bg-gray-30 hover:bg-gray-40 text-gray-95 font-body-14sb rounded-[16px] transition-all duration-200 cursor-pointer"
+                            className="w-[274px] py-2 bg-red-error text-gray-95 font-title-18sb rounded-[10px] transition-all duration-200 cursor-pointer"
                         >
                             확인
                         </button>
