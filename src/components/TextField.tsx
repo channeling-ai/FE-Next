@@ -16,6 +16,8 @@ export interface TextFieldProps
   className?: string
   sizeVariant?: 'mobile' | 'tablet' | 'desktop'
   heightVariant?: 'small' | 'large' // 높이 크기 분기 (기본: small: 88px, large: 151px)
+  textareaClassName?: string
+  fontClassName?: string
 }
 
 export default function TextField({
@@ -32,6 +34,8 @@ export default function TextField({
   sizeVariant = 'mobile',
   heightVariant = 'small',
   id: externalId,
+  textareaClassName = '',
+  fontClassName = 'font-body-14r',
   ...rest
 }: TextFieldProps) {
   // 제어/비제어 호환
@@ -104,9 +108,9 @@ export default function TextField({
         <div className="relative flex-1 flex flex-col justify-start">
           {showPlaceholder && (
             <div className="absolute inset-0 flex flex-col justify-start pointer-events-none text-text-secondary">
-              <p className="font-body-14r tracking-[-0.35px]">{placeholder}</p>
+              <p className={`${fontClassName} tracking-[-0.35px]`}>{placeholder}</p>
               {helperText && (
-                <p className="font-body-14r tracking-[-0.35px]">{helperText}</p>
+                <p className={`${fontClassName} tracking-[-0.35px]`}>{helperText}</p>
               )}
             </div>
           )}
@@ -123,7 +127,8 @@ export default function TextField({
             className={[
               'absolute inset-0 w-full h-full bg-transparent outline-none m-0 p-0 resize-none',
               heightVariant === 'large' ? 'overflow-y-auto custom-scrollbar pr-[4px]' : 'overflow-hidden',
-              'font-body-14r tracking-[-0.35px] text-text-primary caret-gray-90',
+              `${fontClassName} tracking-[-0.35px] text-text-primary caret-gray-90`,
+              textareaClassName,
               showPlaceholder ? 'text-transparent' : '',
             ].join(' ')}
             {...rest}
