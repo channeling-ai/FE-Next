@@ -117,18 +117,25 @@ export default function FeedbackPage() {
 
     return (
         <div className="flex flex-col h-full w-full bg-gray-0 text-gray-95 overflow-hidden selection:bg-primary-60/30">
-            <div className="w-full flex items-center justify-between desktop:px-16 pt-8">
-                <span className="font-title-20sb text-text-primary">피드백</span>
+            <div className="w-full flex items-center gap-2 px-4 tablet:px-5 desktop:px-16 pt-3 tablet:pt-4 desktop:pt-8">
+                <button
+                    onClick={openSidebar}
+                    className="desktop:hidden flex items-center justify-center p-1 text-text-primary hover:text-text-secondary transition-colors cursor-pointer bg-transparent border-none"
+                    aria-label="메뉴 열기"
+                >
+                    <MenuIcon className="w-6 h-6" />
+                </button>
+                <span className="font-title-18sb desktop:text-[20px] mt-[0.5px] desktop:mt-0 text-text-primary">피드백</span>
             </div>
 
-            <main className="overflow-y-auto px-4 tablet:px-6 desktop:px-16 py-7 custom-scrollbar">
+            <main className="overflow-y-auto px-4 tablet:px-5 desktop:px-16 py-7 custom-scrollbar">
                 <div className="w-full flex flex-col gap-4 pb-12">
                     {/* 타이틀 및 서브타이틀 */}
                     <div className="flex flex-col gap-2">
-                        <h2 className="font-title-20sb text-gray-95">
+                        <h2 className="font-title-18sb desktop:text-[20px] text-gray-95">
                             피드백 남기기
                         </h2>
-                        <p className="font-body-16r text-text-secondary whitespace-pre-line">
+                        <p className="font-body-14r desktop:text-[16px] text-text-secondary whitespace-pre-line">
                             서비스 이용 중 불편한 점이나 바라는 점을 남겨주세요.<br/>
                             빠르게 반영하여 만족스러운 경험을 하실 수 있도록<br/>
                             최선을 다하겠습니다. 감사합니다.
@@ -138,8 +145,8 @@ export default function FeedbackPage() {
                     {/* 인스타그램 고객지원 알림창 */}
                     <div className="w-full bg-primary-60/8 rounded-[20px] px-4 py-3 flex">
                         <div className="flex flex-col">
-                            <p className="font-body-16r text-text-brand">
-                                급한 고객 지원 문의 사항은 인스타그램으로 남겨주세요.<br/>
+                            <p className="font-body-14r desktop:text-[16px] text-text-brand">
+                                급한 고객 지원 문의 사항은 인스타그램으로 남겨주세요<br/>
                                 instagram: @chaneling.official
                             </p>
                         </div>
@@ -151,10 +158,10 @@ export default function FeedbackPage() {
                         <div className="flex flex-col gap-2 w-full">
                             <div className="flex justify-between items-center w-full">
                                 <div className="flex items-center">
-                                    <span className="font-body-14m desktop:text-[16px] font-medium text-text-secondary">문의사항 (필수)</span>
-                                    <span className="text-primary-50 font-body-14m desktop:text-[16px] font-medium">*</span>
+                                    <span className="font-caption-12m tablet:text-[14px] desktop:text-[16px] font-medium text-text-secondary">문의사항 (필수)</span>
+                                    <span className="text-primary-50 font-caption-12m tablet:text-[14px] desktop:text-[16px] font-medium">*</span>
                                 </div>
-                                <div className="font-body-12r desktop:text-[14px] font-normal text-text-tertiary">
+                                <div className="font-caption-12r tablet:text-[14px] desktop:text-[14px] font-normal text-text-tertiary">
                                     <span className="text-text-secondary font-medium">{inquiry.length}</span>
                                     <span>/</span>
                                     <span>2000</span>
@@ -175,8 +182,8 @@ export default function FeedbackPage() {
                         {/* 연락처 정보 입력 (선택) */}
                         <div className="flex flex-col gap-2 w-full">
                             <div className="flex justify-between items-center w-full">
-                                <span className="font-body-14m desktop:text-[16px] font-medium text-text-secondary">연락처 정보 (선택)</span>
-                                <div className="font-body-12r desktop:text-[14px] font-normal text-text-tertiary">
+                                <span className="font-caption-12m tablet:text-[14px] desktop:text-[16px] font-medium text-text-secondary">연락처 정보 (선택)</span>
+                                <div className="font-caption-12r tablet:text-[14px] desktop:text-[14px] font-normal text-text-tertiary">
                                     <span className="text-text-secondary font-medium">{contact.length}</span>
                                     <span>/</span>
                                     <span>100</span>
@@ -196,7 +203,7 @@ export default function FeedbackPage() {
 
                         {/* 첨부 파일 입력 (선택) */}
                         <div className="flex flex-col gap-2 w-full">
-                            <span className="font-body-14m desktop:text-[16px] font-medium text-text-secondary">첨부 파일 (JPG, JPEG, PNG) (선택)</span>
+                            <span className="font-caption-12m tablet:text-[14px] desktop:text-[16px] font-medium text-text-secondary">첨부 파일 (JPG, JPEG, PNG) (선택)</span>
                             
                             <input 
                                 type="file" 
@@ -264,7 +271,7 @@ export default function FeedbackPage() {
                         <button
                             onClick={handleSubmit}
                             disabled={isSubmitting || !hasInquiry}
-                            className={`w-full py-3 font-title-18sb rounded-[20px] transition-all duration-200 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed ${
+                            className={`w-full py-3 font-body-16sb desktop:text-[18px] rounded-[20px] transition-all duration-200 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed ${
                                 hasInquiry
                                     ? 'bg-primary-60 text-gray-95'
                                     : 'bg-primary-60 text-gray-95'
@@ -289,17 +296,17 @@ export default function FeedbackPage() {
             {/* 성공 팝업 모달 */}
             {showSuccessModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="w-full max-w-[322px] bg-gray-30 rounded-[20px] p-6 flex flex-col gap-4">
+                    <div className="w-full max-w-[296px] desktop:max-w-[322px] bg-gray-30 rounded-[20px] p-6 flex flex-col gap-4">
                         <div className="flex flex-col gap-1">
-                            <h3 className="font-title-20sb text-gray-95">소중한 의견 감사합니다!</h3>
-                            <p className="font-body-16m text-text-secondary whitespace-pre-line">
+                            <h3 className="font-title-18sb desktop:text-[20px] text-gray-95">소중한 의견 감사합니다!</h3>
+                            <p className="font-body-14m desktop:text-[16px] text-text-secondary whitespace-pre-line">
                                 피드백이 정상적으로 접수되었어요.<br/>
                                 더 나은 기능으로 보답하겠습니다.
                             </p>
                         </div>
                         <button
                             onClick={handleCloseModal}
-                            className="w-[274px] py-2 bg-primary-60 text-gray-95 font-title-18sb rounded-[10px] transition-all duration-200 cursor-pointer"
+                            className="w-[248px] desktop:w-[274px] py-2 bg-primary-60 text-gray-95 font-body-16sb desktop:text-[18px] rounded-[10px] transition-all duration-200 cursor-pointer"
                         >
                             확인
                         </button>
@@ -310,10 +317,10 @@ export default function FeedbackPage() {
             {/* 업로드 실패 팝업 모달 */}
             {showErrorModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="w-full max-w-[322px] bg-gray-30 rounded-[20px] p-6 flex flex-col gap-4">
+                    <div className="w-full max-w-[296px] desktop:max-w-[322px] bg-gray-30 rounded-[20px] p-6 flex flex-col gap-4">
                         <div className="flex flex-col gap-1">
-                            <h3 className="font-title-20sb text-gray-95">파일 업로드에 실패했습니다</h3>
-                            <p className="font-body-16m text-text-secondary whitespace-pre-line">
+                            <h3 className="font-title-18sb desktop:text-[20px] text-gray-95">파일 업로드에 실패했습니다</h3>
+                            <p className="font-body-14m desktop:text-[16px] text-text-secondary whitespace-pre-line">
                                 첨부 파일은 최대 5개까지 업로드 가능하며,<br/>
                                 총 50MB 용량까지 가능해요.
                             </p>
@@ -321,7 +328,7 @@ export default function FeedbackPage() {
                         <button
                             type="button"
                             onClick={() => setShowErrorModal(false)}
-                            className="w-[274px] py-2 bg-red-error text-gray-95 font-title-18sb rounded-[10px] transition-all duration-200 cursor-pointer"
+                            className="w-[248px] desktop:w-[274px] py-2 bg-red-error text-gray-95 font-body-16sb desktop:text-[18px] rounded-[10px] transition-all duration-200 cursor-pointer"
                         >
                             확인
                         </button>
