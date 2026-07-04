@@ -5,7 +5,7 @@ interface LineProps {
 export default function Line({ variant }: LineProps) {
     const heightClass = variant === 'thin' ? 'h-[1px]' : variant === 'medium' ? 'h-2' : 'h-4'
 
-    const bgClass = variant === 'thick' ? 'bg-black' : 'bg-border-subtitle'
+    const bgClass = variant === 'thick' ? 'bg-bg-divider' : 'bg-border-subtitle'
 
     return <div className={`${heightClass} ${bgClass} w-full`} />
 }

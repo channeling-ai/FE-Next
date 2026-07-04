@@ -1,5 +1,3 @@
-'use client'
-
 interface ReportDetailPageProps {
     params: Promise<{ id: string }>
 }
