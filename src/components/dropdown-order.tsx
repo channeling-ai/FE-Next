@@ -9,7 +9,7 @@ export default function DropdownOrder({ handleOptionValue }: DropdownOrderProps)
         <div className="flex flex-col w-42 absolute -bottom-40 -left-20">
             {dropdownOptions.map((option) => {
                 const baseStyle =
-                    'flex flex-col justify-center items-start px-4 py-3 gap-2 bg-bg-2 hover:bg-bg-1 font-body-16m cursor-pointer'
+                    'flex flex-col justify-center items-start px-4 py-3 gap-2 bg-bg-2 hover:bg-bg-1 font-body-14m cursor-pointer'
                 const conditionalStyle = 'first:rounded-t-[20px] last:rounded-b-[20px]'
 
                 return (
