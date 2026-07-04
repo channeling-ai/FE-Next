@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Scroll from '@/components/Scroll'
 import ActionRow from './_components/ActionRow'
 import EditableTextField from './_components/EditableTextField'
@@ -16,6 +17,11 @@ const channel = {
 }
 
 export default function SettingsPage() {
+    const [emailNotifications, setEmailNotifications] = useState({
+        dailyRecommendation: false,
+        marketing: true,
+    })
+
     return (
         <div className="flex h-full w-full flex-col bg-bg-0">
             <SettingHeader />
@@ -60,13 +66,20 @@ export default function SettingsPage() {
                         </p>
                         <div className="flex w-full flex-col gap-4">
                             <NotificationRow
+                                checked={emailNotifications.marketing}
                                 title="마케팅 이메일 수신 동의"
                                 description="이벤트 또는 혜택과 관련된 마케팅 이메일 수신을 받아요"
-                                defaultChecked
+                                onChange={(checked) => {
+                                    setEmailNotifications((current) => ({ ...current, marketing: checked }))
+                                }}
                             />
                             <NotificationRow
+                                checked={emailNotifications.dailyRecommendation}
                                 title="일일 콘텐츠 추천 메일 수신"
                                 description="프리미엄 요금제에서 제공되는 일일 콘텐츠를 추천 받아요"
+                                onChange={(checked) => {
+                                    setEmailNotifications((current) => ({ ...current, dailyRecommendation: checked }))
+                                }}
                             />
                         </div>
                     </div>

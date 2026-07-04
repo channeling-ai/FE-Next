@@ -4,10 +4,11 @@ import { useState, useEffect } from 'react'
 import Toggle from './Toggle'
 
 interface NotificationRowProps {
-    title: string
+    checked: boolean
     description: string
     defaultChecked?: boolean
     onChange?: (checked: boolean) => void
+    title: string
 }
 
 export default function NotificationRow({
@@ -35,9 +36,7 @@ export default function NotificationRow({
                 </h2>
                 <Toggle checked={checked} label={title} onChange={handleToggleChange} />
             </div>
-            <p className="truncate font-caption-12r text-text-secondary desktop:font-body-14r">
-                {description}
-            </p>
+            <p className="truncate font-caption-12r text-text-secondary desktop:font-body-14r">{description}</p>
         </div>
     )
 }
