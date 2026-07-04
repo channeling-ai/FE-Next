@@ -1,22 +1,29 @@
 'use client'
 
-import { type MouseEvent, useRef, useState } from 'react'
+import { type MouseEvent, useRef, useState, useEffect } from 'react'
 import TextField, { type TextFieldProps } from '@/components/TextField'
 
 interface EditableTextFieldProps extends Omit<TextFieldProps, 'value' | 'onChange'> {
     initialValue?: string
+    onSave?: (value: string) => void
 }
 
 export default function EditableTextField({
     initialValue = '',
     inputClassName = '',
     onFocus,
+    onSave,
     ...props
 }: EditableTextFieldProps) {
     const fieldRef = useRef<HTMLDivElement>(null)
     const [savedValue, setSavedValue] = useState(initialValue)
     const [draftValue, setDraftValue] = useState(initialValue)
     const [isEditing, setIsEditing] = useState(false)
+
+    useEffect(() => {
+        setSavedValue(initialValue)
+        setDraftValue(initialValue)
+    }, [initialValue])
 
     function closeEditor() {
         const activeElement = document.activeElement
@@ -37,6 +44,7 @@ export default function EditableTextField({
     function handleSave(event: MouseEvent<HTMLButtonElement>) {
         event.currentTarget.blur()
         setSavedValue(draftValue)
+        onSave?.(draftValue)
         closeEditor()
     }
 
