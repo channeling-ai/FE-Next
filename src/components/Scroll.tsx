@@ -1,16 +1,25 @@
-import { HTMLAttributes, ReactNode } from 'react';
+import { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react';
 
-interface ScrollProps extends HTMLAttributes<HTMLDivElement> {
+interface ScrollProps<T extends ElementType = 'div'> {
+    as?: T;
     children: ReactNode;
+    className?: string;
 }
 
-export default function Scroll({ children, className = '', ...props }: ScrollProps) {
+export default function Scroll<T extends ElementType = 'div'>({
+    as,
+    children,
+    className = '',
+    ...props
+}: ScrollProps<T> & Omit<ComponentPropsWithoutRef<T>, keyof ScrollProps<T>>) {
+    const Component = as ?? 'div'
+
     return (
-        <div 
+        <Component
             className={`overflow-y-auto custom-scrollbar ${className}`} 
             {...props}
         >
             {children}
-        </div>
+        </Component>
     );
 }

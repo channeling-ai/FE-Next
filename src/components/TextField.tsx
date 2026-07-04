@@ -11,9 +11,14 @@ export interface TextFieldProps
   showCounter?: boolean // 카운터 표시 여부 (기본: true)
   placeholder?: string
   helperText?: string
+  isActive?: boolean
   isError?: boolean
   errorMessage?: string
   className?: string
+  inputClassName?: string
+  labelClassName?: string
+  textareaClassName?: string
+  fullWidth?: boolean
   sizeVariant?: 'mobile' | 'tablet' | 'desktop'
   heightVariant?: 'small' | 'large' // 높이 크기 분기 (기본: small: 88px, large: 151px)
 }
@@ -26,12 +31,19 @@ export default function TextField({
   showCounter = true,
   placeholder,
   helperText,
+  isActive = false,
   isError = false,
   errorMessage,
   className = '',
+  inputClassName = '',
+  labelClassName = '',
+  textareaClassName = '',
+  fullWidth = false,
   sizeVariant = 'mobile',
   heightVariant = 'small',
   id: externalId,
+  onFocus: externalOnFocus,
+  onBlur: externalOnBlur,
   ...rest
 }: TextFieldProps) {
   // 제어/비제어 호환
@@ -39,13 +51,11 @@ export default function TextField({
   const isControlled = controlledValue !== undefined
   const value = isControlled ? controlledValue : internalValue
 
-  const [isFocused, setIsFocused] = useState(false)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const autoId = useId()
   const inputId = externalId ?? autoId
 
   const textLength = value.length
-  const isActive = isFocused || textLength > 0
   const showPlaceholder = textLength === 0
 
   function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -57,23 +67,24 @@ export default function TextField({
 
   const widthClass: Record<Required<TextFieldProps>['sizeVariant'], string> = {
     mobile: 'w-[328px]',
-    tablet: 'w-[328px]', // 향후 수정
-    desktop: 'w-[328px]', // 향후 수정
+    tablet: 'w-[328px]',
+    desktop: 'w-[328px]',
   }
 
   return (
-    <div className={`flex flex-col gap-[4px] ${widthClass[sizeVariant]} ${className}`}>
+    <div className={`flex flex-col gap-[4px] ${fullWidth ? 'w-full' : widthClass[sizeVariant]} ${className}`}>
       {/* 메인 Input 래퍼 */}
       <div
         className={[
           'relative flex flex-col w-full px-[16px] py-[12px] bg-bg-1 rounded-[20px]',
           heightVariant === 'large' ? 'h-[151px]' : 'h-[88px]', // variant에 따른 높이 분기
-          isFocused
+          isActive
             ? 'shadow-[inset_0_0_0_1px_var(--color-border-active)]'
-            : isError
-              ? 'shadow-[inset_0_0_0_1px_var(--color-border-error)]'
-              : '',
-          'transition-colors duration-150 cursor-text',
+              : isError
+                ? 'shadow-[inset_0_0_0_1px_var(--color-border-error)]'
+                : '',
+          'transition-colors duration-150 cursor-text focus-within:shadow-[inset_0_0_0_1px_var(--color-border-active)]',
+          inputClassName,
         ].join(' ')}
         onClick={() => inputRef.current?.focus()}
       >
@@ -83,7 +94,7 @@ export default function TextField({
             {label ? (
               <label
                 htmlFor={inputId}
-                className="font-caption-12m text-text-secondary tracking-[-0.3px]"
+                className={`font-caption-12m text-text-secondary tracking-[-0.3px] ${labelClassName}`}
               >
                 {label}
               </label>
@@ -104,9 +115,19 @@ export default function TextField({
         <div className="relative flex-1 flex flex-col justify-start">
           {showPlaceholder && (
             <div className="absolute inset-0 flex flex-col justify-start pointer-events-none text-text-secondary">
-              <p className="font-body-14r tracking-[-0.35px]">{placeholder}</p>
+              <p
+                className={`font-body-14r tracking-[-0.35px] ${textareaClassName}`}
+                style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}
+              >
+                {placeholder}
+              </p>
               {helperText && (
-                <p className="font-body-14r tracking-[-0.35px]">{helperText}</p>
+                <p
+                  className={`font-body-14r tracking-[-0.35px] ${textareaClassName}`}
+                  style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}
+                >
+                  {helperText}
+                </p>
               )}
             </div>
           )}
@@ -117,14 +138,15 @@ export default function TextField({
             id={inputId}
             value={value}
             onChange={handleChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onFocus={externalOnFocus}
+            onBlur={externalOnBlur}
             aria-placeholder={placeholder}
             className={[
               'absolute inset-0 w-full h-full bg-transparent outline-none m-0 p-0 resize-none',
               heightVariant === 'large' ? 'overflow-y-auto custom-scrollbar pr-[4px]' : 'overflow-hidden',
               'font-body-14r tracking-[-0.35px] text-text-primary caret-gray-90',
               showPlaceholder ? 'text-transparent' : '',
+              textareaClassName,
             ].join(' ')}
             {...rest}
           />
