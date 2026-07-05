@@ -1,7 +1,17 @@
+import { useState } from 'react'
 import VideoCard from './VideoCard'
 import VideoSearchInputBar from './VideoSearchInputBar'
+import MyVideoSelect from './MyVideoSelect'
 
 export default function MyVideoList() {
+    const [selectedVideo, setSelectedVideo] = useState<boolean>(false)
+
+    const handleClose = () => {
+        setSelectedVideo(false)
+    }
+    if (selectedVideo) {
+        return <MyVideoSelect onBack={handleClose} />
+    }
     return (
         <div className="px-16 flex flex-col">
             <div className="font-title-20sb text-text-primary pb-2">내 영상 분석</div>
@@ -37,7 +47,9 @@ export default function MyVideoList() {
                     period="3년 전"
                 />
             </div>
-            <button className="px-4 py-2 w-full bg-bg-1 rounded-[20px]">더보기</button>
+            <button className="px-4 py-2 w-full bg-bg-1 rounded-[20px]" onClick={() => setSelectedVideo(true)}>
+                더보기
+            </button>
         </div>
     )
 }

@@ -6,18 +6,12 @@ import SearchBar from './SearchBar'
 import Chip from '@/components/Chip'
 import VideoCard from './VideoCard'
 import DropdownOrder from '@/components/dropdown-order'
-import Dropdown from '@/assets/icons/dropdown.svg'
 
 export default function ReportList() {
     const [activeTab, setActiveTab] = useState<'myreport' | 'recommend'>('myreport')
     const [activeChip, setActiveChip] = useState<'all' | 'longform' | 'shortform'>('all')
-    const [selectedIdea, setSelectedIdea] = useState<boolean>(false)
 
     const [order, setOrder] = useState('최신순')
-
-    const handleClose = () => {
-        setSelectedIdea(false)
-    }
 
     return (
         <div className="px-16">

@@ -45,7 +45,7 @@ export default function DropdownOrder({ onChange }: DropdownOrderProps) {
         <div ref={dropdownOrderRef} className="relative">
             <button
                 type="button"
-                className="flex items-center gap-1 py-2 pl-4 pr-3 bg-bg-1 rounded-[20px] cursor-pointer relative z-50"
+                className="flex items-center gap-1 py-2 pl-4 pr-3 bg-bg-1 rounded-[20px] cursor-pointer relative z-20"
                 onClick={handleDropdownClick}
             >
                 <span className="font-body-14m text-text-primary">{selectedOption}</span>
