@@ -38,7 +38,7 @@ export default function ReportList() {
 
                         <DropdownOrder onChange={setOrder} />
                     </div>
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-2">
                         <VideoCard
                             title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
                             leftside="조회수"
@@ -87,7 +87,7 @@ export default function ReportList() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-2">
                         <VideoCard
                             title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
                             leftside="조회수"
@@ -133,7 +133,7 @@ export default function ReportList() {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-4 gap-2">
+                    <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-2">
                         <VideoCard
                             title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
                             leftside="조회수"

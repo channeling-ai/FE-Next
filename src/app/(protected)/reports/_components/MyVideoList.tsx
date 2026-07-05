@@ -31,7 +31,7 @@ export default function MyVideoList() {
                 <div className="font-body-14m text-icon-secondary text-center whitespace-nowrap">최근 영상 선택</div>
                 <div className="bg-bg-1 w-full h-px"></div>
             </div>
-            <div className="flex flex-rows-4 gap-2 pb-3.5 relative">
+            <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-2 pb-3.5 relative">
                 <VideoCard
                     title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
                     leftside="조회수"
