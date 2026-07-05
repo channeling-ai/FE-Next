@@ -12,39 +12,12 @@ export default function ReportList() {
     const [activeTab, setActiveTab] = useState<'myreport' | 'recommend'>('myreport')
     const [activeChip, setActiveChip] = useState<'all' | 'longform' | 'shortform'>('all')
     const [selectedIdea, setSelectedIdea] = useState<boolean>(false)
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-    const handleDropdownClick = () => {
-        setIsDropdownOpen((prev) => !prev)
-    }
+    const [order, setOrder] = useState('최신순')
 
-    const handleOrderOptionClick = (e: React.MouseEvent<HTMLButtonElement>, option: string) => {
-        e.stopPropagation()
-        setSelectedOption(option)
-        handleDropdownClick()
-    }
-
-    const dropdownOrderRef = useRef<HTMLDivElement>(null)
-
-    const [selectedOption, setSelectedOption] = useState('')
     const handleClose = () => {
         setSelectedIdea(false)
     }
-
-    useEffect(() => {
-        if (!isDropdownOpen) return
-        const handleClickOutside = (e: MouseEvent) => {
-            if (dropdownOrderRef.current && !dropdownOrderRef.current.contains(e.target as Node)) {
-                setIsDropdownOpen(false)
-            }
-        }
-
-        document.addEventListener('mousedown', handleClickOutside)
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside)
-        }
-    }, [isDropdownOpen])
 
     return (
         <div className="px-16">
@@ -69,24 +42,7 @@ export default function ReportList() {
                             />
                         </div>
 
-                        <div
-                            className="flex items-center gap-1 py-2 pl-4 pr-3 bg-bg-1 rounded-[20px] cursor-pointer relative z-100"
-                            onClick={handleDropdownClick}
-                            ref={dropdownOrderRef}
-                        >
-                            {selectedOption == '' && <div className="font-body-14m text-text-primary">최신순</div>}
-                            {selectedOption != '' && (
-                                <div className="font-body-16m text-text-primary">{selectedOption}</div>
-                            )}
-                            {!isDropdownOpen && <Dropdown className="text-text-secondary" />}
-                            {isDropdownOpen && (
-                                <>
-                                    <Dropdown className="scale-y-[-1] text-text-secondary" />
-
-                                    <DropdownOrder handleOptionValue={handleOrderOptionClick} />
-                                </>
-                            )}
-                        </div>
+                        <DropdownOrder onChange={setOrder} />
                     </div>
                     <div className="grid grid-cols-4 gap-2">
                         <VideoCard
