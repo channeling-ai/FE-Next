@@ -11,6 +11,7 @@ export interface VideoSearchInputBarProps extends Omit<InputHTMLAttributes<HTMLI
     isError?: boolean
     errorMessage?: string
     onClear?: () => void
+    onClick?: () => void
     sizeVariant?: 'mobile' | 'tablet' | 'desktop'
 }
 
@@ -20,6 +21,7 @@ export default function VideoSearchInputBar({
     isError = false,
     errorMessage = '유효한 유튜브 URL을 입력해주세요',
     onClear,
+    onClick,
     placeholder = '영상 링크를 입력해주세요',
     className = '',
     sizeVariant = 'mobile',
@@ -105,6 +107,7 @@ export default function VideoSearchInputBar({
                 </div>
                 <button
                     type="button"
+                    onClick={onClick}
                     className={`p-3 rounded-[20px] ${hasValue ? `bg-primary-60 text-icon-primary cursor-pointer` : ` bg-bg-3 text-icon-secondary`}`}
                 >
                     <SendIcon />
