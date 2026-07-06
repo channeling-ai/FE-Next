@@ -2,6 +2,7 @@
 
 import Header from '@/components/layout/Header'
 import MenuIcon from '@/assets/icons/menu.svg'
+import { Footer } from '@/components/Footer'
 import { useLayoutStore } from '@/stores/layoutStore'
 
 // TODO: 온보딩 모달 컴포넌트 import 예정
@@ -39,6 +40,7 @@ export default function DashboardPage() {
                 {/* TODO: 지표 카드 섹션 */}
                 {/* TODO: 최근 리포트 목록 섹션 */}
             </main>
+            <Footer />
         </div>
     )
 }

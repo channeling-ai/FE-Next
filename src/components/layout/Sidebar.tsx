@@ -38,13 +38,14 @@ function SidebarItem({
             href={href}
             onClick={onNavigate}
             aria-label={label}
-            className={`group relative flex h-10 w-full items-center gap-2 rounded-lg p-2 transition-all duration-300 desktop:shrink-0 ${isDesktopCollapsed ? 'desktop:w-10' : 'desktop:w-full'} ${isActive ? 'bg-bg-2' : 'bg-transparent hover:bg-bg-2'}`}
+            className={`group relative flex h-10 w-full items-center rounded-lg p-2 transition-all duration-300 desktop:shrink-0 ${isDesktopCollapsed ? 'desktop:gap-0' : 'gap-2'} ${isActive ? 'bg-bg-2' : 'bg-transparent hover:bg-bg-2'}`}
         >
             <span className="flex size-6 shrink-0 items-center justify-center text-icon-primary">
                 {icon}
             </span>
             <span
-                className={`min-w-0 truncate font-body-14m text-text-primary desktop:text-[16px] ${isDesktopCollapsed ? 'desktop:hidden' : ''}`}
+                aria-hidden={isDesktopCollapsed}
+                className={`min-w-0 overflow-hidden whitespace-nowrap font-body-14m text-text-primary transition-[max-width,opacity] duration-300 desktop:text-[16px] ${isDesktopCollapsed ? 'desktop:max-w-0 desktop:opacity-0' : 'max-w-28 opacity-100'}`}
             >
                 {label}
             </span>
@@ -72,41 +73,45 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
     return (
         <>
-            {isOpen && (
-                <div
-                    className="fixed inset-0 z-40 bg-black/50 transition-opacity desktop:hidden"
-                    onClick={onClose}
-                    aria-hidden="true"
-                />
-            )}
+            <div
+                className={`fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 ease-out desktop:hidden ${isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'}`}
+                onClick={onClose}
+                aria-hidden="true"
+            />
 
             <aside
-                className={`fixed left-0 top-0 z-50 flex h-screen w-[200px] flex-col bg-bg-1 px-4 py-8 shadow-[2px_0_2px_0_rgba(20,20,21,0.5)] transition-[width,transform] duration-300 tablet:py-3 desktop:static desktop:z-20 desktop:h-screen desktop:translate-x-0 desktop:py-8 ${isDesktopCollapsed ? 'desktop:w-[72px]' : 'desktop:w-[192px]'} ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+                className={`fixed left-0 top-0 z-50 flex h-screen w-[200px] transform-gpu flex-col bg-bg-1 px-4 py-8 shadow-[2px_0_2px_0_rgba(20,20,21,0.5)] transition-[width,transform,translate] duration-300 ease-out tablet:py-3 desktop:static desktop:z-20 desktop:h-screen desktop:translate-x-0 desktop:transform-none desktop:py-8 ${isDesktopCollapsed ? 'desktop:w-[72px]' : 'desktop:w-[192px]'} ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
                 style={{
                     height: '100dvh',
                     maxHeight: 'min(100dvh, -webkit-fill-available)',
                 }}
             >
                 <div className={`custom-scrollbar flex min-h-0 w-full flex-1 flex-col gap-2 overflow-y-auto ${isDesktopCollapsed ? 'desktop:overflow-visible' : ''}`}>
-                    <div className={`flex h-8 w-full shrink-0 items-center justify-between ${isDesktopCollapsed ? 'desktop:justify-center' : ''}`}>
-                        <div className={`items-center font-bold ${isDesktopCollapsed ? 'flex desktop:hidden' : 'flex'}`}>
-                            <LogoIcon className="size-8 shrink-0" />
-                            <span className="-ml-[1.33px] text-[17.616px] tracking-tight text-primary-50">Chaneling</span>
+                    <div className="flex h-8 w-full shrink-0 items-center justify-between">
+                        <div
+                            className={`group/logo relative flex h-8 shrink-0 items-center overflow-hidden font-bold transition-[width,transform] duration-300 ${isDesktopCollapsed ? 'desktop:w-8 desktop:translate-x-1' : 'w-[120px] translate-x-0'}`}
+                        >
+                            <LogoIcon
+                                className={`size-8 shrink-0 transition-opacity duration-150 ${isDesktopCollapsed ? 'group-hover/logo:opacity-0 group-focus-within/logo:opacity-0' : ''}`}
+                            />
+                            <span
+                                aria-hidden={isDesktopCollapsed}
+                                className={`-ml-[1.33px] overflow-hidden whitespace-nowrap text-[17.616px] tracking-tight text-primary-50 transition-[max-width,opacity] duration-300 ${isDesktopCollapsed ? 'desktop:max-w-0 desktop:opacity-0' : 'max-w-20 opacity-100'}`}
+                            >
+                                Chaneling
+                            </span>
+                            <button
+                                type="button"
+                                onClick={() => setIsDesktopCollapsed(false)}
+                                aria-hidden={!isDesktopCollapsed}
+                                disabled={!isDesktopCollapsed}
+                                className={`absolute inset-0 flex size-8 items-center justify-center text-icon-primary transition-opacity duration-150 ${isDesktopCollapsed ? 'pointer-events-auto opacity-0 group-hover/logo:opacity-100 group-focus-within/logo:opacity-100' : 'pointer-events-none opacity-0'}`}
+                                aria-label="사이드바 펼치기"
+                                tabIndex={isDesktopCollapsed ? 0 : -1}
+                            >
+                                <CloseIcon />
+                            </button>
                         </div>
-
-                        {isDesktopCollapsed && (
-                            <div className="group/logo relative hidden size-8 shrink-0 desktop:block">
-                                <LogoIcon className="absolute inset-0 size-8 transition-opacity group-hover/logo:opacity-0 group-focus-within/logo:opacity-0" />
-                                <button
-                                    type="button"
-                                    onClick={() => setIsDesktopCollapsed(false)}
-                                    className="absolute inset-0 flex size-8 items-center justify-center text-icon-primary opacity-0 transition-opacity group-hover/logo:opacity-100 group-focus-within/logo:opacity-100"
-                                    aria-label="사이드바 펼치기"
-                                >
-                                    <CloseIcon />
-                                </button>
-                            </div>
-                        )}
 
                         <button
                             type="button"
@@ -117,16 +122,17 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                             <CloseIcon />
                         </button>
 
-                        {!isDesktopCollapsed && (
-                            <button
-                                type="button"
-                                onClick={() => setIsDesktopCollapsed(true)}
-                                className="hidden size-6 items-center justify-center text-icon-primary desktop:flex"
-                                aria-label="사이드바 접기"
-                            >
-                                <CloseIcon />
-                            </button>
-                        )}
+                        <button
+                            type="button"
+                            onClick={() => setIsDesktopCollapsed(true)}
+                            aria-hidden={isDesktopCollapsed}
+                            disabled={isDesktopCollapsed}
+                            className={`hidden h-6 shrink-0 items-center justify-center overflow-hidden text-icon-primary transition-[width,opacity] duration-300 desktop:flex ${isDesktopCollapsed ? 'pointer-events-none w-0 opacity-0' : 'w-6 opacity-100'}`}
+                            aria-label="사이드바 접기"
+                            tabIndex={isDesktopCollapsed ? -1 : 0}
+                        >
+                            <CloseIcon className="size-6 shrink-0" />
+                        </button>
                     </div>
 
                     <nav className="flex w-full shrink-0 flex-col gap-2" aria-label="주요 메뉴">
@@ -154,17 +160,18 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                         onNavigate={onClose}
                     />
                     <div
-                        className={`group/profile relative flex w-full flex-col gap-2 rounded-lg p-2 transition-colors hover:bg-bg-2 ${pathname === '/settings' ? 'bg-bg-2' : 'bg-transparent'} ${isDesktopCollapsed ? 'desktop:w-10' : ''}`}
+                        className={`group/profile relative flex w-full flex-col overflow-hidden rounded-lg p-2 transition-[max-height,gap,background-color] duration-300 hover:bg-bg-2 ${pathname === '/settings' ? 'bg-bg-2' : 'bg-transparent'} ${isDesktopCollapsed ? 'desktop:max-h-10 desktop:gap-0' : 'max-h-[109px] gap-2'}`}
                     >
                         <Link
                             href="/settings"
                             onClick={onClose}
                             aria-label="채널 설정"
-                            className="flex w-full items-center gap-2"
+                            className={`flex w-full shrink-0 items-center transition-[gap] duration-300 ${isDesktopCollapsed ? 'desktop:gap-0' : 'gap-2'}`}
                         >
                             <ProfileImage size={24} />
                             <span
-                                className={`min-w-0 flex-1 ${isDesktopCollapsed ? 'desktop:hidden' : ''}`}
+                                aria-hidden={isDesktopCollapsed}
+                                className={`min-w-0 overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300 ${isDesktopCollapsed ? 'desktop:max-w-0 desktop:opacity-0' : 'max-w-[120px] flex-1 opacity-100'}`}
                             >
                                 <span className="block truncate font-caption-12r text-text-secondary desktop:text-[14px]">
                                     Free
@@ -177,7 +184,10 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
                         <button
                             type="button"
-                            className={`flex w-36 items-center justify-center rounded-sm bg-gray-30 px-0.5 py-2 font-body-14m text-text-primary transition-colors hover:bg-gray-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active desktop:text-[16px] ${isDesktopCollapsed ? 'desktop:hidden' : ''}`}
+                            aria-hidden={isDesktopCollapsed}
+                            disabled={isDesktopCollapsed}
+                            className={`flex max-h-10 w-36 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-gray-30 px-0.5 py-2 font-body-14m text-text-primary transition-[opacity,background-color] duration-300 hover:bg-gray-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active desktop:w-full desktop:text-[16px] ${isDesktopCollapsed ? 'pointer-events-none desktop:opacity-0' : 'opacity-100'}`}
+                            tabIndex={isDesktopCollapsed ? -1 : 0}
                         >
                             플랜 업그레이드
                         </button>
