@@ -1,33 +1,39 @@
-interface MetricCardwithImageProps {
-  channelname?: string;
-  subscriber?: string;
-  range?: string;
-  imageUrl?: string;
+import { type CSSProperties } from 'react'
+
+interface MetricCardWithImageProps {
+    channelName: string
+    delta: number
+    imageUrl: string
+    subscribers: string
 }
 
-export default function MetricCardwithImage({
-  channelname,
-  subscriber,
-  range,
-  imageUrl,
-}: MetricCardwithImageProps) {
-  return (
-    <div
-      className="flex flex-col justify-between items-start w-82 h-82 p-5 rounded-[20px] bg-video-card"
-      style={{ "--video-thumb": `url('${imageUrl}')` } as React.CSSProperties}
-    >
-      <span className="text-text-primary font-title-18sb">
-        안녕하세요
-        <br /> {channelname}
-      </span>
-      <div className="flex flex-col items-start self-stretch">
-        <span className="text-text-primary font-body-14m">구독자</span>
-        <div className="text-text-primary font-title-40r">{subscriber}</div>
-        <div className="flex gap-[6.431px] font-caption-12m">
-          <div className="text-text-brand">{range}</div>
-          <span className="text-text-secondary">지난 달보다</span>
-        </div>
-      </div>
-    </div>
-  );
+export default function MetricCardWithImage({
+    channelName,
+    delta,
+    imageUrl,
+    subscribers,
+}: MetricCardWithImageProps) {
+    return (
+        <article
+            className="bg-video-card flex aspect-square w-full flex-col items-start justify-between overflow-hidden rounded-[20px] p-5"
+            style={{ '--video-thumb': `url('${imageUrl}')` } as CSSProperties}
+        >
+            <h2 className="font-body-16sb text-text-primary">
+                안녕하세요
+                <br />
+                <span className="block max-w-full truncate">{channelName}</span>
+            </h2>
+
+            <div className="flex w-full flex-col items-start">
+                <span className="font-body-14m text-text-primary">구독자</span>
+                <strong className="whitespace-nowrap font-title-40r text-text-primary">
+                    {subscribers}
+                </strong>
+                <p className="flex items-center gap-2 whitespace-nowrap font-caption-12r text-text-secondary">
+                    <span className="font-caption-12m text-text-brand">+ {delta}</span>
+                    지난 달 보다
+                </p>
+            </div>
+        </article>
+    )
 }
