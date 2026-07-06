@@ -43,7 +43,9 @@ function SidebarItem({
             <span className="flex size-6 shrink-0 items-center justify-center text-icon-primary">
                 {icon}
             </span>
-            <span className={`min-w-0 truncate font-body-14m text-text-primary ${isDesktopCollapsed ? 'desktop:hidden' : ''}`}>
+            <span
+                className={`min-w-0 truncate font-body-14m text-text-primary desktop:text-[16px] ${isDesktopCollapsed ? 'desktop:hidden' : ''}`}
+            >
                 {label}
             </span>
             {isDesktopCollapsed && (
@@ -79,7 +81,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
             )}
 
             <aside
-                className={`fixed left-0 top-0 z-50 flex h-screen w-[200px] flex-col bg-bg-1 px-4 pb-6 pt-8 shadow-[2px_0_2px_0_rgba(20,20,21,0.5)] transition-[width,transform] duration-300 desktop:static desktop:z-20 desktop:h-screen desktop:translate-x-0 desktop:py-8 ${isDesktopCollapsed ? 'desktop:w-[72px]' : 'desktop:w-[200px]'} ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+                className={`fixed left-0 top-0 z-50 flex h-screen w-[200px] flex-col bg-bg-1 px-4 py-8 shadow-[2px_0_2px_0_rgba(20,20,21,0.5)] transition-[width,transform] duration-300 tablet:py-3 desktop:static desktop:z-20 desktop:h-screen desktop:translate-x-0 desktop:py-8 ${isDesktopCollapsed ? 'desktop:w-[72px]' : 'desktop:w-[192px]'} ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
                 style={{
                     height: '100dvh',
                     maxHeight: 'min(100dvh, -webkit-fill-available)',
@@ -151,14 +153,44 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                         label="피드백 보내기"
                         onNavigate={onClose}
                     />
-                    <SidebarItem
-                        href="/settings"
-                        icon={<ProfileImage size={24} />}
-                        isActive={pathname === '/settings'}
-                        isDesktopCollapsed={isDesktopCollapsed}
-                        label="채널이름"
-                        onNavigate={onClose}
-                    />
+                    <div
+                        className={`group/profile relative flex w-full flex-col gap-2 rounded-lg p-2 transition-colors hover:bg-bg-2 ${pathname === '/settings' ? 'bg-bg-2' : 'bg-transparent'} ${isDesktopCollapsed ? 'desktop:w-10' : ''}`}
+                    >
+                        <Link
+                            href="/settings"
+                            onClick={onClose}
+                            aria-label="채널 설정"
+                            className="flex w-full items-center gap-2"
+                        >
+                            <ProfileImage size={24} />
+                            <span
+                                className={`min-w-0 flex-1 ${isDesktopCollapsed ? 'desktop:hidden' : ''}`}
+                            >
+                                <span className="block truncate font-caption-12r text-text-secondary desktop:text-[14px]">
+                                    Free
+                                </span>
+                                <span className="block truncate font-body-14m text-text-primary desktop:text-[16px]">
+                                    채널이름
+                                </span>
+                            </span>
+                        </Link>
+
+                        <button
+                            type="button"
+                            className={`flex w-36 items-center justify-center rounded-sm bg-gray-30 px-0.5 py-2 font-body-14m text-text-primary transition-colors hover:bg-gray-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active desktop:text-[16px] ${isDesktopCollapsed ? 'desktop:hidden' : ''}`}
+                        >
+                            플랜 업그레이드
+                        </button>
+
+                        {isDesktopCollapsed && (
+                            <span
+                                aria-hidden
+                                className="pointer-events-none absolute left-12 top-1/2 z-50 hidden h-10 -translate-y-1/2 items-center whitespace-nowrap rounded-lg bg-bg-2 px-2 font-body-16m text-text-primary opacity-0 shadow-[2px_0_2px_rgba(20,20,21,0.5)] transition-opacity desktop:flex group-hover/profile:opacity-100 group-focus-within/profile:opacity-100"
+                            >
+                                채널이름
+                            </span>
+                        )}
+                    </div>
                 </div>
             </aside>
         </>
