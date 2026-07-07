@@ -48,7 +48,7 @@ export default function DashboardPage() {
 
                     <section className="flex w-full flex-col gap-6">
                         <div className="flex flex-col gap-2">
-                            <h2 className="font-body-16sb text-text-primary">채널링의 제안</h2>
+                            <h2 className="font-title-18sb text-text-primary">채널링의 제안</h2>
                             <p className="font-body-14r text-text-secondary">
                                 최근 24시간 내 특정 영상 조회수가 평소 대비 280% 급증하며 추천 피드 유입이 80%를 점유했고, 노출 가속도가 평소 대비 3.5배 상승한 폭발적 성장 단계입니다.
                             </p>
