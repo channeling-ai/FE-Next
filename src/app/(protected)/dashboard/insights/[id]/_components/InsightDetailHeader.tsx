@@ -11,7 +11,7 @@ export default function InsightDetailHeader() {
             >
                 <ArrowIcon aria-hidden className="size-6 rotate-180" />
             </Link>
-            <h1 className="font-title-18sb text-text-primary desktop:text-[20px]">채널링의 제안 상세</h1>
+            <h1 className="font-title-18sb text-text-primary">채널링의 제안 상세</h1>
         </header>
     )
 }
