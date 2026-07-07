@@ -67,8 +67,8 @@ export default function DashboardPage() {
                     </section>
 
                 </PageContent>
+                <Footer />
             </Scroll>
-            <Footer />
         </div>
     )
 }
