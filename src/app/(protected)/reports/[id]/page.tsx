@@ -17,7 +17,7 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
 
     return (
         <div className="flex h-full w-full flex-col bg-bg-0">
-            <Header title="상세 분석 리포트" className="tablet:px-5 desktop:px-16" />
+            <Header title="상세 분석 리포트" />
 
             <PageContent as="main" className="flex flex-col gap-4 pt-4">
                 {/* 영상 정보 */}

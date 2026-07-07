@@ -32,7 +32,7 @@ interface HeaderProps {
 export default function Header({ className = '', leading, showDivider = true, title, trailing }: HeaderProps) {
     return (
         <header
-            className={`flex min-h-14 w-full items-center justify-between bg-bg-0 px-4 py-3 ${showDivider ? 'border-b border-border-default' : ''} ${className}`}
+            className={`flex min-h-14 w-full items-center justify-between bg-bg-0 px-4 py-3 tablet:px-5 desktop:px-16 ${showDivider ? 'border-b border-border-default' : ''} ${className}`}
         >
             <div className="flex items-center gap-2 desktop:gap-8">
                 {leading && (
