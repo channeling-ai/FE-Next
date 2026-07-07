@@ -1,5 +1,7 @@
 'use client'
 
+import PageContent from '@/components/layout/PageContent'
+
 /**
  * 영상 리포트 목록 페이지 (/reports)
  * - 리포트 생성 섹션: 분석할 영상 URL 입력 및 리포트 생성 버튼
@@ -7,7 +9,7 @@
  */
 export default function ReportsPage() {
     return (
-        <main className="p-6">
+        <PageContent as="main" className="py-6">
             <h1 className="text-2xl font-bold">영상 리포트</h1>
 
             {/* 리포트 생성 섹션 */}
@@ -24,6 +26,6 @@ export default function ReportsPage() {
             </section>
 
             {/* TODO: 리포트 목록 섹션 */}
-        </main>
+        </PageContent>
     )
 }
