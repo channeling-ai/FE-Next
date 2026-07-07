@@ -46,7 +46,7 @@ export default function SavedIdea() {
     }
 
     return (
-        <div className="flex flex-col gap-2 justify-start w-full  px-4 desktop:px-8">
+        <div className="flex w-full flex-col justify-start gap-2 px-4 tablet:px-5 desktop:px-16">
             <h1 className="text-text-primary font-title-18sb">저장한 아이디어</h1>
             <div className="flex flex-col gap-4">
                 <SearchBar />

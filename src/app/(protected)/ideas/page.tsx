@@ -35,7 +35,7 @@ export default function IdeasPage() {
 
             <Scroll as="main" className="flex-1">
                 <div className="flex flex-col gap-8 pb-16">
-                    <div className="flex w-full flex-col items-center gap-3.5 px-4 desktop:px-8">
+                    <div className="flex w-full flex-col items-center gap-3.5 px-4 tablet:px-5 desktop:px-16">
                         <TrendKeyword />
                         <Line variant="thin" />
                         <ContentIdeaGeneration />
