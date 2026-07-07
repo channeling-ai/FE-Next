@@ -118,14 +118,14 @@ export default function TextField({
                     {showPlaceholder && (
                         <div className="absolute inset-0 flex flex-col justify-start pointer-events-none text-text-secondary">
                             <p
-                                className={`font-body-14r desktop:font-body-16r tracking-[-0.35px] ${textareaClassName}`}
+                                className={`font-body-14r tracking-[-0.35px] ${textareaClassName}`}
                                 style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}
                             >
                                 {placeholder}
                             </p>
                             {helperText && (
                                 <p
-                                    className={`font-body-14r desktop:font-body-16r tracking-[-0.35px] ${textareaClassName}`}
+                                    className={`font-body-14r tracking-[-0.35px] ${textareaClassName}`}
                                     style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}
                                 >
                                     {helperText}
@@ -146,7 +146,7 @@ export default function TextField({
                         className={[
                             'absolute inset-0 w-full h-full bg-transparent outline-none m-0 p-0 resize-none',
                             heightVariant === 'large' ? 'overflow-y-auto custom-scrollbar pr-1' : 'overflow-hidden',
-                            'font-body-14r desktop:font-body-16r tracking-[-0.35px] text-text-primary caret-gray-90',
+                            'font-body-14r tracking-[-0.35px] text-text-primary caret-gray-90',
                             showPlaceholder ? 'text-transparent' : '',
                             textareaClassName,
                         ].join(' ')}
