@@ -1,12 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Toggle from './Toggle'
 
 interface NotificationRowProps {
     checked: boolean
     description: string
-    defaultChecked?: boolean
     onChange?: (checked: boolean) => void
     title: string
 }
@@ -14,17 +12,10 @@ interface NotificationRowProps {
 export default function NotificationRow({
     title,
     description,
-    defaultChecked = false,
+    checked,
     onChange,
 }: NotificationRowProps) {
-    const [checked, setChecked] = useState(defaultChecked)
-
-    useEffect(() => {
-        setChecked(defaultChecked)
-    }, [defaultChecked])
-
     const handleToggleChange = (nextChecked: boolean) => {
-        setChecked(nextChecked)
         onChange?.(nextChecked)
     }
 
