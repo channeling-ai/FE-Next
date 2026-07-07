@@ -17,7 +17,7 @@ export default function SettingHeader() {
                 >
                     <MenuIcon />
                 </button>
-                <h1 className="font-title-18sb text-text-primary desktop:font-title-20sb">
+                <h1 className="font-title-18sb text-text-primary">
                     설정
                 </h1>
             </div>

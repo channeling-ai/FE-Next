@@ -44,8 +44,6 @@ export default function SettingsPage() {
                                 placeholder="더욱 최적화된 분석 및 제안을 위해 채널 타겟층을 입력해주세요"
                                 fullWidth
                                 inputClassName="h-[88px] desktop:h-[100px]"
-                                labelClassName="desktop:font-body-14m"
-                                textareaClassName="desktop:font-body-16r"
                             />
                             <EditableTextField
                                 label="채널 컨셉"
@@ -53,8 +51,6 @@ export default function SettingsPage() {
                                 placeholder="더욱 최적화된 분석 및 제안을 위해 채널 컨셉을 입력해주세요"
                                 heightVariant="large"
                                 fullWidth
-                                labelClassName="desktop:font-body-14m"
-                                textareaClassName="desktop:font-body-16r"
                             />
                         </div>
                     </PageContent>
@@ -62,7 +58,7 @@ export default function SettingsPage() {
                     <SectionDivider />
 
                     <PageContent className="flex flex-col gap-2">
-                        <p className="font-caption-12m text-text-secondary desktop:font-body-14m">
+                        <p className="font-caption-12m text-text-secondary">
                             이메일 알림
                         </p>
                         <div className="flex w-full flex-col gap-4">

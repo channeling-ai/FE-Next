@@ -90,7 +90,7 @@ export default function TextField({
                         {label ? (
                             <label
                                 htmlFor={inputId}
-                                className={`font-caption-12m desktop:font-caption-14m text-text-secondary tracking-[-0.3px] ${labelClassName}`}
+                                className={`font-caption-12m text-text-secondary tracking-[-0.3px] ${labelClassName}`}
                             >
                                 {label}
                             </label>
@@ -156,7 +156,7 @@ export default function TextField({
             </div>
             {/* 에러 메시지 */}
             {isError && errorMessage && (
-                <p className="px-4 text-[14px] leading-normal tracking-[-0.35px] text-border-error" role="alert">
+                <p className="px-4 font-body-14r tracking-[-0.35px] text-border-error" role="alert">
                     {errorMessage}
                 </p>
             )}
