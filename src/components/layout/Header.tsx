@@ -40,7 +40,7 @@ export default function Header({
 }: HeaderProps) {
     return (
         <header
-            className={`flex min-h-14 w-full items-center justify-between bg-bg-0 px-4 py-3 tablet:px-5 desktop:px-16 ${showDivider ? 'border-b border-border-default' : ''} ${className}`}
+            className={`flex min-h-14 w-full items-center justify-between bg-bg-0 px-4 py-3 tablet:px-5 tablet:py-4 desktop:px-16 desktop:py-5 ${showDivider ? 'border-b border-border-default' : ''} ${className}`}
         >
             <div className="flex items-center gap-2 desktop:gap-8">
                 {leading && (
