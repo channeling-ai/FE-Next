@@ -5,6 +5,7 @@ import MetricCardSmall from './_components/MetricCardSmall'
 import MetricCardWithImage from './_components/MetricCardwithImage'
 import UploadCycleChart from './_components/UploadCycleChart'
 import { dashboardInsights } from './_data/insights'
+import { Footer } from '@/components/Footer'
 
 const metrics = [
     { label: '채널 성장', score: 99, status: '최상' as const },
@@ -66,6 +67,7 @@ export default function DashboardPage() {
 
                 </div>
             </Scroll>
+            <Footer />
         </div>
     )
 }
