@@ -5,6 +5,7 @@ import { ReactNode } from 'react'
 interface HeaderProps {
     className?: string
     leading?: ReactNode
+    leadingClassName?: string
     showDivider?: boolean
     title: string
     trailing?: ReactNode
@@ -29,14 +30,21 @@ interface HeaderProps {
  * />
  */
 
-export default function Header({ className = '', leading, showDivider = true, title, trailing }: HeaderProps) {
+export default function Header({
+    className = '',
+    leading,
+    leadingClassName = '',
+    showDivider = true,
+    title,
+    trailing,
+}: HeaderProps) {
     return (
         <header
             className={`flex min-h-14 w-full items-center justify-between bg-bg-0 px-4 py-3 tablet:px-5 desktop:px-16 ${showDivider ? 'border-b border-border-default' : ''} ${className}`}
         >
             <div className="flex items-center gap-2 desktop:gap-8">
                 {leading && (
-                    <div className="flex items-center shrink-0">
+                    <div className={`flex shrink-0 items-center ${leadingClassName}`}>
                         {leading}
                     </div>
                 )}

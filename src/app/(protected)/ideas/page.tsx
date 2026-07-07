@@ -22,11 +22,12 @@ export default function IdeasPage() {
         <div className="flex h-full w-full flex-col bg-bg-0">
             <Header
                 title="트렌드 · 아이디어"
+                leadingClassName="desktop:hidden"
                 leading={
                     <button
                         type="button"
                         onClick={openSidebar}
-                        className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary desktop:hidden"
+                        className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary"
                         aria-label="메뉴 열기"
                     >
                         <MenuIcon />
