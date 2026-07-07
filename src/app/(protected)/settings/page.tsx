@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Scroll from '@/components/Scroll'
+import PageContent from '@/components/layout/PageContent'
 import ActionRow from './_components/ActionRow'
 import EditableTextField from './_components/EditableTextField'
 import NotificationRow from './_components/NotificationRow'
@@ -28,7 +29,7 @@ export default function SettingsPage() {
 
             <Scroll as="main" className="flex-1">
                 <section className="flex flex-col gap-8 pb-8">
-                    <div className="flex w-full flex-col gap-[22px] px-4 pt-[17px] tablet:px-5 desktop:px-16 desktop:pt-0">
+                    <PageContent className="flex flex-col gap-[22px] pt-[17px] desktop:pt-0">
                         <SettingsProfileImage channelName={channel.name} />
 
                         <div className="flex w-full flex-col gap-2">
@@ -56,11 +57,11 @@ export default function SettingsPage() {
                                 textareaClassName="desktop:font-body-16r"
                             />
                         </div>
-                    </div>
+                    </PageContent>
 
                     <SectionDivider />
 
-                    <div className="flex w-full flex-col gap-2 px-4 tablet:px-5 desktop:px-16">
+                    <PageContent className="flex flex-col gap-2">
                         <p className="font-caption-12m text-text-secondary desktop:font-body-14m">
                             이메일 알림
                         </p>
@@ -82,11 +83,11 @@ export default function SettingsPage() {
                                 }}
                             />
                         </div>
-                    </div>
+                    </PageContent>
 
                     <SectionDivider />
 
-                    <div className="flex w-full flex-col gap-4 px-4 tablet:px-5 desktop:px-16">
+                    <PageContent className="flex flex-col gap-4">
                         <ActionRow
                             label={`${channel.loginId}로 로그인 되어 있습니다`}
                             buttonLabel="로그아웃"
@@ -96,7 +97,7 @@ export default function SettingsPage() {
                             buttonLabel="계정 삭제"
                             danger
                         />
-                    </div>
+                    </PageContent>
                 </section>
             </Scroll>
         </div>
