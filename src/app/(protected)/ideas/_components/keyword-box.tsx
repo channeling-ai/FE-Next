@@ -6,7 +6,7 @@ export default function KeywordBox() {
             <div className="text-text-brand font-title-18sb">1</div>
             <div className="flex flex-col gap-1">
                 <div className="flex gap-2">
-                    <div>트렌드 키워드</div>
+                    <div className="font-body-16m text-text-primary">트렌드 키워드</div>
                     <div className="rounded-lg px-1 py-0.5 bg-text-brand/8 text-text-brand font-caption-12m">new</div>
                 </div>
                 <div className="flex items-center gap-1">
