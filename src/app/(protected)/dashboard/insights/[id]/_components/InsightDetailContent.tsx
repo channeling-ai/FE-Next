@@ -24,7 +24,7 @@ export default function InsightDetailContent({ insight }: InsightDetailContentPr
             </div>
 
             <section className="font-body-14r text-text-secondary">
-                <h3 className="font-normal">채널 성장을 위한 참고 코멘트</h3>
+                <h3>채널 성장을 위한 참고 코멘트</h3>
                 <ul className="list-disc pl-[21px] desktop:pl-6">
                     {insight.comments.map((comment) => (
                         <li key={comment}>{comment}</li>
