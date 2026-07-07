@@ -139,6 +139,12 @@
  ----------------------------------------------------------------- */
 
 /* Title */
+/* 1440: 32px SB fixed */
+@utility font-title-32sb {
+    @apply text-[32px] leading-[1.4] font-semibold;
+    letter-spacing: -0.025em;
+}
+
 /* 360: 40px R → 1440: 48px R */
 @utility font-title-40r {
     @apply text-[40px] leading-[1.4] font-normal;
