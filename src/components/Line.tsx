@@ -7,5 +7,5 @@ export default function Line({ variant }: LineProps) {
 
     const bgClass = variant === 'thick' ? 'bg-bg-divider' : 'bg-border-subtitle'
 
-    return <div className={`${heightClass} ${bgClass} w-full`} />
+    return <div className={`${heightClass} ${bgClass} w-full -mx-4 tablet:-mx-5 desktop:-mx-16`} />
 }

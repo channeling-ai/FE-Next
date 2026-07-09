@@ -40,23 +40,13 @@ export default function Header({
 }: HeaderProps) {
     return (
         <header
-            className={`flex min-h-14 w-full items-center justify-between bg-bg-0 px-4 py-3 tablet:px-5 tablet:py-4 desktop:px-16 desktop:py-5 ${showDivider ? 'border-b border-border-default' : ''} ${className}`}
+            className={`flex min-h-14 w-full items-center justify-between bg-bg-0 py-3 ${showDivider ? 'border-b border-border-default' : ''} ${className}`}
         >
             <div className="flex items-center gap-2 desktop:gap-8">
-                {leading && (
-                    <div className={`flex shrink-0 items-center ${leadingClassName}`}>
-                        {leading}
-                    </div>
-                )}
-                <span className="font-title-18sb text-text-primary whitespace-nowrap">
-                    {title}
-                </span>
+                {leading && <div className={`flex shrink-0 items-center ${leadingClassName}`}>{leading}</div>}
+                <span className="font-title-18sb text-text-primary whitespace-nowrap">{title}</span>
             </div>
-            {trailing && (
-                <div className="flex items-center gap-2 shrink-0">
-                    {trailing}
-                </div>
-            )}
+            {trailing && <div className="flex items-center gap-2 shrink-0">{trailing}</div>}
         </header>
     )
 }
