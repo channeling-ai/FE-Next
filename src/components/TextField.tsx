@@ -90,7 +90,7 @@ export default function TextField({
                         {label ? (
                             <label
                                 htmlFor={inputId}
-                                className={`font-caption-12m desktop:font-caption-14m text-text-secondary tracking-[-0.3px] ${labelClassName}`}
+                                className={`font-caption-12m text-text-secondary tracking-[-0.3px] ${labelClassName}`}
                             >
                                 {label}
                             </label>
@@ -118,14 +118,14 @@ export default function TextField({
                     {showPlaceholder && (
                         <div className="absolute inset-0 flex flex-col justify-start pointer-events-none text-text-secondary">
                             <p
-                                className={`font-body-14r desktop:font-body-16r tracking-[-0.35px] ${textareaClassName}`}
+                                className={`font-body-14r tracking-[-0.35px] ${textareaClassName}`}
                                 style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}
                             >
                                 {placeholder}
                             </p>
                             {helperText && (
                                 <p
-                                    className={`font-body-14r desktop:font-body-16r tracking-[-0.35px] ${textareaClassName}`}
+                                    className={`font-body-14r tracking-[-0.35px] ${textareaClassName}`}
                                     style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}
                                 >
                                     {helperText}
@@ -146,7 +146,7 @@ export default function TextField({
                         className={[
                             'absolute inset-0 w-full h-full bg-transparent outline-none m-0 p-0 resize-none',
                             heightVariant === 'large' ? 'overflow-y-auto custom-scrollbar pr-1' : 'overflow-hidden',
-                            'font-body-14r desktop:font-body-16r tracking-[-0.35px] text-text-primary caret-gray-90',
+                            'font-body-14r tracking-[-0.35px] text-text-primary caret-gray-90',
                             showPlaceholder ? 'text-transparent' : '',
                             textareaClassName,
                         ].join(' ')}
@@ -156,7 +156,7 @@ export default function TextField({
             </div>
             {/* 에러 메시지 */}
             {isError && errorMessage && (
-                <p className="px-4 text-[14px] leading-normal tracking-[-0.35px] text-border-error" role="alert">
+                <p className="px-4 font-body-14r tracking-[-0.35px] text-border-error" role="alert">
                     {errorMessage}
                 </p>
             )}

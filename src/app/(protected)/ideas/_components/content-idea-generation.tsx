@@ -53,14 +53,14 @@ export default function ContentIdeaGeneration() {
                             isDropdownOpen ? ' border-text-secondary' : 'border-transparent'
                         }`}
                     >
-                        <div className="font-caption-12m desktop:font-caption-14m text-text-secondary">영상형식</div>
+                        <div className="font-caption-12m text-text-secondary">영상형식</div>
                         <div
                             className="flex items-start justify-between self-stretch select-none cursor-pointer relative z-10"
                             onClick={handleDropdownClick}
                             ref={dropdownRef}
                         >
                             {selectedOption == '' && (
-                                <div className="font-body-14r desktop:font-body-16r text-text-secondary">
+                                <div className="font-body-14r text-text-secondary">
                                     영상 형식을 선택해 주세요.
                                 </div>
                             )}

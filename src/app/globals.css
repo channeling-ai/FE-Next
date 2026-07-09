@@ -139,29 +139,38 @@
  ----------------------------------------------------------------- */
 
 /* Title */
-/* 360: 40px R → 1440: 32px R */
+/* 1440: 32px SB fixed */
+@utility font-title-32sb {
+    @apply text-[32px] leading-[1.4] font-semibold;
+    letter-spacing: -0.025em;
+}
+
+/* 360: 40px R → 1440: 48px R */
 @utility font-title-40r {
     @apply text-[40px] leading-[1.4] font-normal;
+    letter-spacing: -0.025em;
+    @apply desktop:text-[48px];
+}
+
+/* 360: 30px R → 1440: 32px R */
+@utility font-title-30r {
+    @apply text-[30px] leading-[1.4] font-normal;
     letter-spacing: -0.025em;
     @apply desktop:text-[32px];
 }
 
-/* 360: 30px R → 1440: 24px SB */
-@utility font-title-30r {
-    @apply text-[30px] leading-[1.4] font-normal;
-    letter-spacing: -0.025em;
-}
-
-/* 360: 20px SB → 1440: 20px SB (동일) */
+/* 360: 20px SB → 1440: 22px SB */
 @utility font-title-20sb {
     @apply text-[20px] leading-[1.4] font-semibold;
     letter-spacing: -0.025em;
+    @apply desktop:text-[22px];
 }
 
-/* 360: 18px SB → 1440: 18px SB (동일) */
+/* 360: 18px SB → 1440: 20px SB */
 @utility font-title-18sb {
     @apply text-[18px] leading-[1.4] font-semibold;
     letter-spacing: -0.025em;
+    @apply desktop:text-[20px];
 }
 
 /* Body */

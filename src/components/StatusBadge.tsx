@@ -34,7 +34,7 @@ const statusStyle = {
 export default function StatusBadge({ status }: StatusBadgeProps) {
   return (
     <div
-      className={`inline-flex items-center justify-center rounded-lg px-1 py-0.5 font-body-14m desktop:font-body-16m ${statusStyle[status]}`}
+      className={`inline-flex items-center justify-center rounded-lg px-1 py-0.5 font-body-14m ${statusStyle[status]}`}
     >
       {status}
     </div>
