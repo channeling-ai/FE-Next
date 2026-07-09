@@ -1,5 +1,3 @@
-import Bookmarked from '@/assets/icons/bookmarked.svg'
-import BookmarkDefault from '@/assets/icons/bookmark_default.svg'
 import Back from '@/assets/icons/back.svg'
 import { useState } from 'react'
 import SearchBar from './SearchBar'
@@ -16,7 +14,7 @@ export default function MyVideoSelect({ onBack }: MyVideoSelectProps) {
 
     const [order, setOrder] = useState('최신순')
     return (
-        <div className="fixed inset-y-0 px-16 left-0 right-0 desktop:left-[200px] z-30 flex flex-col gap-2 bg-bg-0 overflow-y-auto">
+        <div className="fixed inset-y-0 px-16 left-0 right-0 desktop:left-50 z-30 flex flex-col gap-2 bg-bg-0 overflow-y-auto">
             <div className="sticky px-4 py-3 mt-1.75 flex flex-row justify-between">
                 <div className="flex gap-2">
                     <button onClick={onBack} className="cursor-pointer flex items-center">

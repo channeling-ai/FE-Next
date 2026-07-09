@@ -7,7 +7,6 @@ export interface SearchBarProps extends Omit<InputHTMLAttributes<HTMLInputElemen
     value?: string
     onChange?: (value: string) => void
     isError?: boolean
-    errorMessage?: string
     onClear?: () => void
     sizeVariant?: 'mobile' | 'tablet' | 'desktop'
 }
@@ -16,10 +15,8 @@ export default function SearchBar({
     value: controlledValue,
     onChange,
     isError = false,
-    errorMessage = '유효한 유튜브 URL을 입력해주세요',
     onClear,
     placeholder = '해당 영상 제목을 입력해주세요',
-    className = '',
     sizeVariant = 'mobile',
     id: externalId,
     ...rest
@@ -34,8 +31,6 @@ export default function SearchBar({
     const autoId = useId()
     const inputId = externalId ?? autoId
 
-    const hasValue = value.length > 0
-    const showClearButton = hasValue
     const isActive = isFocused
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

@@ -3,7 +3,7 @@ import SavedIdeaCard from './saved-idea-card'
 import SearchBar from './search-bar'
 import IdeaDetailView from './idea-detail-view'
 import Dropdown from '@/assets/icons/dropdown.svg'
-import DropdownOrder from '../../../../components/dropdown-order'
+import DropdownOrder from '@/components/dropdown-order'
 
 export default function SavedIdea() {
     const [selectedIdea, setSelectedIdea] = useState<boolean>(false)

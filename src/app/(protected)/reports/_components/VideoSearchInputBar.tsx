@@ -23,7 +23,6 @@ export default function VideoSearchInputBar({
     onClear,
     onClick,
     placeholder = '영상 링크를 입력해주세요',
-    className = '',
     sizeVariant = 'mobile',
     id: externalId,
     ...rest

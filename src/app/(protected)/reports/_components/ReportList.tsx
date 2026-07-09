@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import Tab from '../../ideas/_components/tab'
 import SearchBar from './SearchBar'
 import Chip from '@/components/Chip'
