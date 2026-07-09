@@ -1,10 +1,12 @@
 import Scroll from '@/components/Scroll'
+import PageContent from '@/components/layout/PageContent'
 import DashboardHeader from './_components/DashboardHeader'
 import InsightCard from './_components/InsightCard'
 import MetricCardSmall from './_components/MetricCardSmall'
 import MetricCardWithImage from './_components/MetricCardwithImage'
 import UploadCycleChart from './_components/UploadCycleChart'
 import { dashboardInsights } from './_data/insights'
+import { Footer } from '@/components/Footer'
 
 const metrics = [
     { label: '채널 성장', score: 99, status: '최상' as const },
@@ -21,7 +23,7 @@ export default function DashboardPage() {
             <DashboardHeader />
 
             <Scroll as="main" className="flex-1">
-                <div className="mx-auto flex w-full flex-col gap-8 px-4 pb-8 pt-4 tablet:px-5 desktop:px-16 desktop:pb-16 desktop:pt-8">
+                <PageContent className="mx-auto flex flex-col gap-8 pb-8 pt-4 desktop:pb-16 desktop:pt-8">
                     <section className="flex w-full flex-col gap-2">
                         <p className="font-body-14r text-text-tertiary">
                             26년 2월 19일 (05:15) 기준
@@ -64,8 +66,9 @@ export default function DashboardPage() {
                         </div>
                     </section>
 
-                </div>
+                </PageContent>
             </Scroll>
+            <Footer />
         </div>
     )
 }

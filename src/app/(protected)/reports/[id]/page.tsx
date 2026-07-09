@@ -1,4 +1,5 @@
 import Header from '@/components/layout/Header'
+import PageContent from '@/components/layout/PageContent'
 import ReportTabs from '../_components/ReportTabs'
 
 interface ReportDetailPageProps {
@@ -15,9 +16,10 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
     const { id } = await params
 
     return (
-        <main className="px-4 tablet:px-5 desktop:px-16 flex flex-col">
+        <div className="flex h-full w-full flex-col bg-bg-0">
             <Header title="상세 분석 리포트" />
-            <div className="pt-4 flex flex-col gap-4">
+
+            <PageContent as="main" className="flex flex-col gap-4 pt-4">
                 {/* 영상 정보 */}
                 <div className="flex gap-4 flex-col tablet:flex-row">
                     <div className="w-82 h-46 tablet:w-59.25 tablet:h-33.25 desktop:w-79 desktop:h-44.5 rounded-[20px] bg-bg-3"></div>
@@ -38,7 +40,7 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
                 </div>
 
                 <ReportTabs />
-            </div>
-        </main>
+            </PageContent>
+        </div>
     )
 }
