@@ -14,7 +14,7 @@ export default function ReportList() {
     const [order, setOrder] = useState('최신순')
 
     return (
-        <div className="px-16">
+        <div>
             <Tab title="내 리포트 내역" onClick={() => setActiveTab('myreport')} isActive={activeTab === 'myreport'} />
             <Tab title="추천 리포트" onClick={() => setActiveTab('recommend')} isActive={activeTab === 'recommend'} />
 

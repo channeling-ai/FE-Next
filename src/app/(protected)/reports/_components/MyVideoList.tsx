@@ -22,7 +22,7 @@ export default function MyVideoList() {
         return <MyVideoSelect onBack={handleClose} />
     }
     return (
-        <div className="px-16 flex flex-col">
+        <div className="flex flex-col">
             <div className="font-title-20sb text-text-primary pb-2">내 영상 분석</div>
             <VideoSearchInputBar onClick={openModal} />
 

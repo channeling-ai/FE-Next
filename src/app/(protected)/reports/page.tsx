@@ -14,8 +14,8 @@ import PageContent from '@/components/layout/PageContent'
 export default function ReportsPage() {
     return (
         <PageContent as="main" className="py-6">
-            <Header title="영상 리포트" />
-            <div className="flex flex-col gap-4">
+            <Header showDivider={false} title="영상 리포트" />
+            <div className="flex flex-col gap-4 pt-2">
                 <MyVideoList />
                 <Line variant="thick" />
                 <ReportList />
