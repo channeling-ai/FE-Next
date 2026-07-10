@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { useAuthStore } from '@/stores/authStore'
+import type { User } from '@/types'
 
 type BillingCycle = 'monthly' | 'yearly'
 type PlanName = 'Free' | 'Creator' | 'Pro'
 
-type UserWithPlan = {
+type UserWithPlan = User & {
     currentPlan?: string
     plan?: string
     planName?: string
