@@ -19,7 +19,7 @@ export default function IdeasPage() {
     const openSidebar = useLayoutStore((state) => state.openSidebar)
 
     return (
-        <div className="flex h-full w-full flex-col bg-bg-0">
+        <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
             <Scroll as="main" className="flex-1">
                 <Header
                     title="트렌드 · 아이디어"

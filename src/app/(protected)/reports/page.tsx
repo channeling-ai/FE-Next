@@ -14,7 +14,7 @@ import Scroll from '@/components/Scroll'
  */
 export default function ReportsPage() {
     return (
-        <div className="flex h-full w-full flex-col bg-bg-0">
+        <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
             <Scroll as="main" className="flex-1">
                 <Header title="영상 리포트" />
                 <PageContent className="flex flex-col gap-4 pb-6 pt-2">
