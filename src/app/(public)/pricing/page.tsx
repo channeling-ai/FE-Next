@@ -4,6 +4,15 @@ import { useState } from 'react'
 import { useAuthStore } from '@/stores/authStore'
 
 type BillingCycle = 'monthly' | 'yearly'
+type PlanName = 'Free' | 'Creator' | 'Pro'
+
+type UserWithPlan = {
+    currentPlan?: string
+    plan?: string
+    planName?: string
+    subscriptionPlan?: string
+    subscriptionTier?: string
+}
 
 interface PricingFeature {
     label: string
@@ -11,13 +20,12 @@ interface PricingFeature {
 }
 
 interface PricingPlan {
-    name: string
+    name: PlanName
     description: string
     prices: Record<BillingCycle, { price: string; originalPrice?: string; unit?: string }>
-    buttonLabel: string
     features: PricingFeature[]
-    isCurrent?: boolean
     isRecommended?: boolean
+    selectButtonLabel: string
 }
 
 const plans: PricingPlan[] = [
@@ -28,8 +36,7 @@ const plans: PricingPlan[] = [
             monthly: { price: '무료' },
             yearly: { price: '무료' },
         },
-        buttonLabel: '현재 플랜',
-        isCurrent: true,
+        selectButtonLabel: 'FREE 선택',
         features: [
             { label: '영상 리포트', value: '월 2개' },
             { label: '아이디어 생성', value: '월 5회' },
@@ -44,7 +51,7 @@ const plans: PricingPlan[] = [
             monthly: { price: '9,900원', unit: '/월' },
             yearly: { price: '7,920원', originalPrice: '9,900원', unit: '/월' },
         },
-        buttonLabel: 'Creator 선택',
+        selectButtonLabel: 'Creator 선택',
         isRecommended: true,
         features: [
             { label: '영상 리포트', value: '월 10개' },
@@ -60,7 +67,7 @@ const plans: PricingPlan[] = [
             monthly: { price: '29,900원', unit: '/월' },
             yearly: { price: '23,900원', originalPrice: '29,900원', unit: '/월' },
         },
-        buttonLabel: 'Pro 선택',
+        selectButtonLabel: 'Pro 선택',
         features: [
             { label: '영상 리포트', value: '월 50개' },
             { label: '아이디어 생성', value: '월 150회' },
@@ -70,6 +77,31 @@ const plans: PricingPlan[] = [
         ],
     },
 ]
+
+function normalizePlanName(plan?: string | null): PlanName | null {
+    if (!plan) return null
+
+    const normalizedPlan = plan.trim().toLowerCase()
+
+    if (normalizedPlan === 'free') return 'Free'
+    if (normalizedPlan === 'creator') return 'Creator'
+    if (normalizedPlan === 'pro') return 'Pro'
+
+    return null
+}
+
+function getCurrentPlan(user: UserWithPlan | null, isLoggedIn: boolean): PlanName {
+    if (!isLoggedIn) return 'Free'
+
+    return (
+        normalizePlanName(user?.subscriptionPlan) ??
+        normalizePlanName(user?.subscriptionTier) ??
+        normalizePlanName(user?.currentPlan) ??
+        normalizePlanName(user?.planName) ??
+        normalizePlanName(user?.plan) ??
+        'Free'
+    )
+}
 
 function PricingHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
     return (
@@ -124,8 +156,17 @@ function BillingTabs({
     )
 }
 
-function PricingPlanCard({ billingCycle, plan }: { billingCycle: BillingCycle; plan: PricingPlan }) {
+function PricingPlanCard({
+    billingCycle,
+    currentPlan,
+    plan,
+}: {
+    billingCycle: BillingCycle
+    currentPlan: PlanName
+    plan: PricingPlan
+}) {
     const price = plan.prices[billingCycle]
+    const isCurrentPlan = currentPlan === plan.name
     const shouldBreakAdditionalFeature = plan.name === 'Pro'
 
     return (
@@ -161,14 +202,15 @@ function PricingPlanCard({ billingCycle, plan }: { billingCycle: BillingCycle; p
 
             <button
                 type="button"
-                disabled={plan.isCurrent}
+                disabled={isCurrentPlan}
+                aria-current={isCurrentPlan ? 'true' : undefined}
                 className={`flex w-full items-center justify-center rounded-[10px] p-2 font-body-16sb transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active ${
-                    plan.isCurrent
+                    isCurrentPlan
                         ? 'cursor-default border border-gray-40 bg-gray-30 text-text-tertiary'
                         : 'bg-primary-60 text-text-primary hover:bg-primary-50'
                 }`}
             >
-                {plan.buttonLabel}
+                {isCurrentPlan ? '현재 플랜' : plan.selectButtonLabel}
             </button>
 
             <dl className="flex w-full flex-col gap-2 font-caption-12r desktop:font-caption-14r">
@@ -218,7 +260,9 @@ function EnterpriseCard() {
 
 export default function PricingPage() {
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+    const user = useAuthStore((state) => state.user)
     const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly')
+    const currentPlan = getCurrentPlan(user, isLoggedIn)
 
     return (
         <main
@@ -236,7 +280,12 @@ export default function PricingPage() {
                 <div className="flex w-full max-w-[1312px] flex-col items-center gap-2">
                     <div className="grid w-full grid-cols-1 gap-2 tablet:grid-cols-3">
                         {plans.map((plan) => (
-                            <PricingPlanCard key={plan.name} billingCycle={billingCycle} plan={plan} />
+                            <PricingPlanCard
+                                key={plan.name}
+                                billingCycle={billingCycle}
+                                currentPlan={currentPlan}
+                                plan={plan}
+                            />
                         ))}
                     </div>
                     <EnterpriseCard />
