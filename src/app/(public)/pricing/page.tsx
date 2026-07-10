@@ -5,23 +5,38 @@ import { useAuthStore } from '@/stores/authStore'
 import BillingTabs from './_components/BillingTabs'
 import EnterpriseCard from './_components/EnterpriseCard'
 import PricingHeader from './_components/PricingHeader'
+import PricingPlanChangeModal from './_components/PricingPlanChangeModal'
 import PricingPlanCard from './_components/PricingPlanCard'
-import PricingUpgradeModal from './_components/PricingUpgradeModal'
 import { getCurrentPlan, getRecommendedPlan } from './pricingPlan'
 import { plans } from './pricingPlans'
 import type { BillingCycle, PlanName } from './types'
+
+type PlanChangeModalVariant = 'downgrade' | 'upgrade'
+
+const planPriority: Record<PlanName, number> = {
+    Free: 0,
+    Creator: 1,
+    Pro: 2,
+}
 
 export default function PricingPage() {
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
     const user = useAuthStore((state) => state.user)
     const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly')
-    const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false)
+    const [planChangeModalVariant, setPlanChangeModalVariant] = useState<PlanChangeModalVariant | null>(null)
     const currentPlan = getCurrentPlan(user, isLoggedIn)
     const recommendedPlan = getRecommendedPlan(currentPlan)
 
     const handleSelectPlan = (planName: PlanName) => {
-        if (isLoggedIn && currentPlan === 'Creator' && planName === 'Pro') {
-            setIsUpgradeModalOpen(true)
+        if (!isLoggedIn) return
+
+        if (currentPlan === 'Creator' && planName === 'Pro') {
+            setPlanChangeModalVariant('upgrade')
+            return
+        }
+
+        if (planPriority[planName] < planPriority[currentPlan]) {
+            setPlanChangeModalVariant('downgrade')
         }
     }
 
@@ -59,7 +74,13 @@ export default function PricingPage() {
                 </div>
             </section>
 
-            <PricingUpgradeModal isOpen={isUpgradeModalOpen} onClose={() => setIsUpgradeModalOpen(false)} />
+            {planChangeModalVariant && (
+                <PricingPlanChangeModal
+                    isOpen
+                    onClose={() => setPlanChangeModalVariant(null)}
+                    variant={planChangeModalVariant}
+                />
+            )}
         </main>
     )
 }

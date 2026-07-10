@@ -2,12 +2,32 @@
 
 import { useEffect } from 'react'
 
-interface PricingUpgradeModalProps {
+type PricingPlanChangeModalVariant = 'downgrade' | 'upgrade'
+
+interface PricingPlanChangeModalProps {
     isOpen: boolean
     onClose: () => void
+    variant: PricingPlanChangeModalVariant
 }
 
-export default function PricingUpgradeModal({ isOpen, onClose }: PricingUpgradeModalProps) {
+const modalContent: Record<PricingPlanChangeModalVariant, { actionLabel: string; description: string; title: string }> = {
+    downgrade: {
+        actionLabel: '변경',
+        description:
+            '다음 정기 결제일인 [M월 D일]부터 해당 요금제가 적용됩니다. 남은 기간 동안은 현재 요금제의 모든 혜택을 그대로 이용하실 수 있습니다.',
+        title: '플랜 변경 전 확인해 주세요.',
+    },
+    upgrade: {
+        actionLabel: '결제',
+        description:
+            '남은 기간에 대한 차액 [0,000]원이 즉시 결제되며, 완료 즉시 확장된 기능을 모두 이용하실 수 있습니다. 다음 정기 결제일([M월 D일])부터는 매월 [00,000]원이 청구됩니다.',
+        title: 'PRO 플랜으로 업그레이드할까요?',
+    },
+}
+
+export default function PricingPlanChangeModal({ isOpen, onClose, variant }: PricingPlanChangeModalProps) {
+    const { actionLabel, description, title } = modalContent[variant]
+
     useEffect(() => {
         if (!isOpen) return
 
@@ -30,7 +50,7 @@ export default function PricingUpgradeModal({ isOpen, onClose }: PricingUpgradeM
         <div
             role="dialog"
             aria-modal="true"
-            aria-labelledby="pricing-upgrade-title"
+            aria-labelledby="pricing-plan-change-title"
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-8 backdrop-blur-sm"
             onClick={onClose}
         >
@@ -40,14 +60,13 @@ export default function PricingUpgradeModal({ isOpen, onClose }: PricingUpgradeM
             >
                 <div className="flex w-full flex-col items-start gap-1">
                     <h2
-                        id="pricing-upgrade-title"
+                        id="pricing-plan-change-title"
                         className="text-[18px] font-semibold leading-[1.4] tracking-[-0.025em] text-text-primary"
                     >
-                        PRO 플랜으로 업그레이드할까요?
+                        {title}
                     </h2>
                     <p className="text-[14px] font-medium leading-[1.5] tracking-[-0.025em] text-text-secondary">
-                        남은 기간에 대한 차액 [0,000]원이 즉시 결제되며, 완료 즉시 확장된 기능을 모두 이용하실 수 있습니다.
-                        다음 정기 결제일([M월 D일])부터는 매월 [00,000]원이 청구됩니다.
+                        {description}
                     </p>
                 </div>
 
@@ -63,7 +82,7 @@ export default function PricingUpgradeModal({ isOpen, onClose }: PricingUpgradeM
                         type="button"
                         className="flex w-[120px] shrink-0 items-center justify-center rounded-[10px] bg-primary-60 px-4 py-2 text-[16px] font-semibold leading-[1.5] tracking-[-0.025em] text-text-inverse transition-colors hover:bg-primary-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active"
                     >
-                        결제
+                        {actionLabel}
                     </button>
                 </div>
             </div>
