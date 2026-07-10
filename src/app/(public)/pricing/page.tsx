@@ -164,16 +164,19 @@ function BillingTabs({
 function PricingPlanCard({
     billingCycle,
     currentPlan,
+    isLoggedIn,
     isRecommended,
     plan,
 }: {
     billingCycle: BillingCycle
     currentPlan: PlanName
+    isLoggedIn: boolean
     isRecommended: boolean
     plan: PricingPlan
 }) {
     const price = plan.prices[billingCycle]
-    const isCurrentPlan = currentPlan === plan.name
+    const isCurrentPlan = isLoggedIn && currentPlan === plan.name
+    const buttonLabel = !isLoggedIn && plan.name === 'Free' ? '지금 시작' : plan.selectButtonLabel
     const shouldBreakAdditionalFeature = plan.name === 'Pro'
 
     return (
@@ -217,7 +220,7 @@ function PricingPlanCard({
                         : 'bg-primary-60 text-text-primary hover:bg-primary-50'
                 }`}
             >
-                {isCurrentPlan ? '현재 플랜' : plan.selectButtonLabel}
+                {isCurrentPlan ? '현재 플랜' : buttonLabel}
             </button>
 
             <dl className="flex w-full flex-col gap-2 font-caption-12r desktop:font-caption-14r">
@@ -292,6 +295,7 @@ export default function PricingPage() {
                                 key={plan.name}
                                 billingCycle={billingCycle}
                                 currentPlan={currentPlan}
+                                isLoggedIn={isLoggedIn}
                                 isRecommended={recommendedPlan === plan.name}
                                 plan={plan}
                             />
