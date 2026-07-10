@@ -5,6 +5,7 @@ import MyVideoList from './_components/MyVideoList'
 import Line from '@/components/Line'
 import ReportList from './_components/ReportList'
 import PageContent from '@/components/layout/PageContent'
+import Scroll from '@/components/Scroll'
 
 /**
  * 영상 리포트 목록 페이지 (/reports)
@@ -13,13 +14,17 @@ import PageContent from '@/components/layout/PageContent'
  */
 export default function ReportsPage() {
     return (
-        <PageContent as="main" className="py-6">
-            <Header showDivider={false} title="영상 리포트" />
-            <div className="flex flex-col gap-4 pt-2">
-                <MyVideoList />
-                <Line variant="thick" />
-                <ReportList />
-            </div>
-        </PageContent>
+        <div className="flex h-full w-full flex-col bg-bg-0">
+            <Scroll as="main" className="flex-1">
+                <PageContent className="py-6">
+                    <Header showDivider={false} title="영상 리포트" />
+                    <div className="flex flex-col gap-4 pt-2">
+                        <MyVideoList />
+                        <Line variant="thick" />
+                        <ReportList />
+                    </div>
+                </PageContent>
+            </Scroll>
+        </div>
     )
 }
