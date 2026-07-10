@@ -39,7 +39,7 @@ export default function Header({
 }: HeaderProps) {
     return (
         <header
-            className={`flex min-h-14 w-full min-w-[360px] items-center justify-between bg-bg-0 px-4 py-3 tablet:min-h-16 tablet:min-w-[768px] tablet:px-5 tablet:py-4 desktop:mx-auto desktop:min-h-0 desktop:w-[1240px] desktop:px-16 desktop:py-5 ${className}`}
+            className={`flex min-h-14 w-full min-w-[360px] items-center justify-between bg-bg-0 px-4 py-3 tablet:min-h-16 tablet:min-w-[768px] tablet:px-5 tablet:py-4 desktop:min-h-0 desktop:px-16 desktop:py-5 ${className}`}
         >
             <div className="flex items-center gap-2">
                 {leading && <div className={`flex shrink-0 items-center ${leadingClassName}`}>{leading}</div>}
