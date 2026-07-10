@@ -5,6 +5,7 @@ interface PricingPlanCardProps {
     currentPlan: PlanName
     isLoggedIn: boolean
     isRecommended: boolean
+    onSelectPlan?: (plan: PlanName) => void
     plan: PricingPlan
 }
 
@@ -13,6 +14,7 @@ export default function PricingPlanCard({
     currentPlan,
     isLoggedIn,
     isRecommended,
+    onSelectPlan,
     plan,
 }: PricingPlanCardProps) {
     const price = plan.prices[billingCycle]
@@ -53,6 +55,7 @@ export default function PricingPlanCard({
 
             <button
                 type="button"
+                onClick={() => onSelectPlan?.(plan.name)}
                 disabled={isCurrentPlan}
                 aria-current={isCurrentPlan ? 'true' : undefined}
                 className={`flex w-full items-center justify-center rounded-[10px] p-2 font-body-16sb transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active ${

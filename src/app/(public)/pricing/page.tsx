@@ -6,16 +6,24 @@ import BillingTabs from './_components/BillingTabs'
 import EnterpriseCard from './_components/EnterpriseCard'
 import PricingHeader from './_components/PricingHeader'
 import PricingPlanCard from './_components/PricingPlanCard'
+import PricingUpgradeModal from './_components/PricingUpgradeModal'
 import { getCurrentPlan, getRecommendedPlan } from './pricingPlan'
 import { plans } from './pricingPlans'
-import type { BillingCycle } from './types'
+import type { BillingCycle, PlanName } from './types'
 
 export default function PricingPage() {
     const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
     const user = useAuthStore((state) => state.user)
     const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly')
+    const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false)
     const currentPlan = getCurrentPlan(user, isLoggedIn)
     const recommendedPlan = getRecommendedPlan(currentPlan)
+
+    const handleSelectPlan = (planName: PlanName) => {
+        if (isLoggedIn && currentPlan === 'Creator' && planName === 'Pro') {
+            setIsUpgradeModalOpen(true)
+        }
+    }
 
     return (
         <main
@@ -39,6 +47,7 @@ export default function PricingPage() {
                                 currentPlan={currentPlan}
                                 isLoggedIn={isLoggedIn}
                                 isRecommended={recommendedPlan === plan.name}
+                                onSelectPlan={handleSelectPlan}
                                 plan={plan}
                             />
                         ))}
@@ -49,6 +58,8 @@ export default function PricingPage() {
                     </p>
                 </div>
             </section>
+
+            <PricingUpgradeModal isOpen={isUpgradeModalOpen} onClose={() => setIsUpgradeModalOpen(false)} />
         </main>
     )
 }
