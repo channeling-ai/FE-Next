@@ -13,8 +13,7 @@ interface PricingFeature {
 interface PricingPlan {
     name: string
     description: string
-    price: string
-    unit?: string
+    prices: Record<BillingCycle, { price: string; originalPrice?: string; unit?: string }>
     buttonLabel: string
     features: PricingFeature[]
     isCurrent?: boolean
@@ -25,7 +24,10 @@ const plans: PricingPlan[] = [
     {
         name: 'Free',
         description: '개인 사용자',
-        price: '무료',
+        prices: {
+            monthly: { price: '무료' },
+            yearly: { price: '무료' },
+        },
         buttonLabel: '현재 플랜',
         isCurrent: true,
         features: [
@@ -38,8 +40,10 @@ const plans: PricingPlan[] = [
     {
         name: 'Creator',
         description: '성장하는 크리에이터',
-        price: '9,900원',
-        unit: '/월',
+        prices: {
+            monthly: { price: '9,900원', unit: '/월' },
+            yearly: { price: '7,920원', originalPrice: '9,900원', unit: '/월' },
+        },
         buttonLabel: 'Creator 선택',
         isRecommended: true,
         features: [
@@ -52,8 +56,10 @@ const plans: PricingPlan[] = [
     {
         name: 'Pro',
         description: '전문가',
-        price: '29,900원',
-        unit: '/월',
+        prices: {
+            monthly: { price: '29,900원', unit: '/월' },
+            yearly: { price: '23,900원', originalPrice: '29,900원', unit: '/월' },
+        },
         buttonLabel: 'Pro 선택',
         features: [
             { label: '영상 리포트', value: '월 50개' },
@@ -118,7 +124,9 @@ function BillingTabs({
     )
 }
 
-function PricingPlanCard({ plan }: { plan: PricingPlan }) {
+function PricingPlanCard({ billingCycle, plan }: { billingCycle: BillingCycle; plan: PricingPlan }) {
+    const price = plan.prices[billingCycle]
+
     return (
         <article
             className={`relative flex min-h-[184px] w-full flex-col items-start gap-4 rounded-[20px] p-6 tablet:min-h-[343px] desktop:min-h-[326px] ${
@@ -140,9 +148,14 @@ function PricingPlanCard({ plan }: { plan: PricingPlan }) {
                 </p>
             </div>
 
-            <div className="flex items-end">
-                <p className="font-title-30r text-text-primary desktop:font-title-30r">{plan.price}</p>
-                {plan.unit && <p className="pb-1 font-caption-12r text-text-secondary desktop:font-caption-14r">{plan.unit}</p>}
+            <div className="flex items-end whitespace-nowrap">
+                <p className="font-title-30r text-text-primary desktop:font-title-30r">{price.price}</p>
+                {(price.unit || price.originalPrice) && (
+                    <div className="flex items-center gap-1 pb-1 font-caption-12r text-text-secondary desktop:font-caption-14r">
+                        {price.unit && <span>{price.unit}</span>}
+                        {price.originalPrice && <span className="line-through">{price.originalPrice}</span>}
+                    </div>
+                )}
             </div>
 
             <button
@@ -210,7 +223,7 @@ export default function PricingPage() {
                 <div className="flex w-full max-w-[1312px] flex-col items-center gap-2">
                     <div className="grid w-full grid-cols-1 gap-2 tablet:grid-cols-3">
                         {plans.map((plan) => (
-                            <PricingPlanCard key={plan.name} plan={plan} />
+                            <PricingPlanCard key={plan.name} billingCycle={billingCycle} plan={plan} />
                         ))}
                     </div>
                     <EnterpriseCard />
