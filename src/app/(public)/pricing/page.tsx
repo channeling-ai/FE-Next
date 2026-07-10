@@ -126,6 +126,7 @@ function BillingTabs({
 
 function PricingPlanCard({ billingCycle, plan }: { billingCycle: BillingCycle; plan: PricingPlan }) {
     const price = plan.prices[billingCycle]
+    const shouldBreakAdditionalFeature = plan.name === 'Pro'
 
     return (
         <article
@@ -174,7 +175,19 @@ function PricingPlanCard({ billingCycle, plan }: { billingCycle: BillingCycle; p
                 {plan.features.map((feature) => (
                     <div key={`${plan.name}-${feature.label}`} className="flex w-full items-start justify-between gap-4">
                         <dt className="shrink-0 whitespace-nowrap text-text-secondary">{feature.label}</dt>
-                        <dd className="min-w-0 text-right text-text-primary">{feature.value}</dd>
+                        <dd className="min-w-0 text-right text-text-primary">
+                            {shouldBreakAdditionalFeature && feature.label === '추가 기능' ? (
+                                <>
+                                    <span className="tablet:hidden desktop:block">{feature.value}</span>
+                                    <span className="hidden tablet:block desktop:hidden">
+                                        이메일 리포트 &<br />
+                                        실험 기능 얼리 엑세스
+                                    </span>
+                                </>
+                            ) : (
+                                feature.value
+                            )}
+                        </dd>
                     </div>
                 ))}
             </dl>
