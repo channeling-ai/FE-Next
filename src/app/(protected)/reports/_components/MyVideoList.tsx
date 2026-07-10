@@ -23,7 +23,7 @@ export default function MyVideoList() {
     }
     return (
         <div className="flex flex-col">
-            <div className="font-title-20sb text-text-primary pb-2">내 영상 분석</div>
+            <div className="font-title-18sb text-text-primary pb-2">내 영상 분석</div>
             <VideoSearchInputBar onClick={openModal} />
 
             <div className="flex items-center pt-1.5 pb-1.25">
