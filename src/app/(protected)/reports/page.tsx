@@ -16,13 +16,11 @@ export default function ReportsPage() {
     return (
         <div className="flex h-full w-full flex-col bg-bg-0">
             <Scroll as="main" className="flex-1">
-                <PageContent className="py-6">
-                    <Header showDivider={false} title="영상 리포트" />
-                    <div className="flex flex-col gap-4 pt-2">
-                        <MyVideoList />
-                        <Line variant="thick" />
-                        <ReportList />
-                    </div>
+                <Header title="영상 리포트" />
+                <PageContent className="flex flex-col gap-4 pb-6 pt-2">
+                    <MyVideoList />
+                    <Line variant="thick" />
+                    <ReportList />
                 </PageContent>
             </Scroll>
         </div>

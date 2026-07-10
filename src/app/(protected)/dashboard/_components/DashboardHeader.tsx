@@ -11,8 +11,6 @@ export default function DashboardHeader() {
         <div className="desktop:hidden">
             <Header
                 title="대시보드"
-                showDivider={false}
-                className="tablet:min-h-16 tablet:px-5 tablet:py-4"
                 leading={
                     <button
                         type="button"
