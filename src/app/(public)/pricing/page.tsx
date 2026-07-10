@@ -24,7 +24,6 @@ interface PricingPlan {
     description: string
     prices: Record<BillingCycle, { price: string; originalPrice?: string; unit?: string }>
     features: PricingFeature[]
-    isRecommended?: boolean
     selectButtonLabel: string
 }
 
@@ -52,7 +51,6 @@ const plans: PricingPlan[] = [
             yearly: { price: '7,920원', originalPrice: '9,900원', unit: '/월' },
         },
         selectButtonLabel: 'Creator 선택',
-        isRecommended: true,
         features: [
             { label: '영상 리포트', value: '월 10개' },
             { label: '아이디어 생성', value: '월 30회' },
@@ -101,6 +99,13 @@ function getCurrentPlan(user: UserWithPlan | null, isLoggedIn: boolean): PlanNam
         normalizePlanName(user?.plan) ??
         'Free'
     )
+}
+
+function getRecommendedPlan(currentPlan: PlanName): PlanName | null {
+    if (currentPlan === 'Free') return 'Creator'
+    if (currentPlan === 'Creator') return 'Pro'
+
+    return null
 }
 
 function PricingHeader({ isLoggedIn }: { isLoggedIn: boolean }) {
@@ -159,10 +164,12 @@ function BillingTabs({
 function PricingPlanCard({
     billingCycle,
     currentPlan,
+    isRecommended,
     plan,
 }: {
     billingCycle: BillingCycle
     currentPlan: PlanName
+    isRecommended: boolean
     plan: PricingPlan
 }) {
     const price = plan.prices[billingCycle]
@@ -172,12 +179,12 @@ function PricingPlanCard({
     return (
         <article
             className={`relative flex min-h-[184px] w-full flex-col items-start gap-4 rounded-[20px] p-6 tablet:min-h-[343px] desktop:min-h-[326px] ${
-                plan.isRecommended
+                isRecommended
                     ? 'border border-primary-60 bg-[linear-gradient(144deg,rgba(233,73,90,0.32)_6%,rgba(233,73,90,0.08)_94%)]'
                     : 'bg-bg-1'
             }`}
         >
-            {plan.isRecommended && (
+            {isRecommended && (
                 <span className="absolute right-[19px] top-[19px] rounded-lg bg-primary-60 px-2 py-1 font-caption-14m text-text-primary">
                     추천
                 </span>
@@ -263,6 +270,7 @@ export default function PricingPage() {
     const user = useAuthStore((state) => state.user)
     const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly')
     const currentPlan = getCurrentPlan(user, isLoggedIn)
+    const recommendedPlan = getRecommendedPlan(currentPlan)
 
     return (
         <main
@@ -284,6 +292,7 @@ export default function PricingPage() {
                                 key={plan.name}
                                 billingCycle={billingCycle}
                                 currentPlan={currentPlan}
+                                isRecommended={recommendedPlan === plan.name}
                                 plan={plan}
                             />
                         ))}
