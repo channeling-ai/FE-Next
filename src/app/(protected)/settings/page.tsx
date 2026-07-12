@@ -9,6 +9,7 @@ import { useLayoutStore } from '@/stores/layoutStore'
 import ActionRow from './_components/ActionRow'
 import EditableTextField from './_components/EditableTextField'
 import NotificationRow from './_components/NotificationRow'
+import PlanManagementSection from './_components/PlanManagementSection'
 import ProfileField from './_components/ProfileField'
 import SectionDivider from './_components/SectionDivider'
 import SettingsProfileImage from './_components/SettingsProfileImage'
@@ -72,6 +73,10 @@ export default function SettingsPage() {
                             />
                         </div>
                     </PageContent>
+
+                    <SectionDivider />
+
+                    <PlanManagementSection />
 
                     <SectionDivider />
 
