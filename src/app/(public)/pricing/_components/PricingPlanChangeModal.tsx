@@ -81,6 +81,7 @@ export default function PricingPlanChangeModal({ isOpen, onClose, variant }: Pri
                     </button>
                     <button
                         type="button"
+                        onClick={onConfirm}
                         className="flex w-[120px] shrink-0 items-center justify-center rounded-[10px] bg-primary-60 px-4 py-2 text-[16px] font-semibold leading-[1.5] tracking-[-0.025em] text-text-inverse transition-colors hover:bg-primary-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active"
                     >
                         {actionLabel}
