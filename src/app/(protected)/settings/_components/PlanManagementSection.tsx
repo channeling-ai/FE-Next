@@ -15,13 +15,17 @@ const usage = [
 ]
 
 function SectionLine() {
-    return <div className="h-px w-full bg-border-default" />
+    return (
+        <PageContent>
+            <div className="h-px w-full bg-border-default" />
+        </PageContent>
+    )
 }
 
 export default function PlanManagementSection() {
     return (
-        <PageContent className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
+            <PageContent className="flex flex-col gap-2">
                 <p className="font-caption-12m text-text-secondary">플랜 관리</p>
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between gap-4">
@@ -37,48 +41,46 @@ export default function PlanManagementSection() {
                         2026년 7월 2일에 자동으로 갱신됩니다
                     </p>
                 </div>
-            </div>
+            </PageContent>
 
             <SectionLine />
 
-            <div className="flex flex-col gap-2">
+            <PageContent className="flex flex-col gap-2">
                 <p className="font-caption-12m text-text-secondary">사용량</p>
-                <div className="flex flex-col">
-                    {usage.map((item) => (
-                        <div key={item.label} className="flex items-center justify-between gap-4 font-body-16sb">
-                            <span className="truncate text-text-primary">{item.label}</span>
-                            <span className="shrink-0">
-                                <span className="font-body-16m text-text-brand">{item.current}</span>
-                                <span className="font-body-16r text-text-secondary">/{item.limit}</span>
-                            </span>
-                        </div>
-                    ))}
-                </div>
-            </div>
+                {usage.map((item) => (
+                    <div key={item.label} className="flex items-center justify-between gap-4 font-body-16sb">
+                        <span className="truncate text-text-primary">{item.label}</span>
+                        <span className="shrink-0">
+                            <span className="font-body-16m text-text-brand">{item.current}</span>
+                            <span className="font-body-16r text-text-secondary">/{item.limit}</span>
+                        </span>
+                    </div>
+                ))}
+            </PageContent>
 
             <SectionLine />
 
-            <div className="flex flex-col gap-2 text-text-secondary">
+            <PageContent className="flex flex-col gap-2 text-text-secondary">
                 <p className="font-caption-12m">청구 내역</p>
                 <div className="flex flex-col gap-1 font-body-16r">
                     {billingHistory.map((billing) => (
-                        <div key={billing.date} className="grid grid-cols-[1fr_auto_auto] items-start gap-4">
-                            <span>{billing.date}</span>
-                            <span>{billing.amount}</span>
+                        <div key={billing.date} className="flex items-start justify-between">
+                            <span className="w-[107px] shrink-0 desktop:w-[138px]">{billing.date}</span>
+                            <span className="shrink-0 whitespace-nowrap">{billing.amount}</span>
                             <button
                                 type="button"
-                                className="font-body-14r underline underline-offset-2 transition-colors hover:text-text-primary"
+                                className="shrink-0 whitespace-nowrap font-body-14r underline underline-offset-2 transition-colors hover:text-text-primary"
                             >
                                 보기
                             </button>
                         </div>
                     ))}
                 </div>
-            </div>
+            </PageContent>
 
             <SectionLine />
 
-            <div className="flex flex-col gap-1">
+            <PageContent className="flex flex-col gap-1">
                 <div className="flex items-center justify-between gap-4">
                     <h2 className="font-body-16sb text-text-primary">플랜 취소</h2>
                     <button
@@ -91,7 +93,7 @@ export default function PlanManagementSection() {
                 <p className="truncate font-caption-12r text-text-secondary">
                     취소 후에도 만료일까지 이용 가능합니다
                 </p>
-            </div>
-        </PageContent>
+            </PageContent>
+        </div>
     )
 }
