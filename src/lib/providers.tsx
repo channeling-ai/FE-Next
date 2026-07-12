@@ -2,6 +2,7 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useState } from 'react'
+import AuthInitializer from '@/components/auth/AuthInitializer'
 
 export function Providers({ children }: { children: React.ReactNode }) {
     const [queryClient] = useState(
@@ -18,6 +19,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
     return (
         <QueryClientProvider client={queryClient}>
+            <AuthInitializer />
             {children}
             {/* 개발 시에만 쓴다면 주석 해제하여 사용. 지금은 거슬리므로 끔. */}
             {/* {process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />} */}
