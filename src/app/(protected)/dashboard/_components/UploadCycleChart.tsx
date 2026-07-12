@@ -43,7 +43,7 @@ const chartData: Record<Period, ChartPoint[]> = {
 
 const metricOffsets: Record<Metric, number> = {
     '채널 성장': 0,
-    알고리즘: -5,
+    '알고리즘': -5,
     '시청 몰입': 4,
     '반응 밀도': 1,
     '유입 활력': -2,
@@ -101,7 +101,7 @@ export default function UploadCycleChart() {
                                 key={metric}
                                 type="button"
                                 onClick={() => setActiveMetric(metric)}
-                                className={`shrink-0 border-b-2 px-2 py-2 font-body-14m transition-colors ${activeMetric === metric ? 'border-border-active text-text-primary' : 'border-transparent text-text-secondary hover:text-text-primary'}`}
+                                className={`shrink-0 border-b-2 px-2 py-2 font-body-16sb transition-colors ${activeMetric === metric ? 'border-border-active text-text-primary' : 'border-transparent text-text-secondary hover:text-text-primary'}`}
                             >
                                 {metric}
                             </button>

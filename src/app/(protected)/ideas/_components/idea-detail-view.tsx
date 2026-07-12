@@ -31,18 +31,18 @@ export default function IdeaDetailView({ onBack }: IdeaDetailViewProps) {
                 <div className="flex flex-col gap-2">
                     <div className="font-title-18sb text-text-primary">코케트(coquette) 패션 인사</div>
                     <div className="flex items-start justify-start gap-1 flex-wrap">
-                        <p className="px-2 py-1 rounded-[10px] bg-text-brand/8 text-text-brand font-body-16m whitespace-nowrap">
+                        <p className="px-2 py-1 rounded-[10px] bg-text-brand/8 text-text-brand font-caption-12m whitespace-nowrap">
                             직장인브이로그직장인브이로그
                         </p>
-                        <p className="px-2 py-1 rounded-[10px] bg-text-brand/8 text-text-brand font-body-16m whitespace-nowrap">
+                        <p className="px-2 py-1 rounded-[10px] bg-text-brand/8 text-text-brand font-caption-12m whitespace-nowrap">
                             직장인브이로그
                         </p>
-                        <p className="px-2 py-1 rounded-[10px] bg-text-brand/8 text-text-brand font-body-16m whitespace-nowrap">
+                        <p className="px-2 py-1 rounded-[10px] bg-text-brand/8 text-text-brand font-caption-12m whitespace-nowrap">
                             직장인브이로그
                         </p>
                     </div>
                 </div>
-                <div className="font-caption-14r text-text-secondary">
+                <div className="font-body-14r text-text-secondary">
                     가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가가
                 </div>
             </div>

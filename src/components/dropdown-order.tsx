@@ -48,7 +48,7 @@ export default function DropdownOrder({ onChange }: DropdownOrderProps) {
                 className="flex items-center gap-1 py-2 pl-4 pr-3 bg-bg-1 rounded-[20px] cursor-pointer relative z-20"
                 onClick={handleDropdownClick}
             >
-                <span className="font-body-14m text-text-primary">{selectedOption}</span>
+                <span className="font-body-12m text-text-primary">{selectedOption}</span>
 
                 <Dropdown className={`${isDropdownOpen ? 'scale-y-[-1]' : ''} text-text-secondary`} />
             </button>
@@ -59,7 +59,7 @@ export default function DropdownOrder({ onChange }: DropdownOrderProps) {
                         <button
                             key={option}
                             type="button"
-                            className="flex flex-col justify-center items-start px-4 py-3 gap-2 bg-bg-2 hover:bg-bg-1 font-body-14m cursor-pointer first:rounded-t-[20px] last:rounded-b-[20px]"
+                            className="flex flex-col justify-center items-start px-4 py-3 gap-2 bg-bg-2 hover:bg-bg-1 font-body-14m desktop:!text-[14px] cursor-pointer first:rounded-t-[20px] last:rounded-b-[20px]"
                             onClick={() => handleOptionClick(option)}
                         >
                             {option}
