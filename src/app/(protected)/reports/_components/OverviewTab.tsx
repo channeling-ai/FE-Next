@@ -59,7 +59,7 @@ export default function OverviewTab() {
             <section id="comments" className="flex flex-col gap-2">
                 <p className="font-body-18sb text-text-primary">댓글 반응</p>
                 <div className="flex flex-col gap-8 p-5 rounded-[20px] bg-bg-1">
-                    <div className="flex gap-6">
+                    <div className="flex gap-6 flex-col tablet:flex-row">
                         <CommentDonutChart totalComment="8천" data={commentData} />
                         <div className="flex flex-col gap-4 min-w-0 flex-1">
                             <CommentTab />

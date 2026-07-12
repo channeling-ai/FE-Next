@@ -22,7 +22,7 @@ export default function CommentDonutChart({ totalComment, data }: CommentDonutCh
         // relative: 중앙 텍스트를 absolute로 배치하기 위한 기준
         // size-88: 가로·세로 크기를 모두 22rem으로 설정
         // shrink-0: flex 부모 안에서 차트 크기가 줄어들지 않게 설정
-        <div className="relative size-88 shrink-0">
+        <div className="relative mx-auto aspect-square w-full max-w-88">
             {/* 부모 크기에 맞춰 차트를 반응형으로 렌더링 */}
             <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
