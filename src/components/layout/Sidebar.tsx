@@ -160,7 +160,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                         onNavigate={onClose}
                     />
                     <div
-                        className={`group/profile relative flex w-full flex-col overflow-hidden rounded-lg p-2 transition-[max-height,gap,background-color] duration-300 hover:bg-bg-2 ${pathname === '/settings' ? 'bg-bg-2' : 'bg-transparent'} ${isDesktopCollapsed ? 'desktop:max-h-10 desktop:gap-0' : 'max-h-[109px] gap-2'}`}
+                        className={`group/profile relative flex w-full flex-col gap-2 overflow-hidden rounded-lg p-2 transition-[max-height,background-color] duration-300 hover:bg-bg-2 ${pathname === '/settings' ? 'bg-bg-2' : 'bg-transparent'} ${isDesktopCollapsed ? 'desktop:max-h-10' : 'max-h-[109px]'}`}
                     >
                         <Link
                             href="/settings"

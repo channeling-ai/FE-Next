@@ -6,7 +6,6 @@ interface HeaderProps extends Omit<ComponentPropsWithoutRef<'header'>, 'title'> 
     className?: string
     leading?: ReactNode
     leadingClassName?: string
-    showDivider?: boolean
     title: string
     trailing?: ReactNode
 }
@@ -14,8 +13,9 @@ interface HeaderProps extends Omit<ComponentPropsWithoutRef<'header'>, 'title'> 
 /**
  * 공통 Header 컴포넌트
  *
- * - 모든 보호된 페이지(protected)에서 공통으로 사용
+ * - 화면 상단 공통 header로 사용
  * - 구조: [leading] [title] ——————— [trailing]
+ * - spacing은 Figma header design system 기준을 따른다.
  *
  * @example 1
  * // 기본 (타이틀만)
@@ -34,7 +34,6 @@ export default function Header({
     className = '',
     leading,
     leadingClassName = '',
-    showDivider = true,
     title,
     trailing,
     ...props
