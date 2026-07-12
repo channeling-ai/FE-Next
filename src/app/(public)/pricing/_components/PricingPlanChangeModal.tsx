@@ -7,6 +7,7 @@ type PricingPlanChangeModalVariant = 'downgrade' | 'upgrade'
 interface PricingPlanChangeModalProps {
     isOpen: boolean
     onClose: () => void
+    onConfirm?: () => void
     variant: PricingPlanChangeModalVariant
 }
 
