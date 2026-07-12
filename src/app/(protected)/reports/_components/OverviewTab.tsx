@@ -1,7 +1,16 @@
 import Comment from './comment'
+import CommentDonutChart from './comment-doughnut-chart'
+import CommentTab from './comment-tab'
 import EvaluationCard from './evaluation-card'
 import SummaryComment from './summary-comment'
 import SummaryCard from './SummaryCard'
+
+const commentData = [
+    { name: '긍정', value: 30, color: '#4ADE80' },
+    { name: '부정', value: 20, color: '#E0001B' },
+    { name: '중립', value: 25, color: '#36363B' },
+    { name: '조언', value: 25, color: '#60A5FA' },
+]
 
 export default function OverviewTab() {
     return (
@@ -50,9 +59,15 @@ export default function OverviewTab() {
             <section id="comments" className="flex flex-col gap-2">
                 <p className="font-body-18sb text-text-primary">댓글 반응</p>
                 <div className="flex flex-col gap-8 p-5 rounded-[20px] bg-bg-1">
-                    <div className="flex gap-6"></div>
+                    <div className="flex gap-6">
+                        <CommentDonutChart totalComment="8천" data={commentData} />
+                        <div className="flex flex-col gap-4 min-w-0 flex-1">
+                            <CommentTab />
+                        </div>
+                    </div>
                     <div className="flex flex-col">
                         <p className="font-body-14m text-text-secondary">주요 댓글</p>
+
                         <div className="flex flex-col gap-2">
                             <Comment
                                 comment="영상 정말 잘 봤습니다! 평소 궁금했던 주제인데 설명이 깔끔해서 단번에 이해됐어요. 앞으로도 유익한 영상 많이 올려주세요. 항~상 응원하며 다음 영상도 즐겁게 기다리고 있겠습니다!"
