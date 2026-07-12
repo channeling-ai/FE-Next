@@ -182,15 +182,15 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                             </span>
                         </Link>
 
-                        <button
-                            type="button"
+                        <Link
+                            href="/pricing"
+                            onClick={onClose}
                             aria-hidden={isDesktopCollapsed}
-                            disabled={isDesktopCollapsed}
                             className={`flex max-h-10 w-36 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-gray-30 px-0.5 py-2 font-body-14m text-text-primary transition-[opacity,background-color] duration-300 hover:bg-gray-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active desktop:w-full desktop:text-[16px] ${isDesktopCollapsed ? 'pointer-events-none desktop:opacity-0' : 'opacity-100'}`}
                             tabIndex={isDesktopCollapsed ? -1 : 0}
                         >
                             플랜 업그레이드
-                        </button>
+                        </Link>
 
                         {isDesktopCollapsed && (
                             <span

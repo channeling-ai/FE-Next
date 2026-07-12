@@ -1,8 +1,8 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ComponentPropsWithoutRef, ReactNode } from 'react'
 
-interface HeaderProps {
+interface HeaderProps extends Omit<ComponentPropsWithoutRef<'header'>, 'title'> {
     className?: string
     leading?: ReactNode
     leadingClassName?: string
@@ -37,12 +37,14 @@ export default function Header({
     showDivider = true,
     title,
     trailing,
+    ...props
 }: HeaderProps) {
     return (
         <header
             className={`flex min-h-14 w-full items-center justify-between bg-bg-0 py-3 ${showDivider ? 'border-b border-border-default' : ''} ${className}`}
+            {...props}
         >
-            <div className="flex items-center gap-2 desktop:gap-8">
+            <div className="flex items-center gap-2">
                 {leading && <div className={`flex shrink-0 items-center ${leadingClassName}`}>{leading}</div>}
                 <span className="font-title-18sb text-text-primary whitespace-nowrap">{title}</span>
             </div>

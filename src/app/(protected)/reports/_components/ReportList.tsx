@@ -81,8 +81,8 @@ export default function ReportList() {
             {activeTab === 'recommend' && (
                 <div className="flex flex-col pt-4 gap-4">
                     <div className="flex flex-col gap-1">
-                        <div className="font-title-20sb text-text-primary">나랑 비슷한 채널의 인기 영상</div>
-                        <div className="font-body-16r text-text-secondary">
+                        <div className="font-title-18sb text-text-primary">나랑 비슷한 채널의 인기 영상</div>
+                        <div className="font-body-14r text-text-secondary">
                             인기있는 유사 채널 리포트로 성공 전략을 벤치마킹하세요
                         </div>
                     </div>
@@ -127,8 +127,8 @@ export default function ReportList() {
                     </div>
 
                     <div className="flex flex-col gap-1">
-                        <div className="font-title-20sb text-text-primary">내 분야 대형 채널의 최신 트렌드</div>
-                        <div className="font-body-16r text-text-secondary">
+                        <div className="font-title-18sb text-text-primary">내 분야 대형 채널의 최신 트렌드</div>
+                        <div className="font-body-14r text-text-secondary">
                             카테고리 리더가 다루는 최신 주제로 시장의 흐름을 파악하고 기획에 참고해보세요
                         </div>
                     </div>
