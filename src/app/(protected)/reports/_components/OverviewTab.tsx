@@ -1,9 +1,9 @@
-import Comment from './comment'
-import CommentDonutChart from './comment-doughnut-chart'
-import CommentTab from './comment-tab'
-import EvaluationCard from './evaluation-card'
-import SummaryComment from './summary-comment'
+import CommentDonutChart from './CommentDoughnutChart'
+import CommentTab from './CommentTab'
+import EvaluationCard from './EvaluationCard'
+import SummaryComment from './SummaryComment'
 import SummaryCard from './SummaryCard'
+import Comment from './Comment'
 
 const commentData = [
     { name: '긍정', value: 30, color: '#4ADE80' },
@@ -19,17 +19,17 @@ export default function OverviewTab() {
                 <p className="font-body-18sb text-text-primary">리포트 요약</p>
                 <SummaryCard
                     status="긍정"
-                    summarytitle="진정성 있는 콘텐츠"
+                    summaryTitle="진정성 있는 콘텐츠"
                     details="시청자들의 높은 공감을 이끌어냈으며, 특히 긍정 댓글 비율 60%를 기록했어요."
                 />
                 <SummaryCard
                     status="양호"
-                    summarytitle="2분대 이탈 발생"
+                    summaryTitle="2분대 이탈 발생"
                     details="2분 6초~2분 55초 구간에서 이탈이 집중되고 있어요. 편집 템포 조절이 필요해요."
                 />
                 <SummaryCard
                     status="최적화 원활"
-                    summarytitle="SEO 점수 65점"
+                    summaryTitle="SEO 점수 65점"
                     details="제목과 해시태그 개선을 통해 검색 유입률을 더 높일 수 있어요."
                 />
             </section>
