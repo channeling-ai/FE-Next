@@ -74,6 +74,7 @@ export default function OverviewTab() {
                                 profileImageUrl=""
                                 nickname="닉네임"
                                 time="n"
+                                like={999}
                             />
                             <div className="w-full bg-border-default h-px"></div>
                             <Comment
@@ -81,6 +82,7 @@ export default function OverviewTab() {
                                 profileImageUrl=""
                                 nickname="닉네임"
                                 time="n"
+                                like={11}
                             />
                             <div className="w-full bg-border-default h-px"></div>
                             <Comment
@@ -88,6 +90,7 @@ export default function OverviewTab() {
                                 profileImageUrl=""
                                 nickname="닉네임"
                                 time="n"
+                                like={297}
                             />
                         </div>
                     </div>
