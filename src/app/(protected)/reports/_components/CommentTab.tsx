@@ -72,7 +72,7 @@ export default function CommentTab() {
     return (
         <div className="w-full flex flex-col gap-8">
             {/* 탭 버튼 */}
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-row tablet:flex-col gap-1">
                 {commentTabs.map((tab) => {
                     const isActive = activeTab === tab.id
 
@@ -85,20 +85,20 @@ export default function CommentTab() {
                                 isActive ? tab.activeClassName : 'border-transparent bg-transparent hover:bg-white/5'
                             }`}
                         >
-                            <div className="flex items-center gap-2.5">
+                            <div className="flex flex-col tablet:flex-row items-center gap-2 tablet:gap-2.5">
                                 <div className={`size-2 rounded-full ${tab.dotClassName}`} />
-                                <div className="flex items-center gap-2">
+                                <div className="flex flex-col tablet:flex-row items-center gap-2">
                                     <span
                                         className={
                                             isActive
-                                                ? `font-body-16m ${tab.textClassName}`
-                                                : 'font-body-16m text-text-secondary'
+                                                ? `font-body-14m ${tab.textClassName}`
+                                                : 'font-body-14m text-text-secondary'
                                         }
                                     >
                                         {tab.label}
                                     </span>
 
-                                    <span className="font-body-16m text-text-secondary">{tab.percentage}%</span>
+                                    <span className="font-body-14m text-text-secondary">{tab.percentage}%</span>
                                 </div>
                             </div>
                         </button>
@@ -109,12 +109,12 @@ export default function CommentTab() {
             {/* 선택된 탭 내용 */}
             <div className="w-full flex flex-col gap-1">
                 <div className="flex items-center">
-                    <p className={`font-body-16m ${selectedTab.textClassName}`}>{selectedTab.title}</p>
+                    <p className={`font-body-14m ${selectedTab.textClassName}`}>{selectedTab.title}</p>
 
-                    <p className="font-body-16r text-text-secondary">({selectedTab.count}개)</p>
+                    <p className="font-body-14r text-text-secondary">({selectedTab.count}개)</p>
                 </div>
 
-                <p className="font-body-16r text-text-primary">{selectedTab.description}</p>
+                <p className="font-body-14r text-text-primary">{selectedTab.description}</p>
             </div>
         </div>
     )

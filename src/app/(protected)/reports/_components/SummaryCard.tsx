@@ -24,7 +24,7 @@ export default function SummaryCard({ status, summaryTitle, details }: SummaryCa
         <div className="p-5 w-full bg-bg-1 flex flex-col gap-2 rounded-[20px]">
             <StatusBadge status={status} />
             <h1 className="font-body-16sb text-text-primary">{summaryTitle}</h1>
-            <p className="font-caption-14r text-text-secondary">{details}</p>
+            <p className="font-caption-14r desktop:font-[16px] text-text-secondary">{details}</p>
         </div>
     )
 }

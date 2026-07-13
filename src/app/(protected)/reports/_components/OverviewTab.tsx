@@ -16,7 +16,7 @@ export default function OverviewTab() {
     return (
         <div className="flex flex-col pt-8 gap-8">
             <section id="report-summary" className="flex flex-col gap-2">
-                <p className="font-body-18sb text-text-primary">리포트 요약</p>
+                <p className="font-body-16sb text-text-primary">리포트 요약</p>
                 <SummaryCard
                     status="긍정"
                     summaryTitle="진정성 있는 콘텐츠"
@@ -34,7 +34,7 @@ export default function OverviewTab() {
                 />
             </section>
             <section id="video-evaluation" className="flex flex-col gap-2">
-                <p className="font-body-18sb text-text-primary">영상 평가</p>
+                <p className="font-body-16sb text-text-primary">영상 평가</p>
                 <div className="grid grid-cols-2 tablet:grid-cols-3 gap-2">
                     <EvaluationCard type="view" score={120} average={900} />
                     <EvaluationCard type="likes" score={120} average={900} />
@@ -45,7 +45,7 @@ export default function OverviewTab() {
                 </div>
             </section>
             <section id="video-summary" className="flex flex-col gap-2">
-                <p className="font-body-18sb text-text-primary">영상 요약</p>
+                <p className="font-body-16sb text-text-primary">영상 요약</p>
                 <div className="flex flex-col gap-4 p-5 rounded-[20px] bg-bg-1">
                     <SummaryComment
                         timestamp="00:00"
@@ -57,7 +57,7 @@ export default function OverviewTab() {
                 </div>
             </section>
             <section id="comments" className="flex flex-col gap-2">
-                <p className="font-body-18sb text-text-primary">댓글 반응</p>
+                <p className="font-body-16sb text-text-primary">댓글 반응</p>
                 <div className="flex flex-col gap-8 p-5 rounded-[20px] bg-bg-1">
                     <div className="flex gap-6 flex-col tablet:flex-row">
                         <CommentDonutChart totalComment="8천" data={commentData} />

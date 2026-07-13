@@ -31,7 +31,7 @@ export default function EvaluationCard({ type, score, average }: EvaluationCardP
                 <p className="font-title-30r text-text-secondary">{CardUnit[type]}</p>
             </div>
             <div className="flex gap-2">
-                <p className="font-caption-12m text-text-tertiary">평균</p>
+                <p className="font-caption-12r text-text-tertiary">평균</p>
                 <p className="font-caption-12m text-text-tertiary">
                     {average}
                     {CardUnit[type]}
