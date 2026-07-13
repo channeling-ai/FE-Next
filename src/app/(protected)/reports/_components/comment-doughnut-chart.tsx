@@ -65,7 +65,7 @@ export default function CommentDonutChart({ totalComment, data }: CommentDonutCh
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
                 <span className="font-body-14m text-text-tertiary">총 댓글</span>
 
-                <strong className="font-title-32r text-text-primary">{totalComment}</strong>
+                <strong className="font-title-30r text-text-primary">{totalComment}</strong>
             </div>
         </div>
     )

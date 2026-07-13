@@ -37,7 +37,7 @@ export default function Header({
     leadingClassName = '',
     title,
     trailing,
-    showDivider,
+    showDivider = false,
     ...props
 }: HeaderProps) {
     return (
