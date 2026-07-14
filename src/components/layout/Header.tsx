@@ -8,6 +8,7 @@ interface HeaderProps extends Omit<ComponentPropsWithoutRef<'header'>, 'title'> 
     leadingClassName?: string
     title: string
     trailing?: ReactNode
+    showDivider?: boolean
 }
 
 /**
@@ -36,6 +37,7 @@ export default function Header({
     leadingClassName = '',
     title,
     trailing,
+    showDivider,
     ...props
 }: HeaderProps) {
     return (

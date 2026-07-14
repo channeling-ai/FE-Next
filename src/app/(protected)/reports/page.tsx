@@ -3,7 +3,7 @@
 import Header from '@/components/layout/Header'
 import MyVideoList from './_components/MyVideoList'
 import Line from '@/components/Line'
-import ReportList from './_components/ReportList'
+import VideoReport from './_components/VideoReport'
 import PageContent from '@/components/layout/PageContent'
 import Scroll from '@/components/Scroll'
 
@@ -20,7 +20,7 @@ export default function ReportsPage() {
                 <PageContent className="flex flex-col gap-4 pb-6 pt-2">
                     <MyVideoList />
                     <Line variant="thick" />
-                    <ReportList />
+                    <VideoReport />
                 </PageContent>
             </Scroll>
         </div>
