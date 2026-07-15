@@ -20,17 +20,13 @@ const usage = [
 ]
 
 function SectionLine() {
-    return (
-        <PageContent>
-            <div className="h-px w-full bg-border-default" />
-        </PageContent>
-    )
+    return <div className="h-px w-full bg-border-default" />
 }
 
 export default function PlanManagementSection({ onViewBilling, onCancelPlan }: PlanManagementSectionProps) {
     return (
         <div className="flex flex-col gap-4">
-            <PageContent className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
                 <p className="font-caption-12m text-text-secondary">플랜 관리</p>
                 <div className="flex flex-col gap-1">
                     <div className="flex items-center justify-between gap-4">
@@ -46,11 +42,11 @@ export default function PlanManagementSection({ onViewBilling, onCancelPlan }: P
                         2026년 7월 2일에 자동으로 갱신됩니다
                     </p>
                 </div>
-            </PageContent>
+            </div>
 
             <SectionLine />
 
-            <PageContent className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2">
                 <p className="font-caption-12m text-text-secondary">사용량</p>
                 {usage.map((item) => (
                     <div key={item.label} className="flex items-center justify-between gap-4 font-body-16sb">
@@ -61,11 +57,11 @@ export default function PlanManagementSection({ onViewBilling, onCancelPlan }: P
                         </span>
                     </div>
                 ))}
-            </PageContent>
+            </div>
 
             <SectionLine />
 
-            <PageContent className="flex flex-col gap-2 text-text-secondary">
+            <div className="flex flex-col gap-2 text-text-secondary">
                 <p className="font-caption-12m">청구 내역</p>
                 <div className="flex flex-col gap-1 font-body-16r">
                     {billingHistory.map((billing) => (
@@ -84,11 +80,11 @@ ${billing.date} 청구 내역 보기`}
                         </div>
                     ))}
                 </div>
-            </PageContent>
+            </div>
 
             <SectionLine />
 
-            <PageContent className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1">
                 <div className="flex items-center justify-between gap-4">
                     <h2 className="font-body-16sb text-text-primary">플랜 취소</h2>
                     <button
@@ -101,7 +97,7 @@ ${billing.date} 청구 내역 보기`}
                     </button>
                 </div>
                 <p className="truncate font-caption-12r text-text-secondary">취소 후에도 만료일까지 이용 가능합니다</p>
-            </PageContent>
+            </div>
         </div>
     )
 }
