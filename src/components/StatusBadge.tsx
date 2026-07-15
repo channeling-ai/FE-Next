@@ -21,9 +21,9 @@ const statusStyle = {
   우수: "bg-green-op8 text-green",
   긍정: "bg-green-op8 text-green",
   "최적화 원활": "bg-green-op8 text-green",
-  보통: "bg-bg-2 text-primary",
-  중립: "bg-bg-2 text-primary",
-  양호: "bg-bg-2 text-primary",
+  보통: "bg-bg-2 text-text-secondary",
+  중립: "bg-bg-2 text-text-secondary",
+  양호: "bg-bg-2 text-text-secondary",
   주의: "bg-amber-op8 text-amber",
   "개선 필요": "bg-amber-op8 text-amber",
   "최적화 필요": "bg-amber-op8 text-amber",
@@ -34,7 +34,7 @@ const statusStyle = {
 export default function StatusBadge({ status }: StatusBadgeProps) {
   return (
     <div
-      className={`inline-flex px-1 py-0.5 justify-center items-center rounded-lg gap-2 font-body-14m ${statusStyle[status]}`}
+      className={`inline-flex items-center justify-center rounded-lg px-1 py-0.5 font-body-14m ${statusStyle[status]}`}
     >
       {status}
     </div>
