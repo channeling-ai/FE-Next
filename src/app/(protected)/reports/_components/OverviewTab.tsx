@@ -71,7 +71,7 @@ export default function OverviewTab() {
                         <div className="flex flex-col gap-2">
                             <Comment
                                 comment="영상 정말 잘 봤습니다! 평소 궁금했던 주제인데 설명이 깔끔해서 단번에 이해됐어요. 앞으로도 유익한 영상 많이 올려주세요. 항~상 응원하며 다음 영상도 즐겁게 기다리고 있겠습니다!"
-                                profileImageUrl=""
+                                profileImageUrl="12222"
                                 nickname="닉네임"
                                 time="n"
                                 like={999}
@@ -79,7 +79,7 @@ export default function OverviewTab() {
                             <div className="w-full bg-border-default h-px"></div>
                             <Comment
                                 comment="영상 정말 잘 봤습니다! 평소 궁금했던 주제인데 설명이 깔끔해서 단번에 이해됐어요. 앞으로도 유익한 영상 많이 올려주세요. 항~상 응원하며 다음 영상도 즐겁게 기다리고 있겠습니다!"
-                                profileImageUrl=""
+                                profileImageUrl="21222"
                                 nickname="닉네임"
                                 time="n"
                                 like={11}
@@ -87,7 +87,7 @@ export default function OverviewTab() {
                             <div className="w-full bg-border-default h-px"></div>
                             <Comment
                                 comment="영상 정말 잘 봤습니다! 평소 궁금했던 주제인데 설명이 깔끔해서 단번에 이해됐어요. 앞으로도 유익한 영상 많이 올려주세요. 항~상 응원하며 다음 영상도 즐겁게 기다리고 있겠습니다!"
-                                profileImageUrl=""
+                                profileImageUrl="1222"
                                 nickname="닉네임"
                                 time="n"
                                 like={297}
