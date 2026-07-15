@@ -36,7 +36,6 @@ export default function SettingsPage() {
                 <Header
                     title="설정"
                     leadingClassName="desktop:hidden"
-                    showDivider={false}
                     leading={
                         <button
                             type="button"

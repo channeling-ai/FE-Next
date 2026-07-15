@@ -160,7 +160,7 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                         onNavigate={onClose}
                     />
                     <div
-                        className={`group/profile relative flex w-full flex-col overflow-hidden rounded-lg p-2 transition-[max-height,gap,background-color] duration-300 hover:bg-bg-2 ${pathname === '/settings' ? 'bg-bg-2' : 'bg-transparent'} ${isDesktopCollapsed ? 'desktop:max-h-10 desktop:gap-0' : 'max-h-[109px] gap-2'}`}
+                        className={`group/profile relative flex w-full flex-col gap-2 overflow-hidden rounded-lg p-2 transition-[max-height,background-color] duration-300 hover:bg-bg-2 ${pathname === '/settings' ? 'bg-bg-2' : 'bg-transparent'} ${isDesktopCollapsed ? 'desktop:max-h-10' : 'max-h-[109px]'}`}
                     >
                         <Link
                             href="/settings"
@@ -182,15 +182,15 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                             </span>
                         </Link>
 
-                        <button
-                            type="button"
+                        <Link
+                            href="/pricing"
+                            onClick={onClose}
                             aria-hidden={isDesktopCollapsed}
-                            disabled={isDesktopCollapsed}
                             className={`flex max-h-10 w-36 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-gray-30 px-0.5 py-2 font-body-14m text-text-primary transition-[opacity,background-color] duration-300 hover:bg-gray-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active desktop:w-full desktop:text-[16px] ${isDesktopCollapsed ? 'pointer-events-none desktop:opacity-0' : 'opacity-100'}`}
                             tabIndex={isDesktopCollapsed ? -1 : 0}
                         >
                             플랜 업그레이드
-                        </button>
+                        </Link>
 
                         {isDesktopCollapsed && (
                             <span

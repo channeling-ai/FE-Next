@@ -24,7 +24,6 @@ export default function IdeasPage() {
                 <Header
                     title="트렌드 · 아이디어"
                     leadingClassName="desktop:hidden"
-                    showDivider={false}
                     leading={
                         <button
                             type="button"
