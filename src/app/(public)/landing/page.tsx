@@ -7,7 +7,6 @@ import SearchIcon from '@/assets/icons/search.svg'
 import CardSearchIcon from '@/assets/icons/card_search.svg'
 import CardLightbulbIcon from '@/assets/icons/card_lightbulb.svg'
 import CardCommentIcon from '@/assets/icons/card_comment.svg'
-import { Footer } from '@/components/Footer'
 import ArrowRightIcon from '@/assets/icons/arrow_right.svg'
 import FaqArrowIcon from '@/assets/icons/faq_arrow.svg'
 import GoogleIcon from '@/assets/icons/google.svg'
@@ -398,8 +397,6 @@ export default function LandingPage() {
                 </section>
             </main>
 
-            {/* 하단 푸터 */}
-            <Footer isFixed={false} />
         </div>
     )
 }
