@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Tab from './tab'
+import Tab from './Tab'
 import KeywordBox from './keyword-box'
 import Infoicon from '@/assets/icons/infoIcon.svg'
 
