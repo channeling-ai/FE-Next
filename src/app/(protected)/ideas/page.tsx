@@ -8,7 +8,7 @@ import Scroll from '@/components/Scroll'
 import { useLayoutStore } from '@/stores/layoutStore'
 import ContentIdeaGeneration from './_components/ContentIdeaGeneration'
 import SavedIdea from './_components/SavedIdea'
-import TrendKeyword from './_components/trend-keyword'
+import TrendKeyword from './_components/TrendKeyword'
 
 /**
  * 아이디어 페이지 (/ideas)
