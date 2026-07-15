@@ -11,11 +11,11 @@ import ReportList from './ReportList'
 export default function VideoReport() {
     const [activeTab, setActiveTab] = useState<'myreport' | 'recommend'>('myreport')
     const [activeChip, setActiveChip] = useState<'all' | 'longform' | 'shortform'>('all')
-    const [IsOpenReportList, setIsOpenReportList] = useState(false)
+    const [isOpenReportList, setIsOpenReportList] = useState(false)
 
     const [order, setOrder] = useState('최신순')
 
-    if (IsOpenReportList) return <ReportList onBack={() => setIsOpenReportList(false)} />
+    if (isOpenReportList) return <ReportList totalCount={9} onBack={() => setIsOpenReportList(false)} />
     return (
         <div>
             <Tab title="내 리포트 내역" onClick={() => setActiveTab('myreport')} isActive={activeTab === 'myreport'} />

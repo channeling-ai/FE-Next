@@ -1,6 +1,5 @@
 import ArrowIcon from '@/assets/icons/arrow.svg'
 import X from '@/assets/icons/X.svg'
-import { useState } from 'react'
 
 interface ReportBoxProps {
     generatedDate: string

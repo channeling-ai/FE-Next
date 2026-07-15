@@ -6,13 +6,12 @@ import PageContent from '@/components/layout/PageContent'
 import ReportBox from './ReportBox'
 
 interface ReportListProps {
+    totalCount: number
     onBack: () => void
 }
 
-export default function ReportList({ onBack }: ReportListProps) {
-    const [activeChip, setActiveChip] = useState<'all' | 'longform' | 'shortform'>('all')
-    const [isDelete, SetIsDelete] = useState(false)
-    const [order, setOrder] = useState('최신순')
+export default function ReportList({ totalCount, onBack }: ReportListProps) {
+    const [isDelete, setIsDelete] = useState(false)
 
     return (
         <div className="absolute inset-0 z-30 overflow-y-auto bg-bg-0">
@@ -31,12 +30,12 @@ export default function ReportList({ onBack }: ReportListProps) {
                         <h1 className="font-title-18sb text-text-primary">리포트 상세 목록</h1>
                     </div>
                     <div className="flex gap-2">
-                        <Bin onClick={() => SetIsDelete((prev) => !prev)} />
+                        <Bin onClick={() => setIsDelete((prev) => !prev)} />
                         <Plus />
                     </div>
                 </header>
                 <div className="pt-2 flex">
-                    <p className="font-body-16m text-text-primary">n</p>
+                    <p className="font-body-16m text-text-primary">{totalCount}</p>
                     <p className="font-body-16m text-text-secondary">개의 리포트</p>
                 </div>
                 {/* 영상 정보  */}
