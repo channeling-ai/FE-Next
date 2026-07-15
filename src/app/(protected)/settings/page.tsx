@@ -45,7 +45,7 @@ export default function SettingsPage() {
                     }
                 />
                 <section className="flex flex-col gap-8 pb-8">
-                    <PageContent className="flex flex-col gap-[22px] pt-[17px] desktop:pt-0">
+                    <PageContent className="flex flex-col gap-5.5 pt-4.25 desktop:pt-0">
                         <SettingsProfileImage channelName={channel.name} />
 
                         <div className="flex w-full flex-col gap-2">
@@ -78,9 +78,7 @@ export default function SettingsPage() {
                     <SectionDivider />
 
                     <PageContent className="flex flex-col gap-2">
-                        <p className="font-caption-12m text-text-secondary">
-                            이메일 알림
-                        </p>
+                        <p className="font-caption-12m text-text-secondary">이메일 알림</p>
                         <div className="flex w-full flex-col gap-4">
                             <NotificationRow
                                 checked={emailNotifications.marketing}
@@ -104,15 +102,8 @@ export default function SettingsPage() {
                     <SectionDivider />
 
                     <PageContent className="flex flex-col gap-4">
-                        <ActionRow
-                            label={`${channel.loginId}로 로그인 되어 있습니다`}
-                            buttonLabel="로그아웃"
-                        />
-                        <ActionRow
-                            label="계정 삭제하기"
-                            buttonLabel="계정 삭제"
-                            danger
-                        />
+                        <ActionRow label={`${channel.loginId}로 로그인 되어 있습니다`} buttonLabel="로그아웃" />
+                        <ActionRow label="계정 삭제하기" buttonLabel="계정 삭제" danger />
                     </PageContent>
                 </section>
             </Scroll>
