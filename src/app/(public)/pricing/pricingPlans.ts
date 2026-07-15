@@ -44,7 +44,7 @@ export const plans: PricingPlan[] = [
             { label: '아이디어 생성', value: '월 150회' },
             { label: '분석 수준', value: '최고 모델' },
             { label: '데이터 보관', value: '무제한' },
-            { label: '추가 기능', value: '이메일 리포트 & 실험 기능 얼리 엑세스' },
+            { label: '추가 기능', value: '이메일 리포트 & 실험 기능 얼리 액세스' },
         ],
     },
 ]

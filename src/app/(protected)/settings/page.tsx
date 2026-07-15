@@ -30,23 +30,20 @@ export default function SettingsPage() {
     return (
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
             <Scroll as="main" className="flex-1">
-                <PageContent>
-                    <Header
-                        title="설정"
-                        leadingClassName="desktop:hidden"
-                        showDivider={false}
-                        leading={
-                            <button
-                                type="button"
-                                onClick={openSidebar}
-                                className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary"
-                                aria-label="메뉴 열기"
-                            >
-                                <MenuIcon />
-                            </button>
-                        }
-                    />
-                </PageContent>
+                <Header
+                    title="설정"
+                    leadingClassName="desktop:hidden"
+                    leading={
+                        <button
+                            type="button"
+                            onClick={openSidebar}
+                            className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary"
+                            aria-label="메뉴 열기"
+                        >
+                            <MenuIcon />
+                        </button>
+                    }
+                />
                 <section className="flex flex-col gap-8 pb-8">
                     <PageContent className="flex flex-col gap-[22px] pt-[17px] desktop:pt-0">
                         <SettingsProfileImage channelName={channel.name} />

@@ -77,7 +77,7 @@ export default function PricingPlanCard({
                                     <span className="tablet:hidden desktop:block">{feature.value}</span>
                                     <span className="hidden tablet:block desktop:hidden">
                                         이메일 리포트 &<br />
-                                        실험 기능 얼리 엑세스
+                                        실험 기능 얼리 액세스
                                     </span>
                                 </>
                             ) : (
