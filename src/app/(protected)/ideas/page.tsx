@@ -35,15 +35,15 @@ export default function IdeasPage() {
                         </button>
                     }
                 />
-                <div className="flex flex-col gap-8 pb-16">
-                    <PageContent className="flex flex-col items-center gap-3.5">
+                <PageContent className="flex flex-col gap-8 pb-16">
+                    <div className="flex flex-col items-center gap-4">
                         <TrendKeyword />
                         <Line variant="thin" />
                         <ContentIdeaGeneration />
-                    </PageContent>
+                    </div>
                     <Line variant="thick" />
                     <SavedIdea />
-                </div>
+                </PageContent>
             </Scroll>
         </div>
     )
