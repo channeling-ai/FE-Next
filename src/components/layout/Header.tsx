@@ -1,5 +1,7 @@
 'use client'
 
+import MenuIcon from '@/assets/icons/menu.svg'
+import { useLayoutStore } from '@/stores/layoutStore'
 import { ComponentPropsWithoutRef, ReactNode } from 'react'
 
 interface HeaderProps extends Omit<ComponentPropsWithoutRef<'header'>, 'title'> {
@@ -8,6 +10,7 @@ interface HeaderProps extends Omit<ComponentPropsWithoutRef<'header'>, 'title'> 
     leadingClassName?: string
     title: string
     trailing?: ReactNode
+    showMenu?: boolean
 }
 
 /**
@@ -36,8 +39,13 @@ export default function Header({
     leadingClassName = '',
     title,
     trailing,
+    showMenu = false,
     ...props
 }: HeaderProps) {
+    const openSidebar = useLayoutStore((state) => state.openSidebar)
+
+    const activeLeadingClassName = leadingClassName || (showMenu ? 'desktop:hidden' : '')
+
     return (
         <header
             className={`flex min-h-14 w-full px-4 tablet:px-5 desktop:px-16 items-center justify-between bg-bg-0 py-3 ${className}`}
@@ -45,6 +53,20 @@ export default function Header({
         >
             <div className="flex items-center gap-2">
                 {leading && <div className={`flex shrink-0 items-center ${leadingClassName}`}>{leading}</div>}
+                {showMenu && (
+                    <div className={`flex shrink-0 items-center ${activeLeadingClassName}`}>
+                        {leading || (
+                            <button
+                                type="button"
+                                onClick={openSidebar}
+                                className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary"
+                                aria-label="메뉴 열기"
+                            >
+                                <MenuIcon />
+                            </button>
+                        )}
+                    </div>
+                )}
                 <span className="font-title-18sb text-text-primary whitespace-nowrap">{title}</span>
             </div>
             {trailing && <div className="flex items-center gap-2 shrink-0">{trailing}</div>}

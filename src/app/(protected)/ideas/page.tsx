@@ -1,6 +1,5 @@
 'use client'
 
-import MenuIcon from '@/assets/icons/menu.svg'
 import Line from '@/components/Line'
 import Header from '@/components/layout/Header'
 import PageContent from '@/components/layout/PageContent'
@@ -21,20 +20,7 @@ export default function IdeasPage() {
     return (
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
             <Scroll as="main" className="flex-1">
-                <Header
-                    title="트렌드 · 아이디어"
-                    leadingClassName="desktop:hidden"
-                    leading={
-                        <button
-                            type="button"
-                            onClick={openSidebar}
-                            className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary"
-                            aria-label="메뉴 열기"
-                        >
-                            <MenuIcon />
-                        </button>
-                    }
-                />
+                <Header title="트렌드 · 아이디어" showMenu={true} />
                 <PageContent className="flex flex-col gap-8 pb-16">
                     <div className="flex flex-col items-center gap-4">
                         <TrendKeyword />
