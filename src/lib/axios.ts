@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { LOCAL_STORAGE_KEY } from '@/constants/key'
+import { authStorage } from '@/lib/auth-storage'
+import { useAuthStore } from '@/stores/authStore'
 
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -11,8 +12,7 @@ const api = axios.create({
 
 // 요청 인터셉터: localStorage의 accessToken을 Authorization 헤더에 자동 첨부
 api.interceptors.request.use((config) => {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY.accessToken)
-    const token = raw ? JSON.parse(raw) : null
+    const token = authStorage.getAccessToken()
     if (token) {
         config.headers.Authorization = `Bearer ${token}`
     }
@@ -25,7 +25,12 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            window.location.href = '/'
+            authStorage.clear()
+            useAuthStore.getState().clearUser()
+
+            if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+                window.location.replace('/')
+            }
         }
         return Promise.reject(error)
     }
