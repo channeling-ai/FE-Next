@@ -9,6 +9,7 @@ interface HeaderProps extends Omit<ComponentPropsWithoutRef<'header'>, 'title'> 
     showDivider?: boolean
     title: string
     trailing?: ReactNode
+    showDivider?: boolean
 }
 
 /**
@@ -38,6 +39,7 @@ export default function Header({
     showDivider = true,
     title,
     trailing,
+    showDivider = false,
     ...props
 }: HeaderProps) {
     return (

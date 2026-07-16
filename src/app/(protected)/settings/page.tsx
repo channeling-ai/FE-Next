@@ -11,9 +11,10 @@ import { useLogout } from '@/hooks/useLogout'
 import ActionRow from './_components/ActionRow'
 import EditableTextField from './_components/EditableTextField'
 import NotificationRow from './_components/NotificationRow'
+import PlanManagementSection from './_components/PlanManagementSection'
 import ProfileField from './_components/ProfileField'
-import SectionDivider from './_components/SectionDivider'
 import SettingsProfileImage from './_components/SettingsProfileImage'
+import Line from '@/components/Line'
 
 const channel = {
     name: 'LeoJ Makeup',
@@ -33,22 +34,23 @@ export default function SettingsPage() {
     return (
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
             <Scroll as="main" className="flex-1">
-                <Header
-                    title="설정"
-                    leadingClassName="desktop:hidden"
-                    leading={
-                        <button
-                            type="button"
-                            onClick={openSidebar}
-                            className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary"
-                            aria-label="메뉴 열기"
-                        >
-                            <MenuIcon />
-                        </button>
-                    }
-                />
-                <section className="flex flex-col gap-8 pb-8">
-                    <PageContent className="flex flex-col gap-[22px] pt-[17px] desktop:pt-0">
+                <PageContent className="flex flex-col gap-8 pb-8">
+                    <Header
+                        title="설정"
+                        leadingClassName="desktop:hidden"
+                        leading={
+                            <button
+                                type="button"
+                                onClick={openSidebar}
+                                className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary"
+                                aria-label="메뉴 열기"
+                            >
+                                <MenuIcon />
+                            </button>
+                        }
+                    />
+
+                    <div className="flex flex-col gap-5.5 pt-4.25 desktop:pt-0">
                         <SettingsProfileImage channelName={channel.name} />
 
                         <div className="flex w-full flex-col gap-2">
@@ -72,14 +74,16 @@ export default function SettingsPage() {
                                 fullWidth
                             />
                         </div>
-                    </PageContent>
+                    </div>
 
-                    <SectionDivider />
+                    <Line variant="thick" />
 
-                    <PageContent className="flex flex-col gap-2">
-                        <p className="font-caption-12m text-text-secondary">
-                            이메일 알림
-                        </p>
+                    <PlanManagementSection />
+
+                    <Line variant="thick" />
+
+                    <div className="flex flex-col gap-2">
+                        <p className="font-caption-12m text-text-secondary">이메일 알림</p>
                         <div className="flex w-full flex-col gap-4">
                             <NotificationRow
                                 checked={emailNotifications.marketing}
@@ -98,24 +102,15 @@ export default function SettingsPage() {
                                 }}
                             />
                         </div>
-                    </PageContent>
+                    </div>
 
-                    <SectionDivider />
+                    <Line variant="thick" />
 
-                    <PageContent className="flex flex-col gap-4">
-                        <ActionRow
-                            label={`${user?.googleEmail ?? channel.email}로 로그인 되어 있습니다`}
-                            buttonLabel={isLoggingOut ? '로그아웃 중' : '로그아웃'}
-                            disabled={isLoggingOut}
-                            onClick={() => void logout()}
-                        />
-                        <ActionRow
-                            label="계정 삭제하기"
-                            buttonLabel="계정 삭제"
-                            danger
-                        />
-                    </PageContent>
-                </section>
+                    <div className="flex flex-col gap-4">
+                        <ActionRow label={`${channel.loginId}로 로그인 되어 있습니다`} buttonLabel="로그아웃" />
+                        <ActionRow label="계정 삭제하기" buttonLabel="계정 삭제" danger />
+                    </div>
+                </PageContent>
             </Scroll>
         </div>
     )

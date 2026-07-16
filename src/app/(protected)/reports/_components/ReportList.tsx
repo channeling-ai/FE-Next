@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Tab from '../../ideas/_components/tab'
+import Tab from '../../ideas/_components/Tab'
 import SearchBar from './SearchBar'
 import Chip from '@/components/Chip'
 import VideoCard from './VideoCard'
