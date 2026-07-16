@@ -65,8 +65,6 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
     const pathname = usePathname()
     const [isDesktopCollapsed, setIsDesktopCollapsed] = useState(false)
 
-    if (pathname === '/onboarding') return null
-
     const mainMenus = [
         { name: '대시보드', path: '/dashboard', icon: <DashboardIcon /> },
         { name: '영상 리포트', path: '/reports', icon: <ReportIcon /> },
