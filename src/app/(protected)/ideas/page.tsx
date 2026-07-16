@@ -6,9 +6,9 @@ import Header from '@/components/layout/Header'
 import PageContent from '@/components/layout/PageContent'
 import Scroll from '@/components/Scroll'
 import { useLayoutStore } from '@/stores/layoutStore'
-import ContentIdeaGeneration from './_components/content-idea-generation'
-import SavedIdea from './_components/saved-idea'
-import TrendKeyword from './_components/trend-keyword'
+import ContentIdeaGeneration from './_components/ContentIdeaGeneration'
+import SavedIdea from './_components/SavedIdea'
+import TrendKeyword from './_components/TrendKeyword'
 
 /**
  * 아이디어 페이지 (/ideas)

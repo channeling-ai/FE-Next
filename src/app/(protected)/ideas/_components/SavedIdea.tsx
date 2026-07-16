@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import SavedIdeaCard from './saved-idea-card'
-import SearchBar from './search-bar'
-import IdeaDetailView from './idea-detail-view'
+import SavedIdeaCard from './SavedIdeaCard'
+import SearchBar from './SearchBar'
+import IdeaDetailView from './IdeaDetailView'
 import PageContent from '@/components/layout/PageContent'
 import DropdownOrder from '@/components/dropdown-order'
 

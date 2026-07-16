@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import OverviewTab from './OverviewTab'
 
 type TabType = 'overview' | 'analysis'
 
@@ -34,14 +35,7 @@ export default function ReportTabs() {
                 ))}
             </div>
 
-            {activeTab === 'overview' && (
-                <section className="flex flex-col gap-4">
-                    <div className="rounded-[20px] bg-bg-1 p-4 text-text-primary font-body-16r">개요 내용 영역</div>
-
-                    {/* TODO: 이탈률 그래프 섹션 */}
-                    {/* TODO: 주요 지표 요약 섹션 */}
-                </section>
-            )}
+            {activeTab === 'overview' && <OverviewTab />}
 
             {activeTab === 'analysis' && (
                 <section className="flex flex-col gap-4">

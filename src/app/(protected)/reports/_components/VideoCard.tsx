@@ -1,7 +1,9 @@
 interface VideoCardProps {
     title?: string
     leftside?: string
+    leftsideamount?: string
     rightside?: string
+    rightsideamount?: string
     period?: string
     onClick?: () => void
 }
