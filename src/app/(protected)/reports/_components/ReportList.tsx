@@ -41,39 +41,52 @@ export default function ReportList() {
                     <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-2">
                         <VideoCard
                             title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
+                            leftside="리포트"
+                            leftsideamount="4개"
+                            rightside="최근 생성"
+                            rightsideamount="26년 12월 7일"
                         />
                         <VideoCard
                             title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
+                            leftside="리포트"
+                            leftsideamount="4개"
+                            rightside="최근 생성"
+                            rightsideamount="26년 12월 7일"
                         />
                         <VideoCard
                             title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
+                            leftside="리포트"
+                            leftsideamount="4개"
+                            rightside="최근 생성"
+                            rightsideamount="26년 12월 7일"
                         />
                         <VideoCard
                             title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
+                            leftside="리포트"
+                            leftsideamount="4개"
+                            rightside="최근 생성"
+                            rightsideamount="26년 12월 7일"
                         />
                         <VideoCard
                             title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
+                            leftside="리포트"
+                            leftsideamount="4개"
+                            rightside="최근 생성"
+                            rightsideamount="26년 12월 7일"
                         />
                         <VideoCard
                             title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
+                            leftside="리포트"
+                            leftsideamount="4개"
+                            rightside="최근 생성"
+                            rightsideamount="26년 12월 7일"
+                        />
+                        <VideoCard
+                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
+                            leftside="리포트"
+                            leftsideamount="4개"
+                            rightside="최근 생성"
+                            rightsideamount="26년 12월 7일"
                         />
                     </div>
                 </div>

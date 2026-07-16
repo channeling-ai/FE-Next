@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Tab from './Tab'
-import KeywordBox from './keyword-box'
+import KeywordBox from './KeywordBox'
 import Infoicon from '@/assets/icons/infoIcon.svg'
 
 export default function TrendKeyword() {

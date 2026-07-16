@@ -32,7 +32,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
         <div className="flex h-screen w-full bg-bg-0">
             <Sidebar isOpen={isMobileSidebarOpen} onClose={closeSidebar} />
 
-            <div className="flex-1 flex flex-col min-w-0 ">{children}</div>
+            <div className="relative flex-1 flex flex-col min-w-0 ">{children}</div>
         </div>
     )
 }

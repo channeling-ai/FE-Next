@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
 import Dropdown from '@/assets/icons/dropdown.svg'
-import { DropdownVideoType } from './dropdown-videotype'
+import { DropdownVideoType } from './DropdownVideotype'
 import TextField from '@/components/TextField'
-import GenerationButton from './generation-button'
+import GenerationButton from './GenerationButton'
 
 export default function ContentIdeaGeneration() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -60,9 +60,7 @@ export default function ContentIdeaGeneration() {
                             ref={dropdownRef}
                         >
                             {selectedOption == '' && (
-                                <div className="font-body-14r text-text-secondary">
-                                    영상 형식을 선택해 주세요.
-                                </div>
+                                <div className="font-body-14r text-text-secondary">영상 형식을 선택해 주세요.</div>
                             )}
                             {selectedOption != '' && (
                                 <div className="font-body-16m text-text-primary">{selectedOption}</div>
