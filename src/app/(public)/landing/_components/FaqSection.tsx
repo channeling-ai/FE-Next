@@ -25,7 +25,7 @@ export default function FaqSection() {
             <div className="flex flex-col gap-3">
                 {faqs.map(({ question, answer }, index) => (
                     <Fragment key={question}>
-                        <details open className="group py-2">
+                        <details className="group py-2">
                             <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-body-16sb text-text-primary [&::-webkit-details-marker]:hidden">
                                 <span>{question}</span>
                                 <FaqArrowIcon aria-hidden className="size-6 shrink-0 rotate-180 text-icon-secondary transition-transform group-open:rotate-0" />
