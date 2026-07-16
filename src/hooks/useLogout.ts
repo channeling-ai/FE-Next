@@ -18,6 +18,8 @@ export function useLogout() {
 
         try {
             await requestLogout()
+        } catch (error) {
+            console.error('로그아웃 API 호출 실패:', error)
         } finally {
             clearAuthSession()
             clearUser()
