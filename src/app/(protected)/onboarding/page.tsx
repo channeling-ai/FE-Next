@@ -2,12 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuthStore } from '@/stores/authStore'
 import TextField from '@/components/TextField'
 
 export default function OnboardingPage() {
     const router = useRouter()
-    const completeOnboarding = useAuthStore((state) => state.completeOnboarding)
 
     const [target, setTarget] = useState('')
     const [concept, setConcept] = useState('')
@@ -18,14 +16,11 @@ export default function OnboardingPage() {
     const handleComplete = () => {
         if (!hasContent) return
         setIsSubmitting(true)
-        // 로컬 스토어 상태 변경 및 리다이렉트
-        completeOnboarding()
         router.push('/dashboard')
         setIsSubmitting(false)
     }
 
     const handleSkip = () => {
-        completeOnboarding()
         router.push('/dashboard')
     }
 
@@ -100,4 +95,3 @@ export default function OnboardingPage() {
         </div>
     )
 }
-

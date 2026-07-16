@@ -1,5 +1,5 @@
 import api from '@/lib/axios'
-import { authStorage } from '@/lib/auth-storage'
+import { clearAuthSession } from '@/lib/auth-session'
 
 /**
  * Google 로그인 시작
@@ -20,6 +20,4 @@ export async function requestLogout() {
     await api.post('/auth/logout')
 }
 
-export function clearAuthSession() {
-    authStorage.clear()
-}
+export { clearAuthSession }

@@ -20,7 +20,7 @@ const planPriority: Record<PlanName, number> = {
 }
 
 export default function PricingPage() {
-    const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
+    const isLoggedIn = useAuthStore((state) => state.isAuth)
     const user = useAuthStore((state) => state.user)
     const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly')
     const [planChangeModalVariant, setPlanChangeModalVariant] = useState<PlanChangeModalVariant | null>(null)

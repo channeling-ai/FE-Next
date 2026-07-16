@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
+import { clearAuthSession } from '@/api/auth'
 import { getMember } from '@/api/member'
 import { authStorage } from '@/lib/auth-storage'
 import { useAuthStore } from '@/stores/authStore'
@@ -15,7 +16,6 @@ import { useAuthStore } from '@/stores/authStore'
  */
 export default function AuthCallbackPage() {
     const router = useRouter()
-    const clearUser = useAuthStore((state) => state.clearUser)
     const setUser = useAuthStore((state) => state.setUser)
     const hasRun = useRef(false)
     const [errorMessage, setErrorMessage] = useState('')
@@ -40,27 +40,25 @@ export default function AuthCallbackPage() {
                 || !Number.isFinite(parsedChannelId)
                 || parsedChannelId <= 0
             ) {
-                authStorage.clear()
-                clearUser()
+                clearAuthSession()
                 setErrorMessage('로그인에 실패했습니다. 다시 시도해주세요.')
                 return
             }
 
-            authStorage.setSession({ accessToken, channelId, isNew })
+            authStorage.setAccessToken(accessToken)
 
             try {
                 const member = await getMember(parsedChannelId)
                 setUser(member)
-                router.replace('/dashboard')
+                router.replace(isNew ? '/onboarding' : '/dashboard')
             } catch {
-                authStorage.clear()
-                clearUser()
+                clearAuthSession()
                 setErrorMessage('회원 정보를 불러오지 못했습니다. 다시 로그인해주세요.')
             }
         }
 
         void handleCallback()
-    }, [clearUser, router, setUser])
+    }, [router, setUser])
 
     return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-4">

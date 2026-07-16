@@ -1,45 +1,29 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef } from 'react'
-import { getMember } from '@/api/member'
+import { useEffect } from 'react'
+import { clearAuthSession } from '@/lib/auth-session'
 import { authStorage } from '@/lib/auth-storage'
 import { useAuthStore } from '@/stores/authStore'
 
 export default function AuthInitializer() {
     const pathname = usePathname()
-    const initialized = useRef(false)
-    const clearUser = useAuthStore((state) => state.clearUser)
-    const setChecking = useAuthStore((state) => state.setChecking)
-    const setUser = useAuthStore((state) => state.setUser)
+    const hasHydrated = useAuthStore((state) => state.hasHydrated)
+    const isAuth = useAuthStore((state) => state.isAuth)
+    const user = useAuthStore((state) => state.user)
 
     useEffect(() => {
-        if (initialized.current || pathname === '/auth/callback') return
-        initialized.current = true
+        void useAuthStore.persist.rehydrate()
+    }, [])
 
-        const initialize = async () => {
-            const accessToken = authStorage.getAccessToken()
-            const channelId = Number(authStorage.getChannelId())
+    useEffect(() => {
+        if (!hasHydrated || pathname === '/auth/callback') return
 
-            if (!accessToken || !Number.isFinite(channelId) || channelId <= 0) {
-                authStorage.clear()
-                clearUser()
-                return
-            }
-
-            setChecking()
-
-            try {
-                const member = await getMember(channelId)
-                setUser(member)
-            } catch {
-                authStorage.clear()
-                clearUser()
-            }
+        const accessToken = authStorage.getAccessToken()
+        if (!accessToken || !isAuth || !user) {
+            clearAuthSession()
         }
-
-        void initialize()
-    }, [clearUser, pathname, setChecking, setUser])
+    }, [hasHydrated, isAuth, pathname, user])
 
     return null
 }

@@ -17,17 +17,11 @@ function setStoredValue(key: string, value: unknown) {
 
 export const authStorage = {
     getAccessToken: () => getStoredValue<string>(LOCAL_STORAGE_KEY.accessToken),
-    getChannelId: () => getStoredValue<string>(LOCAL_STORAGE_KEY.channelId),
-    getIsNew: () => getStoredValue<boolean>(LOCAL_STORAGE_KEY.isNew),
-    setSession: ({ accessToken, channelId, isNew }: { accessToken: string; channelId: string; isNew: boolean }) => {
+    setAccessToken: (accessToken: string) => {
         setStoredValue(LOCAL_STORAGE_KEY.accessToken, accessToken)
-        setStoredValue(LOCAL_STORAGE_KEY.channelId, channelId)
-        setStoredValue(LOCAL_STORAGE_KEY.isNew, isNew)
     },
     clear: () => {
         if (typeof window === 'undefined') return
         window.localStorage.removeItem(LOCAL_STORAGE_KEY.accessToken)
-        window.localStorage.removeItem(LOCAL_STORAGE_KEY.channelId)
-        window.localStorage.removeItem(LOCAL_STORAGE_KEY.isNew)
     },
 }

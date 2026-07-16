@@ -1,6 +1,6 @@
 import axios from 'axios'
+import { clearAuthSession } from '@/lib/auth-session'
 import { authStorage } from '@/lib/auth-storage'
-import { useAuthStore } from '@/stores/authStore'
 
 const api = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -25,8 +25,7 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            authStorage.clear()
-            useAuthStore.getState().clearUser()
+            clearAuthSession()
 
             if (typeof window !== 'undefined' && window.location.pathname !== '/') {
                 window.location.replace('/')
