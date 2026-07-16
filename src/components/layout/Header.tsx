@@ -6,10 +6,8 @@ interface HeaderProps extends Omit<ComponentPropsWithoutRef<'header'>, 'title'> 
     className?: string
     leading?: ReactNode
     leadingClassName?: string
-    showDivider?: boolean
     title: string
     trailing?: ReactNode
-    showDivider?: boolean
 }
 
 /**
@@ -36,15 +34,13 @@ export default function Header({
     className = '',
     leading,
     leadingClassName = '',
-    showDivider = true,
     title,
     trailing,
-    showDivider = false,
     ...props
 }: HeaderProps) {
     return (
         <header
-            className={`flex min-h-14 w-full items-center justify-between bg-bg-0 py-3 ${showDivider ? 'border-b border-border-default' : ''} ${className}`}
+            className={`flex min-h-14 w-full items-center justify-between bg-bg-0 py-3 ${className}`}
             {...props}
         >
             <div className="flex items-center gap-2">

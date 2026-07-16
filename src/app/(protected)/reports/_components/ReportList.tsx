@@ -1,191 +1,88 @@
-'use client'
-
+import Back from '@/assets/icons/back.svg'
+import Bin from '@/assets/icons/bin.svg'
+import Plus from '@/assets/icons/plus.svg'
 import { useState } from 'react'
-import Tab from '../../ideas/_components/Tab'
-import SearchBar from './SearchBar'
-import Chip from '@/components/Chip'
-import VideoCard from './VideoCard'
-import DropdownOrder from '@/components/dropdown-order'
+import PageContent from '@/components/layout/PageContent'
+import ReportBox from './ReportBox'
 
-export default function ReportList() {
-    const [activeTab, setActiveTab] = useState<'myreport' | 'recommend'>('myreport')
-    const [activeChip, setActiveChip] = useState<'all' | 'longform' | 'shortform'>('all')
+interface ReportListProps {
+    totalCount: number
+    onBack: () => void
+}
 
-    const [order, setOrder] = useState('최신순')
+export default function ReportList({ totalCount, onBack }: ReportListProps) {
+    const [isDelete, setIsDelete] = useState(false)
 
     return (
-        <div>
-            <Tab title="내 리포트 내역" onClick={() => setActiveTab('myreport')} isActive={activeTab === 'myreport'} />
-            <Tab title="추천 리포트" onClick={() => setActiveTab('recommend')} isActive={activeTab === 'recommend'} />
+        <div className="absolute inset-0 z-30 overflow-y-auto bg-bg-0">
+            <PageContent className="flex min-h-full flex-col gap-4 pb-16 pt-4">
+                <header className="sticky top-0 z-10 flex items-center justify-between bg-bg-0 py-3">
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={onBack}
+                            className="flex cursor-pointer items-center"
+                            aria-label="뒤로 가기"
+                        >
+                            <Back />
+                        </button>
 
-            {activeTab === 'myreport' && (
-                <div className="flex flex-col pt-4 gap-4">
-                    <SearchBar />
-                    <div className="flex justify-between">
-                        <div className="flex gap-1">
-                            <Chip title="전체" onClick={() => setActiveChip('all')} isActive={activeChip === 'all'} />
-                            <Chip
-                                title="롱폼"
-                                onClick={() => setActiveChip('longform')}
-                                isActive={activeChip === 'longform'}
-                            />
-                            <Chip
-                                title="숏폼"
-                                onClick={() => setActiveChip('shortform')}
-                                isActive={activeChip === 'shortform'}
-                            />
-                        </div>
-
-                        <DropdownOrder onChange={setOrder} />
+                        <h1 className="font-title-18sb text-text-primary">리포트 상세 목록</h1>
                     </div>
-                    <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-2">
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="리포트"
-                            leftsideamount="4개"
-                            rightside="최근 생성"
-                            rightsideamount="26년 12월 7일"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="리포트"
-                            leftsideamount="4개"
-                            rightside="최근 생성"
-                            rightsideamount="26년 12월 7일"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="리포트"
-                            leftsideamount="4개"
-                            rightside="최근 생성"
-                            rightsideamount="26년 12월 7일"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="리포트"
-                            leftsideamount="4개"
-                            rightside="최근 생성"
-                            rightsideamount="26년 12월 7일"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="리포트"
-                            leftsideamount="4개"
-                            rightside="최근 생성"
-                            rightsideamount="26년 12월 7일"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="리포트"
-                            leftsideamount="4개"
-                            rightside="최근 생성"
-                            rightsideamount="26년 12월 7일"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="리포트"
-                            leftsideamount="4개"
-                            rightside="최근 생성"
-                            rightsideamount="26년 12월 7일"
-                        />
+                    <div className="flex gap-2">
+                        <Bin onClick={() => setIsDelete((prev) => !prev)} />
+                        <Plus />
+                    </div>
+                </header>
+                <div className="pt-2 flex">
+                    <p className="font-body-16m text-text-primary">{totalCount}</p>
+                    <p className="font-body-16m text-text-secondary">개의 리포트</p>
+                </div>
+                {/* 영상 정보  */}
+                <div className="flex gap-4 flex-col tablet:flex-row">
+                    <div className="w-82 h-46 tablet:w-59.25 tablet:h-33.25 desktop:w-79 desktop:h-44.5 rounded-[20px] bg-bg-3"></div>
+                    <div className="flex flex-col gap-1 justify-start items-start">
+                        <div className="px-2 py-1 rounded-[20px] bg-bg-2 font-caption-12m desktop:font-caption-14m text-text-primary">
+                            Long-Form
+                        </div>
+                        <div className="font-title-14sb desktop:font-title-20sb text-text-primary">
+                            주말 아침 루틴 | 느긋한 브런치 만들기
+                        </div>
+                        <div className="font-body-14r desktop:font-body-16r text-text-secondary">
+                            업데이트: 2025년 6월 21일 (오전 03:39)
+                        </div>
+                        <div className="font-body-14r desktop:font-body-16r text-text-secondary">
+                            지혜로운 생활 · 5일 전
+                        </div>
                     </div>
                 </div>
-            )}
-            {activeTab === 'recommend' && (
-                <div className="flex flex-col pt-4 gap-4">
-                    <div className="flex flex-col gap-1">
-                        <div className="font-title-18sb text-text-primary">나랑 비슷한 채널의 인기 영상</div>
-                        <div className="font-body-14r text-text-secondary">
-                            인기있는 유사 채널 리포트로 성공 전략을 벤치마킹하세요
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-2">
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                        <div className="font-title-18sb text-text-primary">내 분야 대형 채널의 최신 트렌드</div>
-                        <div className="font-body-14r text-text-secondary">
-                            카테고리 리더가 다루는 최신 주제로 시장의 흐름을 파악하고 기획에 참고해보세요
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 tablet:grid-cols-2 desktop:grid-cols-4 gap-2">
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                        <VideoCard
-                            title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                            leftside="조회수"
-                            rightside="17만회"
-                            period="3년 전"
-                        />
-                    </div>
+                <div className="flex flex-col gap-2">
+                    <ReportBox
+                        generatedDate="25년 12월 21일 (03:39)"
+                        startDate="25.12.21"
+                        endDate="26.12.21"
+                        isDelete={isDelete}
+                    />
+                    <ReportBox
+                        generatedDate="25년 12월 21일 (03:39)"
+                        startDate="25.12.21"
+                        endDate="26.12.21"
+                        isDelete={isDelete}
+                    />
+                    <ReportBox
+                        generatedDate="25년 12월 21일 (03:39)"
+                        startDate="25.12.21"
+                        endDate="26.12.21"
+                        isDelete={isDelete}
+                    />
+                    <ReportBox
+                        generatedDate="25년 12월 21일 (03:39)"
+                        startDate="25.12.21"
+                        endDate="26.12.21"
+                        isDelete={isDelete}
+                    />
                 </div>
-            )}
+            </PageContent>
         </div>
     )
 }
