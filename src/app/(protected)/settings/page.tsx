@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import MenuIcon from '@/assets/icons/menu.svg'
 import Scroll from '@/components/Scroll'
 import Header from '@/components/layout/Header'
 import PageContent from '@/components/layout/PageContent'
@@ -23,7 +22,6 @@ const channel = {
 }
 
 export default function SettingsPage() {
-    const openSidebar = useLayoutStore((state) => state.openSidebar)
     const user = useAuthStore((state) => state.user)
     const { isLoggingOut, logout } = useLogout()
     const [emailNotifications, setEmailNotifications] = useState({
@@ -34,22 +32,8 @@ export default function SettingsPage() {
     return (
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
             <Scroll as="main" className="flex-1">
+                <Header title="설정" showMenu={true} />
                 <PageContent className="flex flex-col gap-8 pb-8">
-                    <Header
-                        title="설정"
-                        leadingClassName="desktop:hidden"
-                        leading={
-                            <button
-                                type="button"
-                                onClick={openSidebar}
-                                className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary"
-                                aria-label="메뉴 열기"
-                            >
-                                <MenuIcon />
-                            </button>
-                        }
-                    />
-
                     <div className="flex flex-col gap-5.5 pt-4.25 desktop:pt-0">
                         <SettingsProfileImage channelName={channel.name} />
 

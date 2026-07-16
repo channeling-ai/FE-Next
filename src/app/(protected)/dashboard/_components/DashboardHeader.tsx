@@ -9,19 +9,7 @@ export default function DashboardHeader() {
 
     return (
         <div className="desktop:hidden">
-            <Header
-                title="대시보드"
-                leading={
-                    <button
-                        type="button"
-                        onClick={openSidebar}
-                        className="-ml-1 flex size-8 items-center justify-center text-icon-primary transition-colors hover:text-text-primary"
-                        aria-label="메뉴 열기"
-                    >
-                        <MenuIcon />
-                    </button>
-                }
-            />
+            <Header title="대시보드" showMenu={true} />
         </div>
     )
 }
