@@ -1,30 +1,22 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-import type { StateCreator } from 'zustand'
 import type { User } from '@/types'
+
+export type AuthStatus = 'checking' | 'authenticated' | 'unauthenticated'
 
 interface AuthState {
     user: User | null
     isLoggedIn: boolean
+    status: AuthStatus
     setUser: (user: User) => void
+    setChecking: () => void
     clearUser: () => void
-    completeOnboarding: () => void
 }
 
-const createAuthState = persist<AuthState>(
-    (set) => ({
-        user: null,
-        isLoggedIn: false,
-        setUser: (user) => set({ user, isLoggedIn: true }),
-        clearUser: () => set({ user: null, isLoggedIn: false }),
-        completeOnboarding: () =>
-            set((state) => ({
-                user: state.user ? { ...state.user, isOnboardingCompleted: true } : null,
-            })),
-    }),
-    {
-        name: 'auth-storage',
-    }
-) as unknown as StateCreator<AuthState>
-
-export const useAuthStore = create<AuthState>()(createAuthState)
+export const useAuthStore = create<AuthState>()((set) => ({
+    user: null,
+    isLoggedIn: false,
+    status: 'checking',
+    setUser: (user) => set({ user, isLoggedIn: true, status: 'authenticated' }),
+    setChecking: () => set({ status: 'checking' }),
+    clearUser: () => set({ user: null, isLoggedIn: false, status: 'unauthenticated' }),
+}))

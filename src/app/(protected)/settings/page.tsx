@@ -6,6 +6,8 @@ import Scroll from '@/components/Scroll'
 import Header from '@/components/layout/Header'
 import PageContent from '@/components/layout/PageContent'
 import { useLayoutStore } from '@/stores/layoutStore'
+import { useAuthStore } from '@/stores/authStore'
+import { useLogout } from '@/hooks/useLogout'
 import ActionRow from './_components/ActionRow'
 import EditableTextField from './_components/EditableTextField'
 import NotificationRow from './_components/NotificationRow'
@@ -22,6 +24,8 @@ const channel = {
 
 export default function SettingsPage() {
     const openSidebar = useLayoutStore((state) => state.openSidebar)
+    const user = useAuthStore((state) => state.user)
+    const { isLoggingOut, logout } = useLogout()
     const [emailNotifications, setEmailNotifications] = useState({
         dailyRecommendation: false,
         marketing: true,
