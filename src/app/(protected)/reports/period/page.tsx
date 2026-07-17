@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import BackIcon from '@/assets/icons/back.svg'
+import Chip from '@/components/Chip'
 import Header from '@/components/layout/Header'
 import PageContent from '@/components/layout/PageContent'
 
@@ -134,24 +135,15 @@ export default function ReportPeriodPage() {
                 <section className="mt-4">
                     <h2 className="font-body-14r text-text-secondary">빠른 기간 선택</h2>
                     <div className="mt-2 flex flex-wrap gap-2">
-                        {periodPresets.map((preset) => {
-                            const isActive = activePreset === preset.value
-
-                            return (
-                                <button
-                                    key={preset.value}
-                                    type="button"
-                                    onClick={() => selectPreset(preset.value)}
-                                    className={`flex h-10 items-center justify-center whitespace-nowrap rounded-[20px] border px-4 font-body-14r desktop:h-[43px] ${
-                                        isActive
-                                            ? 'border-border-strong bg-primary-60/8 text-text-brand'
-                                            : 'border-transparent bg-bg-1 text-text-secondary'
-                                    }`}
-                                >
-                                    {preset.label}
-                                </button>
-                            )
-                        })}
+                        {periodPresets.map((preset) => (
+                            <Chip
+                                key={preset.value}
+                                title={preset.label}
+                                onClick={() => selectPreset(preset.value)}
+                                isActive={activePreset === preset.value}
+                                variant="period"
+                            />
+                        ))}
                     </div>
                 </section>
 
