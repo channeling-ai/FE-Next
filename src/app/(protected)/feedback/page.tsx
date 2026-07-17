@@ -2,6 +2,8 @@
 
 import { useState, useRef } from 'react'
 import Header from '@/components/layout/Header'
+import PageContent from '@/components/layout/PageContent'
+import Scroll from '@/components/Scroll'
 import TextField from '@/components/TextField'
 import ImageIcon from '@/assets/icons/image.svg'
 import XIcon from '@/assets/icons/X.svg'
@@ -115,8 +117,9 @@ export default function FeedbackPage() {
         <div className="flex h-full w-full flex-col overflow-hidden bg-gray-0 text-gray-95 selection:bg-primary-60/30 desktop:pt-3">
             <Header title="피드백" showMenu={true} />
 
-            <main className="overflow-y-auto px-4 tablet:px-5 desktop:px-16 py-7 custom-scrollbar">
-                <div className="w-full flex flex-col gap-4 pb-12">
+            <Scroll as="main" className="flex-1">
+                <PageContent className="py-7">
+                    <div className="w-full flex flex-col gap-4 pb-12">
                     {/* 타이틀 및 서브타이틀 */}
                     <div className="flex flex-col gap-2">
                         <h2 className="font-title-18sb desktop:text-[20px] text-gray-95">
@@ -277,8 +280,9 @@ export default function FeedbackPage() {
                             )}
                         </button>
                     </div>
-                </div>
-            </main>
+                    </div>
+                </PageContent>
+            </Scroll>
 
             {/* 성공 팝업 모달 */}
             {showSuccessModal && (
