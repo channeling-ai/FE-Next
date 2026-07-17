@@ -1,0 +1,44 @@
+name: Deploy by Syncing
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-sync-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  sync-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create output directory
+        run: sh ./scripts/build.sh
+
+      - name: Set timestamp
+        run: echo "TIMESTAMP=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_ENV"
+
+      - name: Push snapshot to production repository
+        uses: cpina/github-action-push-to-another-repository@55306faa4ed53b815ae49e564af8cfb359d32ae2 # v1.7.3
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.FE_NEXT_DEPLOY_TOKEN }}
+        with:
+          source-directory: output
+          destination-github-username: channeling8th
+          destination-repository-name: Chaneling-FE-Next
+          user-name: channeling8th
+          user-email: ${{ secrets.FE_NEXT_DEPLOY_EMAIL }}
+          target-branch: ${{ github.ref_name }}
+          create-target-branch-if-needed: true
+          commit-message: "[DEPLOY] Auto-sync from ${{ github.ref_name }} at ${{ env.TIMESTAMP }}"
