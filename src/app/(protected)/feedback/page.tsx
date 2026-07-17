@@ -165,7 +165,7 @@ export default function FeedbackPage() {
                                 showCounter={false}
                                 maxLength={2000}
                                 className="!w-full"
-                                fontClassName="font-body-14r desktop:text-[16px]"
+                                textareaClassName="desktop:text-[16px]"
                             />
                         </div>
 
@@ -187,7 +187,7 @@ export default function FeedbackPage() {
                                 showCounter={false}
                                 maxLength={100}
                                 className="!w-full"
-                                fontClassName="font-body-14r desktop:text-[16px]"
+                                textareaClassName="desktop:text-[16px]"
                             />
                         </div>
 
