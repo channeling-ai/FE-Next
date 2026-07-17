@@ -25,9 +25,9 @@ export interface DashboardChannelInfo {
 
 export interface DashboardChannelScore {
     scoreType: DashboardScoreType
-    score: number
-    grade: string
-    scoreChange: number
+    score: number | null
+    grade: string | null
+    scoreChange: number | null
 }
 
 export interface DashboardMetadata {

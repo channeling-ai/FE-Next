@@ -13,6 +13,8 @@ export default function MetricCardWithImage({
     imageUrl,
     subscribers,
 }: MetricCardWithImageProps) {
+    const formattedDelta = `${delta > 0 ? '+' : ''} ${delta}`
+
     return (
         <article
             className="bg-video-card flex aspect-square w-full flex-col items-start justify-between overflow-hidden rounded-[20px] p-5"
@@ -30,7 +32,7 @@ export default function MetricCardWithImage({
                     {subscribers}
                 </strong>
                 <p className="flex items-center gap-2 whitespace-nowrap font-caption-12r text-text-secondary">
-                    <span className="font-caption-12m text-text-brand">+ {delta}</span>
+                    <span className="font-caption-12m text-text-brand">{formattedDelta}</span>
                     지난 달 보다
                 </p>
             </div>

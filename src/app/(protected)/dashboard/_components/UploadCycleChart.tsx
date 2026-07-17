@@ -21,41 +21,6 @@ interface ChartPoint {
     score: number | null
 }
 
-const chartData: Record<Period, ChartPoint[]> = {
-    '1주': [
-        { date: '2026.02.19', score: 39 },
-        { date: '2026.02.20', score: 41 },
-        { date: '2026.02.21', score: 45 },
-        { date: '2026.02.22', score: 48 },
-        { date: '2026.02.23', score: 50 },
-        { date: '2026.02.24', score: 68 },
-        { date: '2026.02.25', score: 74 },
-    ],
-    '1달': [
-        { date: '2026.01.27', score: 31 },
-        { date: '2026.01.30', score: 34 },
-        { date: '2026.02.02', score: 36 },
-        { date: '2026.02.05', score: 40 },
-        { date: '2026.02.08', score: 43 },
-        { date: '2026.02.11', score: 47 },
-        { date: '2026.02.14', score: 50 },
-        { date: '2026.02.17', score: 54 },
-        { date: '2026.02.19', score: 58 },
-        { date: '2026.02.21', score: 69 },
-        { date: '2026.02.23', score: 78 },
-        { date: '2026.02.25', score: 84 },
-    ],
-}
-
-const metricOffsets: Record<Metric, number> = {
-    '채널 성장': 0,
-    '알고리즘': -5,
-    '시청 몰입': 4,
-    '반응 밀도': 1,
-    '유입 활력': -2,
-    '업로드 주기': 6,
-}
-
 const metricScoreTypes: Record<Metric, DashboardScoreType> = {
     '채널 성장': 'CHANNEL_GROWTH',
     '알고리즘': 'ALGORITHM',
@@ -63,15 +28,6 @@ const metricScoreTypes: Record<Metric, DashboardScoreType> = {
     '반응 밀도': 'REACTION_DENSITY',
     '유입 활력': 'INFLOW_ACTIVITY',
     '업로드 주기': 'UPLOAD_CYCLE',
-}
-
-function getMetricData(metric: Metric, period: Period) {
-    const offset = metricOffsets[metric]
-
-    return chartData[period].map((point, index) => ({
-        ...point,
-        score: Math.max(0, Math.min(100, (point.score ?? 0) + offset + ((index % 3) - 1) * Math.abs(offset) * 0.2)),
-    }))
 }
 
 interface ChartTooltipProps extends TooltipContentProps {
@@ -116,13 +72,13 @@ export default function UploadCycleChart() {
             (scoreGraph) => scoreGraph.scoreType === metricScoreTypes[activeMetric]
         )?.scoreHistory
 
-        if (!scoreHistory?.length) return getMetricData(activeMetric, period)
+        if (!scoreHistory?.length) return []
 
         return scoreHistory.map((point) => ({
             date: point.date.replaceAll('-', '.'),
             score: point.score,
         }))
-    }, [activeMetric, graph, period])
+    }, [activeMetric, graph])
 
     return (
         <section className="flex w-full flex-col gap-[22px] rounded-[20px] bg-bg-1 p-5">
