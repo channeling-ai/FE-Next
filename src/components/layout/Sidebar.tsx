@@ -161,38 +161,40 @@ export default function Sidebar({ isOpen = true, onClose }: SidebarProps) {
                         label="피드백 보내기"
                         onNavigate={onClose}
                     />
-                    <div
-                        className={`group/profile relative flex w-full flex-col gap-2 overflow-hidden rounded-lg p-2 transition-[max-height,background-color] duration-300 hover:bg-bg-2 ${pathname === '/settings' ? 'bg-bg-2' : 'bg-transparent'} ${isDesktopCollapsed ? 'desktop:max-h-10' : 'max-h-[109px]'}`}
-                    >
-                        <Link
-                            href="/settings"
-                            onClick={onClose}
-                            aria-label="채널 설정"
-                            className={`flex w-full shrink-0 items-center transition-[gap] duration-300 ${isDesktopCollapsed ? 'desktop:gap-0' : 'gap-2'}`}
+                    <div className="group/profile relative w-full">
+                        <div
+                            className={`flex w-full flex-col overflow-hidden rounded-lg p-2 transition-[max-height,gap,background-color] duration-300 hover:bg-bg-2 ${pathname === '/settings' ? 'bg-bg-2' : 'bg-transparent'} ${isDesktopCollapsed ? 'desktop:max-h-10 desktop:gap-0' : 'max-h-[109px] gap-2'}`}
                         >
-                            <ProfileImage size={24} />
-                            <span
-                                aria-hidden={isDesktopCollapsed}
-                                className={`min-w-0 overflow-hidden whitespace-nowrap transition-[max-width,opacity] duration-300 ${isDesktopCollapsed ? 'desktop:max-w-0 desktop:opacity-0' : 'max-w-[120px] flex-1 opacity-100'}`}
+                            <Link
+                                href="/settings"
+                                onClick={onClose}
+                                aria-label="채널 설정"
+                                className={`flex w-full shrink-0 items-center transition-[height,gap] duration-300 ${isDesktopCollapsed ? 'desktop:h-6 desktop:gap-0' : 'gap-2'}`}
                             >
-                                <span className="block truncate font-caption-12r text-text-secondary desktop:text-[14px]">
-                                    Free
+                                <ProfileImage size={24} />
+                                <span
+                                    aria-hidden={isDesktopCollapsed}
+                                    className={`min-w-0 overflow-hidden whitespace-nowrap transition-[max-width,max-height,opacity] duration-300 ${isDesktopCollapsed ? 'desktop:max-h-0 desktop:max-w-0 desktop:opacity-0' : 'max-h-12 max-w-[120px] flex-1 opacity-100'}`}
+                                >
+                                    <span className="block truncate font-caption-12r text-text-secondary desktop:text-[14px]">
+                                        Free
+                                    </span>
+                                    <span className="block truncate font-body-14m text-text-primary desktop:text-[16px]">
+                                        채널이름
+                                    </span>
                                 </span>
-                                <span className="block truncate font-body-14m text-text-primary desktop:text-[16px]">
-                                    채널이름
-                                </span>
-                            </span>
-                        </Link>
+                            </Link>
 
-                        <Link
-                            href="/pricing"
-                            onClick={onClose}
-                            aria-hidden={isDesktopCollapsed}
-                            className={`flex max-h-10 w-36 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-gray-30 px-0.5 py-2 font-body-14m text-text-primary transition-[opacity,background-color] duration-300 hover:bg-gray-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active desktop:w-full desktop:text-[16px] ${isDesktopCollapsed ? 'pointer-events-none desktop:opacity-0' : 'opacity-100'}`}
-                            tabIndex={isDesktopCollapsed ? -1 : 0}
-                        >
-                            플랜 업그레이드
-                        </Link>
+                            <Link
+                                href="/pricing"
+                                onClick={onClose}
+                                aria-hidden={isDesktopCollapsed}
+                                className={`flex w-36 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-gray-30 px-0.5 font-body-14m text-text-primary transition-[max-height,padding,opacity,background-color] duration-300 hover:bg-gray-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-active desktop:w-full desktop:text-[16px] ${isDesktopCollapsed ? 'pointer-events-none desktop:max-h-0 desktop:py-0 desktop:opacity-0' : 'max-h-10 py-2 opacity-100'}`}
+                                tabIndex={isDesktopCollapsed ? -1 : 0}
+                            >
+                                플랜 업그레이드
+                            </Link>
+                        </div>
 
                         {isDesktopCollapsed && (
                             <span
