@@ -16,7 +16,7 @@ import {
     DashboardMetricCardsSkeleton,
     DashboardProfileCardSkeleton,
     DashboardSuggestionsSkeleton,
-} from './_components/DashboardSkeletons'
+} from '@/components/dashboard/DashboardSkeletons'
 import InsightCard from './_components/InsightCard'
 import MetricCardSmall from './_components/MetricCardSmall'
 import MetricCardWithImage from './_components/MetricCardwithImage'

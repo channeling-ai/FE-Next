@@ -9,7 +9,7 @@ import {
     type DashboardPeriod,
     type DashboardScoreType,
 } from '@/api/dashboard'
-import { DashboardChartSkeleton } from './DashboardSkeletons'
+import { DashboardChartSkeleton } from '@/components/dashboard/DashboardSkeletons'
 
 const metrics = ['채널 성장', '알고리즘', '시청 몰입', '반응 밀도', '유입 활력', '업로드 주기'] as const
 const periods = ['1주', '1달'] as const
