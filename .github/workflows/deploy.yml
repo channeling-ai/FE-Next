@@ -35,9 +35,9 @@ jobs:
           API_TOKEN_GITHUB: ${{ secrets.FE_NEXT_DEPLOY_TOKEN }}
         with:
           source-directory: output
-          destination-github-username: channeling8th
+          destination-github-username: channeling8
           destination-repository-name: Chaneling-FE-Next
-          user-name: channeling8th
+          user-name: channeling8
           user-email: ${{ secrets.FE_NEXT_DEPLOY_EMAIL }}
           target-branch: ${{ github.ref_name }}
           create-target-branch-if-needed: true
