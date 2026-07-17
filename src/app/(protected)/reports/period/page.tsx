@@ -109,6 +109,9 @@ export default function ReportPeriodPage() {
         setEndDate(value)
     }
 
+    const isPeriodValid =
+        activePreset !== null || (startDate !== '' && endDate !== '' && startDate <= endDate)
+
     return (
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
             <Header
@@ -167,7 +170,8 @@ export default function ReportPeriodPage() {
 
                 <button
                     type="button"
-                    className="fixed bottom-8 left-4 right-4 flex h-12 items-center justify-center rounded-[20px] bg-primary-60 px-2 font-body-16sb text-text-primary tablet:static tablet:mt-4 tablet:w-full desktop:h-[49px]"
+                    disabled={!isPeriodValid}
+                    className="fixed bottom-8 left-4 right-4 flex h-12 cursor-pointer items-center justify-center rounded-[20px] bg-primary-60 px-2 font-body-16sb text-text-primary disabled:cursor-not-allowed disabled:bg-gray-30 disabled:text-text-secondary tablet:static tablet:mt-4 tablet:w-full desktop:h-[49px]"
                 >
                     리포트 생성 시작
                 </button>
