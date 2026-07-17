@@ -55,7 +55,7 @@ function DateField({ label, max, min, onChange, value }: DateFieldProps) {
             <input
                 type="date"
                 aria-label={label}
-                className="absolute inset-0 h-full w-full cursor-pointer border-0 bg-transparent px-4 text-transparent outline-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:ml-auto [&::-webkit-calendar-picker-indicator]:size-6 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-50"
+                className="absolute inset-0 h-full w-full cursor-pointer border-0 bg-transparent px-4 text-transparent outline-none [color-scheme:dark] [&::-webkit-calendar-picker-indicator]:ml-auto [&::-webkit-calendar-picker-indicator]:size-6 [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-50 [&::-webkit-datetime-edit]:opacity-0"
                 max={max}
                 min={min}
                 onChange={(event) => onChange(event.target.value)}
