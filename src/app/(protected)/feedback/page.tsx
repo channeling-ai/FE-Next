@@ -3,10 +3,8 @@
 import { useState, useRef } from 'react'
 import Header from '@/components/layout/Header'
 import TextField from '@/components/TextField'
-import MenuIcon from '@/assets/icons/menu.svg'
 import ImageIcon from '@/assets/icons/image.svg'
 import XIcon from '@/assets/icons/X.svg'
-import { useLayoutStore } from '@/stores/layoutStore'
 
 const formatFileSize = (bytes: number) => {
     const mb = bytes / (1024 * 1024)
@@ -18,8 +16,6 @@ const formatFileSize = (bytes: number) => {
 }
 
 export default function FeedbackPage() {
-    const { openSidebar } = useLayoutStore()
-
     // Form states
     const [inquiry, setInquiry] = useState('')
     const [contact, setContact] = useState('')
@@ -117,16 +113,7 @@ export default function FeedbackPage() {
 
     return (
         <div className="flex flex-col h-full w-full bg-gray-0 text-gray-95 overflow-hidden selection:bg-primary-60/30">
-            <div className="w-full flex items-center gap-2 px-4 tablet:px-5 desktop:px-16 pt-3 tablet:pt-4 desktop:pt-8">
-                <button
-                    onClick={openSidebar}
-                    className="desktop:hidden flex items-center justify-center p-1 text-text-primary hover:text-text-secondary transition-colors cursor-pointer bg-transparent border-none"
-                    aria-label="메뉴 열기"
-                >
-                    <MenuIcon className="w-6 h-6" />
-                </button>
-                <span className="font-title-18sb desktop:text-[20px] mt-[0.5px] desktop:mt-0 text-text-primary">피드백</span>
-            </div>
+            <Header title="피드백" showMenu={true} />
 
             <main className="overflow-y-auto px-4 tablet:px-5 desktop:px-16 py-7 custom-scrollbar">
                 <div className="w-full flex flex-col gap-4 pb-12">
