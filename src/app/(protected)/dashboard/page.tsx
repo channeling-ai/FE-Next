@@ -31,17 +31,14 @@ const scoreTypeDetails: Record<DashboardScoreType, { label: string }> = {
 
 const scoreTypeOrder = Object.keys(scoreTypeDetails) as DashboardScoreType[]
 
-const suggestionDetails: Record<DashboardSuggestionType, { insightId: string; tags: string[] }> = {
+const suggestionDetails: Record<DashboardSuggestionType, { tags: string[] }> = {
     VIDEO_REUSE: {
-        insightId: 'revival-video',
         tags: dashboardInsights[0].tags,
     },
     TREND_KEYWORD: {
-        insightId: 'trend-keyword',
         tags: dashboardInsights[1].tags,
     },
     COMMENT_ANALYSIS: {
-        insightId: 'comment-sentiment',
         tags: dashboardInsights[2].tags,
     },
 }
@@ -166,7 +163,7 @@ export default function DashboardPage() {
                                     title={insight.title}
                                     description={insight.description}
                                     tags={insight.tags}
-                                    href={`/dashboard/insights/${insight.insightId}`}
+                                    href={`/dashboard/insights/${insight.suggestionId}`}
                                 />
                             ))}
                         </div>

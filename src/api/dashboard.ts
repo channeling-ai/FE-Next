@@ -64,6 +64,17 @@ export interface DashboardSuggestionList {
     suggestionList: DashboardSuggestion[]
 }
 
+export interface DashboardExpectedMetric {
+    label: string
+    value: string
+}
+
+export interface DashboardSuggestionDetail extends DashboardSuggestion {
+    expectedMetrics: DashboardExpectedMetric[]
+    detailAnalysis: string
+    tips: string[]
+}
+
 export async function getDashboardMetadata(): Promise<DashboardMetadata> {
     const { data } = await api.get<ApiResponse<DashboardMetadata>>('/dashboards/metadata')
     return data.result
@@ -78,5 +89,14 @@ export async function getDashboardGraph(period: DashboardPeriod): Promise<Dashbo
 
 export async function getDashboardSuggestions(): Promise<DashboardSuggestionList> {
     const { data } = await api.get<ApiResponse<DashboardSuggestionList>>('/dashboards/suggestions')
+    return data.result
+}
+
+export async function getDashboardSuggestionDetail(
+    suggestionId: number
+): Promise<DashboardSuggestionDetail> {
+    const { data } = await api.get<ApiResponse<DashboardSuggestionDetail>>(
+        `/dashboards/suggestions/${suggestionId}`
+    )
     return data.result
 }
