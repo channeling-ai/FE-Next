@@ -65,7 +65,7 @@ export default function OnboardingPage() {
                             placeholder="더욱 최적화된 분석 및 제안을 위해 채널 타겟층을 입력해주세요"
                             value={target}
                             onChange={setTarget}
-                            heightVariant={{ mobile: 'small', tablet: 'xsmall', desktop: 'medium' }}
+                            heightVariant="small"
                             className="!w-full"
                         />
 
