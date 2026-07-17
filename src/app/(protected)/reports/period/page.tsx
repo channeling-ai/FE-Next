@@ -130,10 +130,10 @@ export default function ReportPeriodPage() {
                 as="main"
                 className="flex min-h-0 flex-1 flex-col pb-24 pt-2 tablet:pb-5 tablet:pt-4 desktop:pt-2"
             >
-                <h1 className="font-title-18sb text-text-primary">원하는 기간을 선택하여 영상을 분석해요</h1>
+                <h1 className="font-title-20sb text-text-primary">원하는 기간을 선택하여 영상을 분석해요</h1>
 
                 <section className="mt-4">
-                    <h2 className="font-body-14r text-text-secondary">빠른 기간 선택</h2>
+                    <h2 className="font-body-14m text-text-secondary">빠른 기간 선택</h2>
                     <div className="mt-2 flex flex-wrap gap-2">
                         {periodPresets.map((preset) => (
                             <Chip
