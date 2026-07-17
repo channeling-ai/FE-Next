@@ -1,8 +1,14 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
 import { useMemo, useState } from 'react'
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import type { TooltipContentProps } from 'recharts'
+import {
+    getDashboardGraph,
+    type DashboardPeriod,
+    type DashboardScoreType,
+} from '@/api/dashboard'
 
 const metrics = ['채널 성장', '알고리즘', '시청 몰입', '반응 밀도', '유입 활력', '업로드 주기'] as const
 const periods = ['1주', '1달'] as const
@@ -12,7 +18,7 @@ type Period = (typeof periods)[number]
 
 interface ChartPoint {
     date: string
-    score: number
+    score: number | null
 }
 
 const chartData: Record<Period, ChartPoint[]> = {
@@ -50,12 +56,21 @@ const metricOffsets: Record<Metric, number> = {
     '업로드 주기': 6,
 }
 
+const metricScoreTypes: Record<Metric, DashboardScoreType> = {
+    '채널 성장': 'CHANNEL_GROWTH',
+    '알고리즘': 'ALGORITHM',
+    '시청 몰입': 'VIEW_ENGAGEMENT',
+    '반응 밀도': 'REACTION_DENSITY',
+    '유입 활력': 'INFLOW_ACTIVITY',
+    '업로드 주기': 'UPLOAD_CYCLE',
+}
+
 function getMetricData(metric: Metric, period: Period) {
     const offset = metricOffsets[metric]
 
     return chartData[period].map((point, index) => ({
         ...point,
-        score: Math.max(0, Math.min(100, point.score + offset + ((index % 3) - 1) * Math.abs(offset) * 0.2)),
+        score: Math.max(0, Math.min(100, (point.score ?? 0) + offset + ((index % 3) - 1) * Math.abs(offset) * 0.2)),
     }))
 }
 
@@ -67,6 +82,8 @@ function ChartTooltip({ active, activeIndex, dataLength, payload }: ChartTooltip
     if (!active || !payload || !payload.length) return null
 
     const point = payload[0].payload as ChartPoint
+    if (point.score === null) return null
+
     const index = Number(activeIndex)
     const alignment = index === 0
         ? 'items-start text-left'
@@ -89,7 +106,23 @@ function ChartTooltip({ active, activeIndex, dataLength, payload }: ChartTooltip
 export default function UploadCycleChart() {
     const [activeMetric, setActiveMetric] = useState<Metric>('채널 성장')
     const [period, setPeriod] = useState<Period>('1주')
-    const data = useMemo(() => getMetricData(activeMetric, period), [activeMetric, period])
+    const apiPeriod: DashboardPeriod = period === '1주' ? 'WEEK' : 'MONTH'
+    const { data: graph } = useQuery({
+        queryKey: ['dashboard', 'graph', apiPeriod],
+        queryFn: () => getDashboardGraph(apiPeriod),
+    })
+    const data = useMemo(() => {
+        const scoreHistory = graph?.scoreGraphs.find(
+            (scoreGraph) => scoreGraph.scoreType === metricScoreTypes[activeMetric]
+        )?.scoreHistory
+
+        if (!scoreHistory?.length) return getMetricData(activeMetric, period)
+
+        return scoreHistory.map((point) => ({
+            date: point.date.replaceAll('-', '.'),
+            score: point.score,
+        }))
+    }, [activeMetric, graph, period])
 
     return (
         <section className="flex w-full flex-col gap-[22px] rounded-[20px] bg-bg-1 p-5">
