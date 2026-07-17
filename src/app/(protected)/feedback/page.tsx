@@ -118,7 +118,7 @@ export default function FeedbackPage() {
             <Header title="피드백" showMenu={true} />
 
             <Scroll as="main" className="flex-1">
-                <PageContent className="py-7">
+                <PageContent className="py-2">
                     <div className="w-full flex flex-col gap-4 pb-12">
                     {/* 타이틀 및 서브타이틀 */}
                     <div className="flex flex-col gap-2">

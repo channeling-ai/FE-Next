@@ -17,7 +17,7 @@ export default function ReportsPage() {
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
             <Scroll as="main" className="flex-1">
                 <Header title="영상 리포트" showMenu={true} />
-                <PageContent className="flex flex-col gap-4 pb-6 pt-2">
+                <PageContent className="flex flex-col gap-4 pb-6 pt-2 tablet:pt-4 desktop:pt-2">
                     <MyVideoList />
                     <Line variant="thick" />
                     <VideoReport />
