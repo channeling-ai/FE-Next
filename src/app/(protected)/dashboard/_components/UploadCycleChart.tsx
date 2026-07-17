@@ -9,6 +9,7 @@ import {
     type DashboardPeriod,
     type DashboardScoreType,
 } from '@/api/dashboard'
+import { DashboardChartSkeleton } from './DashboardSkeletons'
 
 const metrics = ['채널 성장', '알고리즘', '시청 몰입', '반응 밀도', '유입 활력', '업로드 주기'] as const
 const periods = ['1주', '1달'] as const
@@ -63,7 +64,7 @@ export default function UploadCycleChart() {
     const [activeMetric, setActiveMetric] = useState<Metric>('채널 성장')
     const [period, setPeriod] = useState<Period>('1주')
     const apiPeriod: DashboardPeriod = period === '1주' ? 'WEEK' : 'MONTH'
-    const { data: graph } = useQuery({
+    const { data: graph, isPending } = useQuery({
         queryKey: ['dashboard', 'graph', apiPeriod],
         queryFn: () => getDashboardGraph(apiPeriod),
     })
@@ -79,6 +80,8 @@ export default function UploadCycleChart() {
             score: point.score,
         }))
     }, [activeMetric, graph])
+
+    if (isPending) return <DashboardChartSkeleton />
 
     return (
         <section className="flex w-full flex-col gap-[22px] rounded-[20px] bg-bg-1 p-5">

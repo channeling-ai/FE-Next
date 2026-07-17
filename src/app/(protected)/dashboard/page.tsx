@@ -11,6 +11,12 @@ import {
     type DashboardSuggestionType,
 } from '@/api/dashboard'
 import DashboardHeader from './_components/DashboardHeader'
+import {
+    DashboardDateSkeleton,
+    DashboardMetricCardsSkeleton,
+    DashboardProfileCardSkeleton,
+    DashboardSuggestionsSkeleton,
+} from './_components/DashboardSkeletons'
 import InsightCard from './_components/InsightCard'
 import MetricCardSmall from './_components/MetricCardSmall'
 import MetricCardWithImage from './_components/MetricCardwithImage'
@@ -63,9 +69,7 @@ function isMetricStatus(status: string): status is MetricStatus {
     return metricStatuses.has(status as MetricStatus)
 }
 
-function formatBaseDate(baseDate?: string) {
-    if (!baseDate) return '데이터 기준 시각을 불러오는 중입니다'
-
+function formatBaseDate(baseDate: string) {
     const parts = new Intl.DateTimeFormat('ko-KR', {
         timeZone: 'Asia/Seoul',
         year: '2-digit',
@@ -81,9 +85,7 @@ function formatBaseDate(baseDate?: string) {
     return `${getPart('year')}년 ${getPart('month')}월 ${getPart('day')}일 (${getPart('hour')}:${getPart('minute')}) 기준`
 }
 
-function formatSubscribers(subscriberCount?: number) {
-    if (subscriberCount === undefined) return '-'
-
+function formatSubscribers(subscriberCount: number) {
     return new Intl.NumberFormat('en-US', {
         notation: 'compact',
         maximumFractionDigits: 1,
@@ -91,11 +93,11 @@ function formatSubscribers(subscriberCount?: number) {
 }
 
 export default function DashboardPage() {
-    const { data: metadata } = useQuery({
+    const { data: metadata, isPending: isMetadataPending } = useQuery({
         queryKey: ['dashboard', 'metadata'],
         queryFn: getDashboardMetadata,
     })
-    const { data: suggestions } = useQuery({
+    const { data: suggestions, isPending: isSuggestionsPending } = useQuery({
         queryKey: ['dashboard', 'suggestions'],
         queryFn: getDashboardSuggestions,
     })
@@ -126,48 +128,65 @@ export default function DashboardPage() {
             <Scroll as="main" className="flex-1">
                 <PageContent className="mx-auto flex flex-col gap-8 pb-8 pt-4 desktop:pb-16 desktop:pt-8">
                     <section className="flex w-full flex-col gap-2">
-                        <p className="font-body-14r text-text-tertiary">
-                            {formatBaseDate(metadata?.baseDate)}
-                        </p>
+                        {isMetadataPending ? (
+                            <DashboardDateSkeleton />
+                        ) : metadata ? (
+                            <p className="font-body-14r text-text-tertiary">
+                                {formatBaseDate(metadata.baseDate)}
+                            </p>
+                        ) : null}
 
                         <div className="grid w-full grid-cols-1 gap-2 tablet:grid-cols-[274px_minmax(0,1fr)] desktop:grid-cols-[298px_minmax(0,1fr)]">
-                            <MetricCardWithImage
-                                channelName={metadata?.channelInfo.channelName ?? '채널 정보를 불러오는 중입니다'}
-                                subscribers={formatSubscribers(metadata?.channelInfo.subscriberCount)}
-                                delta={metadata?.channelInfo.subscriberChange ?? 0}
-                                imageUrl={metadata?.channelInfo.profileImageUrl || '/images/dashboard/subscriber-card.png'}
-                            />
-                            <div className="grid min-w-0 grid-cols-2 gap-2 tablet:grid-cols-3">
-                                {renderedMetrics.map((metric) => (
-                                    <MetricCardSmall key={metric.label} {...metric} />
-                                ))}
-                            </div>
+                            {isMetadataPending ? (
+                                <>
+                                    <DashboardProfileCardSkeleton />
+                                    <DashboardMetricCardsSkeleton />
+                                </>
+                            ) : metadata ? (
+                                <>
+                                    <MetricCardWithImage
+                                        channelName={metadata.channelInfo.channelName}
+                                        subscribers={formatSubscribers(metadata.channelInfo.subscriberCount)}
+                                        delta={metadata.channelInfo.subscriberChange}
+                                        imageUrl={metadata.channelInfo.profileImageUrl}
+                                    />
+                                    <div className="grid min-w-0 grid-cols-2 gap-2 tablet:grid-cols-3">
+                                        {renderedMetrics.map((metric) => (
+                                            <MetricCardSmall key={metric.label} {...metric} />
+                                        ))}
+                                    </div>
+                                </>
+                            ) : null}
                         </div>
                     </section>
 
                     <UploadCycleChart />
 
-                    <section className="flex w-full flex-col gap-6">
-                        <div className="flex flex-col gap-2">
-                            <h2 className="font-title-18sb text-text-primary">채널링의 제안</h2>
-                            {suggestions?.summaryMessage && (
-                                <p className="font-body-14r text-text-secondary">
-                                    {suggestions.summaryMessage}
-                                </p>
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            {(renderedInsights ?? []).map((insight) => (
-                                <InsightCard
-                                    key={insight.suggestionId}
-                                    title={insight.title}
-                                    description={insight.description}
-                                    tags={insight.tags}
-                                    href={`/dashboard/insights/${insight.suggestionId}`}
-                                />
-                            ))}
-                        </div>
-                    </section>
+                    {isSuggestionsPending ? (
+                        <DashboardSuggestionsSkeleton />
+                    ) : suggestions ? (
+                        <section className="flex w-full flex-col gap-6">
+                            <div className="flex flex-col gap-2">
+                                <h2 className="font-title-18sb text-text-primary">채널링의 제안</h2>
+                                {suggestions.summaryMessage && (
+                                    <p className="font-body-14r text-text-secondary">
+                                        {suggestions.summaryMessage}
+                                    </p>
+                                )}
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                {(renderedInsights ?? []).map((insight) => (
+                                    <InsightCard
+                                        key={insight.suggestionId}
+                                        title={insight.title}
+                                        description={insight.description}
+                                        tags={insight.tags}
+                                        href={`/dashboard/insights/${insight.suggestionId}`}
+                                    />
+                                ))}
+                            </div>
+                        </section>
+                    ) : null}
 
                 </PageContent>
                 <Footer />
