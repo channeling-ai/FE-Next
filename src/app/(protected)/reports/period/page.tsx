@@ -59,6 +59,7 @@ function DateField({ label, max, min, onChange, value }: DateFieldProps) {
                 max={max}
                 min={min}
                 onChange={(event) => onChange(event.target.value)}
+                onClick={(event) => event.currentTarget.showPicker?.()}
                 value={value}
             />
         </label>
