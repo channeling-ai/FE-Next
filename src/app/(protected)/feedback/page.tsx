@@ -112,7 +112,7 @@ export default function FeedbackPage() {
     }
 
     return (
-        <div className="flex flex-col h-full w-full bg-gray-0 text-gray-95 overflow-hidden selection:bg-primary-60/30">
+        <div className="flex h-full w-full flex-col overflow-hidden bg-gray-0 text-gray-95 selection:bg-primary-60/30 desktop:pt-3">
             <Header title="피드백" showMenu={true} />
 
             <main className="overflow-y-auto px-4 tablet:px-5 desktop:px-16 py-7 custom-scrollbar">
