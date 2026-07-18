@@ -129,9 +129,11 @@ export default function AnalysisTab() {
                 </h2>
 
                 <div className="flex flex-col gap-4 overflow-hidden rounded-[20px] bg-bg-1 p-5">
-                    <div className="flex flex-col gap-1 font-body-14r">
-                        <p className="font-medium text-text-brand">0분 00초(00:00~00:00) 구간 이탈 요약</p>
-                        <p className="text-text-secondary">채널링이 분석한 가장 개선이 시급한 구간입니다.</p>
+                    <div className="flex flex-col gap-1">
+                        <p className="font-body-14m text-text-brand">0분 00초(00:00~00:00) 구간 이탈 요약</p>
+                        <p className="font-body-14r text-text-secondary">
+                            채널링이 분석한 가장 개선이 시급한 구간입니다.
+                        </p>
                     </div>
 
                     <RetentionGraph />
