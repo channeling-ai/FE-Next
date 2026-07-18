@@ -1,12 +1,40 @@
 import { useEffect, useRef, useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import Dropdown from '@/assets/icons/dropdown.svg'
+import { createIdeas } from '@/api/ideas'
+import type { IdeaVideoType } from '@/api/ideas'
 import { DropdownVideoType } from './DropdownVideotype'
 import TextField from '@/components/TextField'
 import GenerationButton from './GenerationButton'
 
-export default function ContentIdeaGeneration() {
+const VIDEO_TYPE_MAP: Record<string, IdeaVideoType> = {
+    선택없음: 'ALL',
+    '숏폼 (3분 미만)': 'SHORTS',
+    '롱폼 (3분 이상)': 'LONG',
+}
+
+interface ContentIdeaGenerationProps {
+    keyword: string
+    onKeywordChange: (keyword: string) => void
+}
+
+export default function ContentIdeaGeneration({ keyword, onKeywordChange }: ContentIdeaGenerationProps) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const [detail, setDetail] = useState('')
+    const [resultMessage, setResultMessage] = useState('')
+    const queryClient = useQueryClient()
+    const createIdeaMutation = useMutation({
+        mutationFn: createIdeas,
+        onSuccess: async () => {
+            setResultMessage('아이디어를 생성했습니다.')
+            setDetail('')
+            await queryClient.invalidateQueries({ queryKey: ['ideas'] })
+        },
+        onError: () => {
+            setResultMessage('아이디어를 생성하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+        },
+    })
 
     const handleDropdownClick = () => {
         setIsDropdownOpen((prev) => !prev)
@@ -21,6 +49,15 @@ export default function ContentIdeaGeneration() {
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     const [selectedOption, setSelectedOption] = useState('')
+
+    const handleGenerate = () => {
+        setResultMessage('')
+        createIdeaMutation.mutate({
+            keyword: keyword.trim(),
+            videoType: VIDEO_TYPE_MAP[selectedOption] ?? 'ALL',
+            detail: detail.trim(),
+        })
+    }
 
     useEffect(() => {
         if (!isDropdownOpen) return
@@ -77,6 +114,8 @@ export default function ContentIdeaGeneration() {
                     </div>
                     <TextField
                         label="핵심 키워드"
+                        value={keyword}
+                        onChange={onKeywordChange}
                         className="w-full"
                         placeholder="생각나는 키워드를 입력해주세요"
                         helperText="(예: 바이브코딩, 도쿄 여행, 가을 메이크업)"
@@ -84,13 +123,25 @@ export default function ContentIdeaGeneration() {
                     <TextField
                         label="추가 입력 사항"
                         maxLength={300}
+                        value={detail}
+                        onChange={setDetail}
                         heightVariant="large"
                         className="w-full"
                         placeholder="어떤 점을 강조하고 싶으신가요?"
                         helperText="(예: 쉬운 설명, 유머, 영상미)"
                     />
                 </div>
-                <GenerationButton />
+                <GenerationButton isPending={createIdeaMutation.isPending} onClick={handleGenerate} />
+                {resultMessage && (
+                    <p
+                        role="status"
+                        className={`px-4 font-body-14r ${
+                            createIdeaMutation.isError ? 'text-border-error' : 'text-text-secondary'
+                        }`}
+                    >
+                        {resultMessage}
+                    </p>
+                )}
             </div>
         </div>
     )
