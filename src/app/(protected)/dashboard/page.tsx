@@ -8,7 +8,6 @@ import {
     getDashboardMetadata,
     getDashboardSuggestions,
     type DashboardScoreType,
-    type DashboardSuggestionType,
 } from '@/api/dashboard'
 import DashboardHeader from './_components/DashboardHeader'
 import {
@@ -21,7 +20,6 @@ import InsightCard from './_components/InsightCard'
 import MetricCardSmall from './_components/MetricCardSmall'
 import MetricCardWithImage from './_components/MetricCardwithImage'
 import UploadCycleChart from './_components/UploadCycleChart'
-import { dashboardInsights } from './_data/insights'
 import { Footer } from '@/components/Footer'
 
 type MetricStatus = Parameters<typeof StatusBadge>[0]['status']
@@ -36,18 +34,6 @@ const scoreTypeDetails: Record<DashboardScoreType, { label: string }> = {
 }
 
 const scoreTypeOrder = Object.keys(scoreTypeDetails) as DashboardScoreType[]
-
-const suggestionDetails: Record<DashboardSuggestionType, { tags: string[] }> = {
-    VIDEO_REUSE: {
-        tags: dashboardInsights[0]?.tags ?? [],
-    },
-    TREND_KEYWORD: {
-        tags: dashboardInsights[1]?.tags ?? [],
-    },
-    COMMENT_ANALYSIS: {
-        tags: dashboardInsights[2]?.tags ?? [],
-    },
-}
 
 const metricStatuses = new Set<MetricStatus>([
     '최상',
@@ -114,13 +100,6 @@ export default function DashboardPage() {
         }
     })
 
-    const renderedInsights = suggestions?.suggestionList.length
-        ? suggestions.suggestionList.map((suggestion) => ({
-            ...suggestion,
-            ...suggestionDetails[suggestion.suggestionType],
-        }))
-        : undefined
-
     return (
         <div className="flex h-full w-full flex-col bg-bg-0">
             <DashboardHeader />
@@ -175,12 +154,11 @@ export default function DashboardPage() {
                                 )}
                             </div>
                             <div className="flex flex-col gap-2">
-                                {(renderedInsights ?? []).map((insight) => (
+                                {suggestions.suggestionList.map((insight) => (
                                     <InsightCard
                                         key={insight.suggestionId}
                                         title={insight.title}
                                         description={insight.description}
-                                        tags={insight.tags}
                                         href={`/dashboard/insights/${insight.suggestionId}`}
                                     />
                                 ))}
