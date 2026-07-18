@@ -20,7 +20,10 @@ import NotificationRow from './_components/NotificationRow'
 import PlanManagementSection from './_components/PlanManagementSection'
 import ProfileField from './_components/ProfileField'
 import SettingsProfileImage from './_components/SettingsProfileImage'
+import SettingsConfirmModal from './_components/SettingsConfirmModal'
 import Line from '@/components/Line'
+
+type ConfirmModalType = 'logout' | 'withdraw' | 'cancelPlan' | null
 
 export default function SettingsPage() {
     const user = useAuthStore((state) => state.user)
@@ -36,6 +39,7 @@ export default function SettingsPage() {
     const [isUpdatingAgreements, setIsUpdatingAgreements] = useState(false)
     const [isUploadingProfile, setIsUploadingProfile] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
+    const [confirmModal, setConfirmModal] = useState<ConfirmModalType>(null)
 
     useEffect(() => {
         if (!user) return
@@ -114,6 +118,15 @@ export default function SettingsPage() {
         }
     }
 
+    const handleWithdraw = async () => {
+        try {
+            await withdraw()
+        } catch {
+            setConfirmModal(null)
+            setErrorMessage('계정을 삭제하지 못했습니다. 잠시 후 다시 시도해주세요.')
+        }
+    }
+
     return (
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
             <Scroll as="main" className="flex-1">
@@ -156,7 +169,9 @@ export default function SettingsPage() {
 
                     <Line variant="thick" />
 
-                    <PlanManagementSection />
+                    <PlanManagementSection
+                        onCancelPlan={() => setConfirmModal('cancelPlan')}
+                    />
 
                     <Line variant="thick" />
 
@@ -191,14 +206,14 @@ export default function SettingsPage() {
                             label={`${user?.googleEmail ?? ''}로 로그인 되어 있습니다`}
                             buttonLabel={isLoggingOut ? '로그아웃 중' : '로그아웃'}
                             disabled={isLoggingOut || isWithdrawing}
-                            onClick={() => void logout()}
+                            onClick={() => setConfirmModal('logout')}
                         />
                         <ActionRow
                             label="계정 삭제하기"
                             buttonLabel={isWithdrawing ? '삭제 중' : '계정 삭제'}
                             danger
                             disabled={isLoggingOut || isWithdrawing}
-                            onClick={() => void withdraw()}
+                            onClick={() => setConfirmModal('withdraw')}
                         />
                     </div>
                 </PageContent>
@@ -215,6 +230,38 @@ export default function SettingsPage() {
                     </Modal.Button>
                 </Modal.Footer>
             </Modal>
+
+            <SettingsConfirmModal
+                isOpen={confirmModal === 'logout'}
+                title="로그아웃 하시겠어요?"
+                caption="언제든지 다시 로그인할 수 있어요"
+                confirmLabel="로그아웃"
+                pendingLabel="로그아웃 중"
+                isPending={isLoggingOut}
+                onClose={() => setConfirmModal(null)}
+                onConfirm={() => void logout()}
+            />
+
+            <SettingsConfirmModal
+                isOpen={confirmModal === 'withdraw'}
+                title="정말 채널링을 떠나시겠어요?"
+                caption={'삭제된 데이터는 다시 복구할 수 없으니\n신중하게 결정해 주세요'}
+                confirmLabel="탈퇴"
+                pendingLabel="탈퇴 중"
+                confirmVariant="error"
+                isPending={isWithdrawing}
+                onClose={() => setConfirmModal(null)}
+                onConfirm={() => void handleWithdraw()}
+            />
+
+            <SettingsConfirmModal
+                isOpen={confirmModal === 'cancelPlan'}
+                title="정말 구독을 해지하시겠습니까?"
+                caption={'해지 시, 다음 결제일 전까지\n혜택을 이용하실 수 있습니다.'}
+                confirmLabel="해지"
+                onClose={() => setConfirmModal(null)}
+                onConfirm={() => setConfirmModal(null)}
+            />
         </div>
     )
 }

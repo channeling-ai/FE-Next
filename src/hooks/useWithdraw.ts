@@ -13,11 +13,6 @@ export function useWithdraw() {
     const withdraw = useCallback(async () => {
         if (isWithdrawing) return
 
-        const shouldWithdraw = window.confirm(
-            '계정을 삭제하시겠어요? 탈퇴 후 30일 이내에 복구할 수 있습니다.'
-        )
-        if (!shouldWithdraw) return
-
         setIsWithdrawing(true)
 
         try {
@@ -28,7 +23,7 @@ export function useWithdraw() {
             router.refresh()
         } catch (error) {
             console.error('회원 탈퇴 API 호출 실패:', error)
-            window.alert('계정을 삭제하지 못했습니다. 잠시 후 다시 시도해주세요.')
+            throw error
         } finally {
             setIsWithdrawing(false)
         }
