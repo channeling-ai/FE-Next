@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { changeIdeaBookmark, getIdeas } from '@/api/ideas'
+import { changeIdeaBookmark, getBookmarkedIdeas } from '@/api/ideas'
 import type { IdeaDetail, IdeaSort } from '@/api/ideas'
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import SavedIdeaCard from './SavedIdeaCard'
@@ -25,13 +25,11 @@ export default function SavedIdea() {
     }, [searchKeyword])
 
     const ideasQuery = useInfiniteQuery({
-        queryKey: ['ideas', 'list', { keyword: debouncedKeyword, sort }],
+        queryKey: ['ideas', 'bookmarks'],
         queryFn: ({ pageParam }) =>
-            getIdeas({
+            getBookmarkedIdeas({
                 page: pageParam,
-                size: 10,
-                sort,
-                keyword: debouncedKeyword,
+                size: 6,
             }),
         initialPageParam: 1,
         getNextPageParam: (lastPage) => (lastPage.hasNextPage ? lastPage.page + 1 : undefined),
@@ -47,12 +45,25 @@ export default function SavedIdea() {
                       }
                     : previousIdea
             )
-            await queryClient.invalidateQueries({ queryKey: ['ideas', 'list'] })
+            await queryClient.invalidateQueries({ queryKey: ['ideas', 'bookmarks'] })
         },
     })
 
-    const ideas = ideasQuery.data?.pages.flatMap((page) => page.ideas) ?? []
-    const totalIdeas = ideasQuery.data?.pages[0]?.total ?? 0
+    const ideas = (ideasQuery.data?.pages.flatMap((page) => page.ideas) ?? [])
+        .filter((idea) => {
+            if (!debouncedKeyword) return true
+
+            const normalizedKeyword = debouncedKeyword.toLocaleLowerCase()
+            return [idea.title, idea.contentPreview, ...idea.tags].some((value) =>
+                value.toLocaleLowerCase().includes(normalizedKeyword)
+            )
+        })
+        .sort((firstIdea, secondIdea) => {
+            const firstCreatedAt = new Date(firstIdea.createdAt).getTime()
+            const secondCreatedAt = new Date(secondIdea.createdAt).getTime()
+            return sort === 'latest' ? secondCreatedAt - firstCreatedAt : firstCreatedAt - secondCreatedAt
+        })
+    const totalIdeas = debouncedKeyword ? ideas.length : (ideasQuery.data?.pages[0]?.total ?? 0)
 
     if (selectedIdeaId !== null) {
         return <IdeaDetailView ideaId={selectedIdeaId} onBack={() => setSelectedIdeaId(null)} />

@@ -28,7 +28,7 @@ export default function IdeaDetailView({ ideaId, onBack }: IdeaDetailViewProps) 
                       }
                     : previousIdea
             )
-            await queryClient.invalidateQueries({ queryKey: ['ideas', 'list'] })
+            await queryClient.invalidateQueries({ queryKey: ['ideas', 'bookmarks'] })
         },
     })
 

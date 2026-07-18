@@ -2,11 +2,14 @@ import { useEffect, useRef, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import Dropdown from '@/assets/icons/dropdown.svg'
-import { createIdeas } from '@/api/ideas'
-import type { IdeaVideoType } from '@/api/ideas'
+import { changeIdeaBookmark, createIdeas } from '@/api/ideas'
+import type { IdeaDetail, IdeaListItem, IdeaVideoType } from '@/api/ideas'
 import { DropdownVideoType } from './DropdownVideotype'
 import TextField from '@/components/TextField'
 import GenerationButton from './GenerationButton'
+import { SkeletonBase } from '@/components/skeletonbase'
+import SavedIdeaCard from './SavedIdeaCard'
+import IdeaDetailView from './IdeaDetailView'
 
 const VIDEO_TYPE_MAP: Record<string, IdeaVideoType> = {
     선택없음: 'ALL',
@@ -23,16 +26,47 @@ export default function ContentIdeaGeneration({ keyword, onKeywordChange }: Cont
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [detail, setDetail] = useState('')
     const [resultMessage, setResultMessage] = useState('')
+    const [generatedIdeas, setGeneratedIdeas] = useState<IdeaListItem[]>([])
+    const [selectedIdeaId, setSelectedIdeaId] = useState<number | null>(null)
     const queryClient = useQueryClient()
     const createIdeaMutation = useMutation({
         mutationFn: createIdeas,
-        onSuccess: async () => {
+        onMutate: () => {
+            setGeneratedIdeas([])
+            setResultMessage('')
+        },
+        onSuccess: (ideas) => {
+            setGeneratedIdeas(ideas)
             setResultMessage('아이디어를 생성했습니다.')
             setDetail('')
-            await queryClient.invalidateQueries({ queryKey: ['ideas'] })
+            void queryClient.invalidateQueries({ queryKey: ['ideas', 'bookmarks'] })
         },
         onError: () => {
             setResultMessage('아이디어를 생성하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+        },
+    })
+    const bookmarkMutation = useMutation({
+        mutationFn: changeIdeaBookmark,
+        onSuccess: async (bookmarkResult) => {
+            setGeneratedIdeas((previousIdeas) =>
+                previousIdeas.map((idea) =>
+                    idea.ideaId === bookmarkResult.ideaId
+                        ? {
+                              ...idea,
+                              isBookmarked: bookmarkResult.isBookmarked,
+                          }
+                        : idea
+                )
+            )
+            queryClient.setQueryData<IdeaDetail>(['ideas', 'detail', bookmarkResult.ideaId], (previousIdea) =>
+                previousIdea
+                    ? {
+                          ...previousIdea,
+                          isBookmarked: bookmarkResult.isBookmarked,
+                      }
+                    : previousIdea
+            )
+            await queryClient.invalidateQueries({ queryKey: ['ideas', 'bookmarks'] })
         },
     })
 
@@ -51,7 +85,6 @@ export default function ContentIdeaGeneration({ keyword, onKeywordChange }: Cont
     const [selectedOption, setSelectedOption] = useState('')
 
     const handleGenerate = () => {
-        setResultMessage('')
         createIdeaMutation.mutate({
             keyword: keyword.trim(),
             videoType: VIDEO_TYPE_MAP[selectedOption] ?? 'ALL',
@@ -132,6 +165,31 @@ export default function ContentIdeaGeneration({ keyword, onKeywordChange }: Cont
                     />
                 </div>
                 <GenerationButton isPending={createIdeaMutation.isPending} onClick={handleGenerate} />
+
+                {createIdeaMutation.isPending && (
+                    <div className="flex w-full flex-col gap-3">
+                        {[0, 1, 2].map((index) => (
+                            <SkeletonBase key={index} sizeConfig="h-50 w-full" />
+                        ))}
+                    </div>
+                )}
+
+                {generatedIdeas.length > 0 && (
+                    <div className="flex w-full flex-col gap-3">
+                        {generatedIdeas.map((idea) => (
+                            <SavedIdeaCard
+                                key={idea.ideaId}
+                                idea={idea}
+                                onClick={() => setSelectedIdeaId(idea.ideaId)}
+                                onBookmarkClick={() => bookmarkMutation.mutate(idea.ideaId)}
+                                isBookmarkPending={
+                                    bookmarkMutation.isPending && bookmarkMutation.variables === idea.ideaId
+                                }
+                            />
+                        ))}
+                    </div>
+                )}
+
                 {resultMessage && (
                     <p
                         role="status"
@@ -143,6 +201,10 @@ export default function ContentIdeaGeneration({ keyword, onKeywordChange }: Cont
                     </p>
                 )}
             </div>
+
+            {selectedIdeaId !== null && (
+                <IdeaDetailView ideaId={selectedIdeaId} onBack={() => setSelectedIdeaId(null)} />
+            )}
         </div>
     )
 }
