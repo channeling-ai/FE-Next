@@ -24,7 +24,7 @@ export default function SettingsProfileImage({
             <input
                 ref={inputRef}
                 type="file"
-                accept="image/png,image/jpeg,image/jpg"
+                accept="image/png,image/jpeg"
                 className="hidden"
                 onChange={(event) => {
                     const file = event.target.files?.[0]
