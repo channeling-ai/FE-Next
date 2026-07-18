@@ -56,19 +56,29 @@ function isMetricStatus(status: string): status is MetricStatus {
 }
 
 function formatBaseDate(baseDate: string) {
-    const parts = new Intl.DateTimeFormat('ko-KR', {
-        timeZone: 'Asia/Seoul',
-        year: '2-digit',
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hourCycle: 'h23',
-    }).formatToParts(new Date(baseDate))
-    const getPart = (type: Intl.DateTimeFormatPartTypes) =>
-        parts.find((part) => part.type === type)?.value
+    try {
+        const date = new Date(baseDate)
 
-    return `${getPart('year')}년 ${getPart('month')}월 ${getPart('day')}일 (${getPart('hour')}:${getPart('minute')}) 기준`
+        if (Number.isNaN(date.getTime())) {
+            return '일시 정보 없음'
+        }
+
+        const parts = new Intl.DateTimeFormat('ko-KR', {
+            timeZone: 'Asia/Seoul',
+            year: '2-digit',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hourCycle: 'h23',
+        }).formatToParts(date)
+        const getPart = (type: Intl.DateTimeFormatPartTypes) =>
+            parts.find((part) => part.type === type)?.value
+
+        return `${getPart('year')}년 ${getPart('month')}월 ${getPart('day')}일 (${getPart('hour')}:${getPart('minute')}) 기준`
+    } catch {
+        return '일시 정보 없음'
+    }
 }
 
 function formatSubscribers(subscriberCount: number) {
