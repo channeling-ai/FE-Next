@@ -7,6 +7,7 @@ import SearchBar from './SearchBar'
 import IdeaDetailView from './IdeaDetailView'
 import DropdownOrder from '@/components/dropdown-order'
 import { SkeletonBase } from '@/components/skeletonbase'
+import { useIdeasStore } from '@/stores/ideasStore'
 
 export default function SavedIdea() {
     const [selectedIdeaId, setSelectedIdeaId] = useState<number | null>(null)
@@ -14,6 +15,7 @@ export default function SavedIdea() {
     const [debouncedKeyword, setDebouncedKeyword] = useState('')
     const [sort, setSort] = useState<IdeaSort>('latest')
     const queryClient = useQueryClient()
+    const updateGeneratedIdeaBookmark = useIdeasStore((state) => state.updateGeneratedIdeaBookmark)
 
     useEffect(() => {
         const timeoutId = window.setTimeout(() => {
@@ -36,6 +38,7 @@ export default function SavedIdea() {
     const bookmarkMutation = useMutation({
         mutationFn: changeIdeaBookmark,
         onSuccess: async (bookmarkResult) => {
+            updateGeneratedIdeaBookmark(bookmarkResult.ideaId, bookmarkResult.isBookmarked)
             queryClient.setQueryData<IdeaDetail>(['ideas', 'detail', bookmarkResult.ideaId], (previousIdea) =>
                 previousIdea
                     ? {

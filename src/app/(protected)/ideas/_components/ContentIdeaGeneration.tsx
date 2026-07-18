@@ -3,7 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import Dropdown from '@/assets/icons/dropdown.svg'
 import { changeIdeaBookmark, createIdeas } from '@/api/ideas'
-import type { IdeaDetail, IdeaListItem, IdeaVideoType } from '@/api/ideas'
+import type { IdeaDetail, IdeaVideoType } from '@/api/ideas'
+import { useIdeasStore } from '@/stores/ideasStore'
 import { DropdownVideoType } from './DropdownVideotype'
 import TextField from '@/components/TextField'
 import GenerationButton from './GenerationButton'
@@ -26,17 +27,18 @@ export default function ContentIdeaGeneration({ keyword, onKeywordChange }: Cont
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [detail, setDetail] = useState('')
     const [resultMessage, setResultMessage] = useState('')
-    const [generatedIdeas, setGeneratedIdeas] = useState<IdeaListItem[]>([])
     const [selectedIdeaId, setSelectedIdeaId] = useState<number | null>(null)
+    const generatedIdeas = useIdeasStore((state) => state.generatedIdeas)
+    const prependGeneratedIdeas = useIdeasStore((state) => state.prependGeneratedIdeas)
+    const updateGeneratedIdeaBookmark = useIdeasStore((state) => state.updateGeneratedIdeaBookmark)
     const queryClient = useQueryClient()
     const createIdeaMutation = useMutation({
         mutationFn: createIdeas,
         onMutate: () => {
-            setGeneratedIdeas([])
             setResultMessage('')
         },
         onSuccess: (ideas) => {
-            setGeneratedIdeas(ideas)
+            prependGeneratedIdeas(ideas)
             setResultMessage('아이디어를 생성했습니다.')
             setDetail('')
             void queryClient.invalidateQueries({ queryKey: ['ideas', 'bookmarks'] })
@@ -48,16 +50,7 @@ export default function ContentIdeaGeneration({ keyword, onKeywordChange }: Cont
     const bookmarkMutation = useMutation({
         mutationFn: changeIdeaBookmark,
         onSuccess: async (bookmarkResult) => {
-            setGeneratedIdeas((previousIdeas) =>
-                previousIdeas.map((idea) =>
-                    idea.ideaId === bookmarkResult.ideaId
-                        ? {
-                              ...idea,
-                              isBookmarked: bookmarkResult.isBookmarked,
-                          }
-                        : idea
-                )
-            )
+            updateGeneratedIdeaBookmark(bookmarkResult.ideaId, bookmarkResult.isBookmarked)
             queryClient.setQueryData<IdeaDetail>(['ideas', 'detail', bookmarkResult.ideaId], (previousIdea) =>
                 previousIdea
                     ? {

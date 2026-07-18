@@ -4,6 +4,7 @@ import BookmarkDefault from '@/assets/icons/bookmark_default.svg'
 import Back from '@/assets/icons/back.svg'
 import { SkeletonBase } from '@/components/skeletonbase'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useIdeasStore } from '@/stores/ideasStore'
 import { formatIdeaDate, formatIdeaTag } from './idea-format'
 
 interface IdeaDetailViewProps {
@@ -13,6 +14,7 @@ interface IdeaDetailViewProps {
 
 export default function IdeaDetailView({ ideaId, onBack }: IdeaDetailViewProps) {
     const queryClient = useQueryClient()
+    const updateGeneratedIdeaBookmark = useIdeasStore((state) => state.updateGeneratedIdeaBookmark)
     const { data, isPending, isError, refetch } = useQuery({
         queryKey: ['ideas', 'detail', ideaId],
         queryFn: () => getIdeaDetail(ideaId),
@@ -20,6 +22,7 @@ export default function IdeaDetailView({ ideaId, onBack }: IdeaDetailViewProps) 
     const bookmarkMutation = useMutation({
         mutationFn: () => changeIdeaBookmark(ideaId),
         onSuccess: async (bookmarkResult) => {
+            updateGeneratedIdeaBookmark(bookmarkResult.ideaId, bookmarkResult.isBookmarked)
             queryClient.setQueryData(['ideas', 'detail', ideaId], (previousIdea: typeof data) =>
                 previousIdea
                     ? {
