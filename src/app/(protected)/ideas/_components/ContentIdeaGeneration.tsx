@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
 
 import Dropdown from '@/assets/icons/dropdown.svg'
 import { changeIdeaBookmark, createIdeas } from '@/api/ideas'
 import type { IdeaDetail, IdeaVideoType } from '@/api/ideas'
+import { Modal } from '@/components/Modal'
 import { useIdeasStore } from '@/stores/ideasStore'
 import { DropdownVideoType } from './DropdownVideotype'
 import TextField from '@/components/TextField'
@@ -23,10 +25,31 @@ interface ContentIdeaGenerationProps {
     onKeywordChange: (keyword: string) => void
 }
 
+interface GenerationErrorResponse {
+    code: string
+    message: string
+}
+
+interface GenerationErrorModalContent {
+    title: string
+    caption: string
+}
+
+const GENERATION_LIMIT_ERROR: GenerationErrorModalContent = {
+    title: '아이디어 생성 한도를 초과했어요',
+    caption: '현재 이용 가능한 아이디어 생성 횟수를 모두 사용했어요.',
+}
+
+const DEFAULT_GENERATION_ERROR: GenerationErrorModalContent = {
+    title: '아이디어를 생성하지 못했어요',
+    caption: '잠시 후 다시 시도해 주세요.',
+}
+
 export default function ContentIdeaGeneration({ keyword, onKeywordChange }: ContentIdeaGenerationProps) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [detail, setDetail] = useState('')
     const [resultMessage, setResultMessage] = useState('')
+    const [generationError, setGenerationError] = useState<GenerationErrorModalContent | null>(null)
     const [selectedIdeaId, setSelectedIdeaId] = useState<number | null>(null)
     const generatedIdeas = useIdeasStore((state) => state.generatedIdeas)
     const prependGeneratedIdeas = useIdeasStore((state) => state.prependGeneratedIdeas)
@@ -36,6 +59,7 @@ export default function ContentIdeaGeneration({ keyword, onKeywordChange }: Cont
         mutationFn: createIdeas,
         onMutate: () => {
             setResultMessage('')
+            setGenerationError(null)
         },
         onSuccess: (ideas) => {
             prependGeneratedIdeas(ideas)
@@ -43,8 +67,11 @@ export default function ContentIdeaGeneration({ keyword, onKeywordChange }: Cont
             setDetail('')
             void queryClient.invalidateQueries({ queryKey: ['ideas', 'bookmarks'] })
         },
-        onError: () => {
-            setResultMessage('아이디어를 생성하지 못했습니다. 잠시 후 다시 시도해 주세요.')
+        onError: (error) => {
+            const isLimitExceeded =
+                axios.isAxiosError<GenerationErrorResponse>(error) && error.response?.data.code === 'S3402'
+
+            setGenerationError(isLimitExceeded ? GENERATION_LIMIT_ERROR : DEFAULT_GENERATION_ERROR)
         },
     })
     const bookmarkMutation = useMutation({
@@ -184,16 +211,20 @@ export default function ContentIdeaGeneration({ keyword, onKeywordChange }: Cont
                 )}
 
                 {resultMessage && (
-                    <p
-                        role="status"
-                        className={`px-4 font-body-14r ${
-                            createIdeaMutation.isError ? 'text-border-error' : 'text-text-secondary'
-                        }`}
-                    >
+                    <p role="status" className="px-4 font-body-14r text-text-secondary">
                         {resultMessage}
                     </p>
                 )}
             </div>
+
+            <Modal isOpen={generationError !== null} onClose={() => setGenerationError(null)}>
+                <Modal.Header title={generationError?.title ?? ''} caption={generationError?.caption} />
+                <Modal.Footer>
+                    <Modal.Button type="button" variant="error" onClick={() => setGenerationError(null)}>
+                        확인
+                    </Modal.Button>
+                </Modal.Footer>
+            </Modal>
 
             {selectedIdeaId !== null && (
                 <IdeaDetailView ideaId={selectedIdeaId} onBack={() => setSelectedIdeaId(null)} />
