@@ -174,8 +174,8 @@ function parseIdeaTags(tags: string[] | undefined, hashTag: string | string[] | 
         .filter(Boolean)
 }
 
-function parseCreatedIdeaBookmark(value: CreatedIdeaResponse['is_book_marked']) {
-    return ['true', '1', 'y', 'yes'].includes(value.toLowerCase())
+function parseCreatedIdeaBookmark(value: CreatedIdeaResponse['is_book_marked'] | undefined | null) {
+    return ['true', '1', 'y', 'yes'].includes(value?.toLowerCase() ?? '')
 }
 
 export async function createIdeas(request: CreateIdeaRequest): Promise<IdeaListItem[]> {
