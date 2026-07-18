@@ -25,6 +25,7 @@ export default function FeedbackPage() {
     const [contact, setContact] = useState('')
     const [files, setFiles] = useState<File[]>([])
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [uploadProgress, setUploadProgress] = useState<number | null>(null)
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [isDragging, setIsDragging] = useState(false)
     const [errorTitle, setErrorTitle] = useState('')
@@ -110,13 +111,17 @@ export default function FeedbackPage() {
     const handleSubmit = async () => {
         if (!hasInquiry) return
         setIsSubmitting(true)
+        setUploadProgress(files.length > 0 ? 0 : null)
 
         try {
-            await createFeedback({
-                content: inquiry.trim(),
-                contactInfo: contact.trim() || undefined,
-                images: files,
-            })
+            await createFeedback(
+                {
+                    content: inquiry.trim(),
+                    contactInfo: contact.trim() || undefined,
+                    images: files,
+                },
+                files.length > 0 ? setUploadProgress : undefined
+            )
             setShowSuccessModal(true)
         } catch {
             showError(
@@ -125,6 +130,7 @@ export default function FeedbackPage() {
             )
         } finally {
             setIsSubmitting(false)
+            setUploadProgress(null)
         }
     }
 
@@ -296,7 +302,9 @@ export default function FeedbackPage() {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                                     </svg>
-                                    제출 중...
+                                    {uploadProgress !== null && uploadProgress < 100
+                                        ? `파일 업로드 중... ${uploadProgress}%`
+                                        : '피드백 처리 중...'}
                                 </span>
                             ) : (
                                 '피드백 보내기'

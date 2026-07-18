@@ -15,7 +15,7 @@ export async function createFeedback({
     content,
     contactInfo,
     images,
-}: CreateFeedbackParams): Promise<CreateFeedbackResult> {
+}: CreateFeedbackParams, onUploadProgress?: (progress: number) => void): Promise<CreateFeedbackResult> {
     const formData = new FormData()
     formData.append('content', content)
 
@@ -33,6 +33,10 @@ export async function createFeedback({
         {
             headers: {
                 'Content-Type': 'multipart/form-data',
+            },
+            onUploadProgress: (event) => {
+                if (!onUploadProgress || !event.total) return
+                onUploadProgress(Math.min(100, Math.round((event.loaded / event.total) * 100)))
             },
         }
     )
