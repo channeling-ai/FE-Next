@@ -150,10 +150,28 @@ export async function changeIdeaBookmark(ideaId: number): Promise<IdeaBookmarkRe
 }
 
 function parseIdeaTags(tags: string[] | undefined, hashTag: string | string[] | undefined) {
-    if (tags) return tags
+    let rawTags: unknown[] = tags ?? []
 
-    const rawTags = Array.isArray(hashTag) ? hashTag : (hashTag ?? '').split(/[\s,]+/)
-    return rawTags.map((tag) => tag.trim().replace(/^#+/, '')).filter(Boolean)
+    if (!tags && Array.isArray(hashTag)) {
+        rawTags = hashTag
+    }
+
+    if (!tags && typeof hashTag === 'string') {
+        try {
+            const parsedHashTag: unknown = JSON.parse(hashTag)
+            rawTags = Array.isArray(parsedHashTag) ? parsedHashTag : hashTag.split(/[\s,]+/)
+        } catch {
+            rawTags = hashTag.split(/[\s,]+/)
+        }
+    }
+
+    return rawTags
+        .map((tag) =>
+            String(tag)
+                .trim()
+                .replace(/^[\s#\[\]"']+|[\s\[\]"']+$/g, '')
+        )
+        .filter(Boolean)
 }
 
 function parseCreatedIdeaBookmark(value: CreatedIdeaResponse['is_book_marked']) {

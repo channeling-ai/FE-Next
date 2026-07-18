@@ -15,5 +15,6 @@ export function formatIdeaDate(dateString: string) {
 }
 
 export function formatIdeaTag(tag: string) {
-    return `#${tag.trim().replace(/^#+/, '')}`
+    const normalizedTag = tag.trim().replace(/^[\s#\[\]"']+|[\s\[\]"']+$/g, '')
+    return normalizedTag ? `#${normalizedTag}` : ''
 }
