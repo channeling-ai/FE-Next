@@ -132,7 +132,13 @@ export default function UploadCycleChart() {
                         <XAxis dataKey="date" hide padding={{ left: 0, right: 0 }} />
                         <YAxis hide domain={[0, 100]} />
                         <Tooltip
-                            defaultIndex={period === '1주' ? 0 : 8}
+                            defaultIndex={
+                                data.length === 0
+                                    ? undefined
+                                    : period === '1주'
+                                        ? 0
+                                        : data.length - 1
+                            }
                             position={{ y: 0 }}
                             offset={0}
                             allowEscapeViewBox={{ x: true, y: false }}
