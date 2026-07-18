@@ -39,13 +39,13 @@ const scoreTypeOrder = Object.keys(scoreTypeDetails) as DashboardScoreType[]
 
 const suggestionDetails: Record<DashboardSuggestionType, { tags: string[] }> = {
     VIDEO_REUSE: {
-        tags: dashboardInsights[0].tags,
+        tags: dashboardInsights[0]?.tags ?? [],
     },
     TREND_KEYWORD: {
-        tags: dashboardInsights[1].tags,
+        tags: dashboardInsights[1]?.tags ?? [],
     },
     COMMENT_ANALYSIS: {
-        tags: dashboardInsights[2].tags,
+        tags: dashboardInsights[2]?.tags ?? [],
     },
 }
 
