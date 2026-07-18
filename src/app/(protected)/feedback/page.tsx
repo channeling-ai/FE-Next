@@ -7,6 +7,7 @@ import Scroll from '@/components/Scroll'
 import TextField from '@/components/TextField'
 import ImageIcon from '@/assets/icons/image.svg'
 import XIcon from '@/assets/icons/X.svg'
+import { createFeedback } from '@/api/feedback'
 
 const formatFileSize = (bytes: number) => {
     const mb = bytes / (1024 * 1024)
@@ -25,6 +26,7 @@ export default function FeedbackPage() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [isDragging, setIsDragging] = useState(false)
+    const [errorTitle, setErrorTitle] = useState('')
     const [uploadError, setUploadError] = useState('')
     const [showErrorModal, setShowErrorModal] = useState(false)
 
@@ -33,12 +35,17 @@ export default function FeedbackPage() {
     // Form validation
     const hasInquiry = inquiry.trim().length > 0
 
+    const showError = (title: string, message: string) => {
+        setErrorTitle(title)
+        setUploadError(message)
+        setShowErrorModal(true)
+    }
+
     // File Handlers
     const addFiles = (newFiles: File[]) => {
         // Validation: total files <= 5
         if (files.length + newFiles.length > 5) {
-            setUploadError('파일은 최대 5개까지만 업로드 가능합니다.')
-            setShowErrorModal(true)
+            showError('파일 업로드에 실패했습니다', '파일은 최대 5개까지만 업로드 가능합니다.')
             return
         }
 
@@ -46,16 +53,14 @@ export default function FeedbackPage() {
         const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png']
         const hasInvalidType = newFiles.some(file => !allowedTypes.includes(file.type))
         if (hasInvalidType) {
-            setUploadError('JPG, JPEG, PNG 파일만 업로드 가능합니다.')
-            setShowErrorModal(true)
+            showError('파일 업로드에 실패했습니다', 'JPG, JPEG, PNG 파일만 업로드 가능합니다.')
             return
         }
 
         // Validation: total size <= 50MB (50 * 1024 * 1024 bytes)
         const newTotalSize = files.reduce((sum, f) => sum + f.size, 0) + newFiles.reduce((sum, f) => sum + f.size, 0)
         if (newTotalSize > 50 * 1024 * 1024) {
-            setUploadError('총 파일 크기는 50MB를 초과할 수 없습니다.')
-            setShowErrorModal(true)
+            showError('파일 업로드에 실패했습니다', '총 파일 크기는 50MB를 초과할 수 없습니다.')
             return
         }
 
@@ -95,15 +100,25 @@ export default function FeedbackPage() {
     }
 
     // Submission Handler
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!hasInquiry) return
         setIsSubmitting(true)
-        
-        // Simulating API Call
-        setTimeout(() => {
-            setIsSubmitting(false)
+
+        try {
+            await createFeedback({
+                content: inquiry.trim(),
+                contactInfo: contact.trim() || undefined,
+                images: files,
+            })
             setShowSuccessModal(true)
-        }, 1200)
+        } catch {
+            showError(
+                '피드백을 전송하지 못했습니다',
+                '피드백 전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+            )
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     const handleCloseModal = () => {
@@ -310,10 +325,9 @@ export default function FeedbackPage() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
                     <div className="w-full max-w-[296px] desktop:max-w-[322px] bg-gray-30 rounded-[20px] p-6 flex flex-col gap-4">
                         <div className="flex flex-col gap-1">
-                            <h3 className="font-title-18sb desktop:text-[20px] text-gray-95">파일 업로드에 실패했습니다</h3>
+                            <h3 className="font-title-18sb desktop:text-[20px] text-gray-95">{errorTitle}</h3>
                             <p className="font-body-14m desktop:text-[16px] text-text-secondary whitespace-pre-line">
-                                첨부 파일은 최대 5개까지 업로드 가능하며,<br/>
-                                총 50MB 용량까지 가능해요.
+                                {uploadError}
                             </p>
                         </div>
                         <button
