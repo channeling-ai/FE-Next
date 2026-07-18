@@ -31,15 +31,16 @@ export async function createFeedback({
         '/feedbacks',
         formData,
         {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
             onUploadProgress: (event) => {
                 if (!onUploadProgress || !event.total) return
                 onUploadProgress(Math.min(100, Math.round((event.loaded / event.total) * 100)))
             },
         }
     )
+
+    if (!data.isSuccess) {
+        throw new Error(data.message || '피드백 등록에 실패했습니다.')
+    }
 
     return data.result
 }
