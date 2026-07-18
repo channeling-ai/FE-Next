@@ -281,12 +281,13 @@ export default function FeedbackPage() {
                     {/* 피드백 보내기 버튼 */}
                     <div className="w-full flex justify-center mt-4">
                         <button
+                            type="button"
                             onClick={handleSubmit}
                             disabled={isSubmitting || !hasInquiry}
-                            className={`w-full py-3 font-body-16sb desktop:text-[18px] rounded-[20px] transition-all duration-200 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed ${
+                            className={`flex w-full items-center justify-center rounded-[20px] py-3 font-body-16sb transition-all duration-200 desktop:text-[18px] ${
                                 hasInquiry
-                                    ? 'bg-primary-60 text-gray-95'
-                                    : 'bg-primary-60 text-gray-95'
+                                    ? 'cursor-pointer bg-primary-60 text-gray-95 hover:bg-primary-70 disabled:cursor-not-allowed'
+                                    : 'cursor-not-allowed bg-gray-30 text-text-tertiary'
                             }`}
                         >
                             {isSubmitting ? (
