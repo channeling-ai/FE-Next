@@ -42,7 +42,9 @@ export default function KeywordBox({ keyword, rank, onClick }: KeywordBoxProps) 
                     )}
                 </div>
                 <div className="flex items-center gap-1">
-                    <div className="font-body-14r text-text-secondary">{formatElapsedTime(keyword.startedAt)}</div>
+                    <div className="font-body-14r text-text-secondary">
+                        {formatElapsedTime(keyword.startedAt ?? keyword.createdAt)}
+                    </div>
                     <div className="flex items-center gap-0.5">
                         <div className={isUp ? 'text-text-brand font-body-14r' : 'text-text-secondary font-body-14r'}>
                             {keyword.score}
