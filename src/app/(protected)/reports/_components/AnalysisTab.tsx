@@ -49,7 +49,7 @@ function formatKoreanTime(time: string) {
     const minutes = Math.floor(totalSeconds / 60)
     const seconds = totalSeconds % 60
 
-    return `${minutes}분 ${String(seconds).padStart(2, '0')}초`
+    return `${minutes}분 ${seconds}초`
 }
 
 function RetentionGraph({
