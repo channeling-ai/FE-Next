@@ -22,8 +22,10 @@ interface KeywordBoxProps {
 }
 
 export default function KeywordBox({ keyword, rank, onClick }: KeywordBoxProps) {
-    const isNew = keyword.scoreStatus === 'NONE'
-    const isUp = keyword.scoreStatus === 'UP'
+    const isChannelKeyword = keyword.keywordType === 'CHANNEL'
+    const isNew = !isChannelKeyword && keyword.scoreStatus === 'NONE'
+    const isUp = keyword.scoreStatus === 'UP' || keyword.scoreStatus === 'NONE'
+    const isDown = keyword.scoreStatus === 'DOWN'
 
     return (
         <button
@@ -43,13 +45,14 @@ export default function KeywordBox({ keyword, rank, onClick }: KeywordBoxProps) 
                 </div>
                 <div className="flex items-center gap-1">
                     <div className="font-body-14r text-text-secondary">
-                        {formatElapsedTime(keyword.startedAt ?? keyword.createdAt)}
+                        {isChannelKeyword ? '추천 점수' : formatElapsedTime(keyword.startedAt ?? keyword.createdAt)}
                     </div>
                     <div className="flex items-center gap-0.5">
                         <div className={isUp ? 'text-text-brand font-body-14r' : 'text-text-secondary font-body-14r'}>
                             {keyword.score}
                         </div>
-                        {isUp && <RankUpIcon />}
+                        {!isChannelKeyword && isUp && <RankUpIcon className="text-icon-brand" />}
+                        {!isChannelKeyword && isDown && <RankUpIcon className="rotate-180 text-icon-secondary" />}
                     </div>
                 </div>
             </div>
