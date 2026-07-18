@@ -22,7 +22,7 @@ function deduplicateKeywords(keywords: TrendKeywordItem[]) {
         }
     })
 
-    return Array.from(uniqueKeywords.values())
+    return Array.from(uniqueKeywords.values()).slice(0, 5)
 }
 
 function KeywordList({
