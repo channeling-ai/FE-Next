@@ -29,12 +29,7 @@ export async function updateMemberProfileImage(image: File): Promise<string> {
 
     const { data } = await api.patch<ApiResponse<{ updatedProfileImage: string }>>(
         '/members/profile-images',
-        formData,
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        }
+        formData
     )
 
     return data.result.updatedProfileImage
