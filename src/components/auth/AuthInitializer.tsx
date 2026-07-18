@@ -13,6 +13,7 @@ export default function AuthInitializer() {
     const isAuth = useAuthStore((state) => state.isAuth)
     const channelId = useAuthStore((state) => state.user?.channelId)
     const setUser = useAuthStore((state) => state.setUser)
+    const lastValidatedToken = useRef<string | null>(null)
 
     useEffect(() => {
         void useAuthStore.persist.rehydrate()
