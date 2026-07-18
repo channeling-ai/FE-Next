@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header'
 import PageContent from '@/components/layout/PageContent'
 import Scroll from '@/components/Scroll'
 import TextField from '@/components/TextField'
+import { Modal } from '@/components/Modal'
 import ImageIcon from '@/assets/icons/image.svg'
 import XIcon from '@/assets/icons/X.svg'
 import { createFeedback } from '@/api/feedback'
@@ -45,7 +46,10 @@ export default function FeedbackPage() {
     const addFiles = (newFiles: File[]) => {
         // Validation: total files <= 5
         if (files.length + newFiles.length > 5) {
-            showError('파일 업로드에 실패했습니다', '파일은 최대 5개까지만 업로드 가능합니다.')
+            showError(
+                '파일 업로드에 실패했습니다',
+                '첨부 파일은 최대 5개까지 업로드 가능하며,\n총 50MB 용량까지 가능해요.'
+            )
             return
         }
 
@@ -60,7 +64,10 @@ export default function FeedbackPage() {
         // Validation: total size <= 50MB (50 * 1024 * 1024 bytes)
         const newTotalSize = files.reduce((sum, f) => sum + f.size, 0) + newFiles.reduce((sum, f) => sum + f.size, 0)
         if (newTotalSize > 50 * 1024 * 1024) {
-            showError('파일 업로드에 실패했습니다', '총 파일 크기는 50MB를 초과할 수 없습니다.')
+            showError(
+                '파일 업로드에 실패했습니다',
+                '첨부 파일은 최대 5개까지 업로드 가능하며,\n총 50MB 용량까지 가능해요.'
+            )
             return
         }
 
@@ -299,47 +306,29 @@ export default function FeedbackPage() {
                 </PageContent>
             </Scroll>
 
-            {/* 성공 팝업 모달 */}
-            {showSuccessModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="w-full max-w-[296px] desktop:max-w-[322px] bg-gray-30 rounded-[20px] p-6 flex flex-col gap-4">
-                        <div className="flex flex-col gap-1">
-                            <h3 className="font-title-18sb desktop:text-[20px] text-gray-95">소중한 의견 감사합니다!</h3>
-                            <p className="font-body-14m desktop:text-[16px] text-text-secondary whitespace-pre-line">
-                                피드백이 정상적으로 접수되었어요.<br/>
-                                더 나은 기능으로 보답하겠습니다.
-                            </p>
-                        </div>
-                        <button
-                            onClick={handleCloseModal}
-                            className="w-[248px] desktop:w-[274px] py-2 bg-primary-60 text-gray-95 font-body-16sb desktop:text-[18px] rounded-[10px] transition-all duration-200 cursor-pointer"
-                        >
-                            확인
-                        </button>
-                    </div>
-                </div>
-            )}
+            <Modal isOpen={showSuccessModal} onClose={handleCloseModal}>
+                <Modal.Header
+                    title="소중한 의견 감사합니다!"
+                    caption={'피드백이 정상적으로 접수되었어요.\n더 나은 기능으로 보답하겠습니다.'}
+                />
+                <Modal.Footer>
+                    <Modal.Button onClick={handleCloseModal}>
+                        확인
+                    </Modal.Button>
+                </Modal.Footer>
+            </Modal>
 
-            {/* 업로드 실패 팝업 모달 */}
-            {showErrorModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="w-full max-w-[296px] desktop:max-w-[322px] bg-gray-30 rounded-[20px] p-6 flex flex-col gap-4">
-                        <div className="flex flex-col gap-1">
-                            <h3 className="font-title-18sb desktop:text-[20px] text-gray-95">{errorTitle}</h3>
-                            <p className="font-body-14m desktop:text-[16px] text-text-secondary whitespace-pre-line">
-                                {uploadError}
-                            </p>
-                        </div>
-                        <button
-                            type="button"
-                            onClick={() => setShowErrorModal(false)}
-                            className="w-[248px] desktop:w-[274px] py-2 bg-red-error text-gray-95 font-body-16sb desktop:text-[18px] rounded-[10px] transition-all duration-200 cursor-pointer"
-                        >
-                            확인
-                        </button>
-                    </div>
-                </div>
-            )}
+            <Modal isOpen={showErrorModal} onClose={() => setShowErrorModal(false)}>
+                <Modal.Header title={errorTitle} caption={uploadError} />
+                <Modal.Footer>
+                    <Modal.Button
+                        variant="error"
+                        onClick={() => setShowErrorModal(false)}
+                    >
+                        확인
+                    </Modal.Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }
