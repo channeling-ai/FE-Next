@@ -1,7 +1,13 @@
 'use client'
 
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { updateChannelConcept, updateChannelTarget } from '@/api/channel'
+import {
+    getChannel,
+    updateChannelConcept,
+    updateChannelTarget,
+    type ChannelDetail,
+} from '@/api/channel'
 import {
     updateMemberAgreements,
     updateMemberProfileImage,
@@ -28,6 +34,12 @@ type ConfirmModalType = 'logout' | 'withdraw' | 'cancelPlan' | null
 export default function SettingsPage() {
     const user = useAuthStore((state) => state.user)
     const setUser = useAuthStore((state) => state.setUser)
+    const queryClient = useQueryClient()
+    const { data: channel } = useQuery({
+        queryKey: ['channel', user?.channelId],
+        queryFn: () => getChannel(user!.channelId),
+        enabled: Boolean(user?.channelId),
+    })
     const { isLoggingOut, logout } = useLogout()
     const { isWithdrawing, withdraw } = useWithdraw()
     const [emailNotifications, setEmailNotifications] = useState<MemberAgreements>({
@@ -50,6 +62,13 @@ export default function SettingsPage() {
         })
     }, [user])
 
+    useEffect(() => {
+        if (!channel) return
+
+        setChannelTarget(channel.target ?? '')
+        setChannelConcept(channel.concept ?? '')
+    }, [channel])
+
     const requireChannelId = () => {
         if (!user?.channelId) {
             throw new Error('채널 정보를 확인할 수 없습니다.')
@@ -59,8 +78,13 @@ export default function SettingsPage() {
 
     const handleSaveTarget = async (target: string) => {
         try {
-            const updatedTarget = await updateChannelTarget(requireChannelId(), target.trim())
+            const channelId = requireChannelId()
+            const updatedTarget = await updateChannelTarget(channelId, target.trim())
             setChannelTarget(updatedTarget)
+            queryClient.setQueryData<ChannelDetail>(
+                ['channel', channelId],
+                (current) => current ? { ...current, target: updatedTarget } : current
+            )
         } catch (error) {
             setErrorMessage('채널 타겟층을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.')
             throw error
@@ -69,8 +93,13 @@ export default function SettingsPage() {
 
     const handleSaveConcept = async (concept: string) => {
         try {
-            const updatedConcept = await updateChannelConcept(requireChannelId(), concept.trim())
+            const channelId = requireChannelId()
+            const updatedConcept = await updateChannelConcept(channelId, concept.trim())
             setChannelConcept(updatedConcept)
+            queryClient.setQueryData<ChannelDetail>(
+                ['channel', channelId],
+                (current) => current ? { ...current, concept: updatedConcept } : current
+            )
         } catch (error) {
             setErrorMessage('채널 컨셉을 저장하지 못했습니다. 잠시 후 다시 시도해주세요.')
             throw error

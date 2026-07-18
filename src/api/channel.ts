@@ -11,6 +11,19 @@ interface UpdateChannelConceptResult {
     updatedConcept: string
 }
 
+export interface ChannelDetail {
+    channelId: number
+    target: string | null
+    concept: string | null
+}
+
+export async function getChannel(channelId: number): Promise<ChannelDetail> {
+    const { data } = await api.get<ApiResponse<ChannelDetail>>(
+        `/channels/${channelId}`
+    )
+    return data.result
+}
+
 export async function updateChannelTarget(
     channelId: number,
     target: string
