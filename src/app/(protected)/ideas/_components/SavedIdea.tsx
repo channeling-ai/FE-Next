@@ -5,7 +5,6 @@ import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-q
 import SavedIdeaCard from './SavedIdeaCard'
 import SearchBar from './SearchBar'
 import IdeaDetailView from './IdeaDetailView'
-import PageContent from '@/components/layout/PageContent'
 import DropdownOrder from '@/components/dropdown-order'
 import { SkeletonBase } from '@/components/skeletonbase'
 
@@ -70,7 +69,7 @@ export default function SavedIdea() {
     }
 
     return (
-        <PageContent className="flex flex-col justify-start gap-2">
+        <section className="flex w-full flex-col justify-start gap-2">
             <h1 className="text-text-primary font-title-18sb">저장한 아이디어</h1>
             <div className="flex flex-col gap-4">
                 <SearchBar value={searchKeyword} onChange={setSearchKeyword} />
@@ -133,6 +132,6 @@ export default function SavedIdea() {
                     </button>
                 )}
             </div>
-        </PageContent>
+        </section>
     )
 }
