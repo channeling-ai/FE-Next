@@ -15,6 +15,7 @@ interface ReportDetailPageProps {
  */
 export default async function ReportDetailPage({ params }: ReportDetailPageProps) {
     const { id } = await params
+    const reportId = Number(id)
 
     return (
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
@@ -40,7 +41,7 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
                         </div>
                     </div>
 
-                    <ReportTabs />
+                    <ReportTabs reportId={reportId} />
                 </PageContent>
             </Scroll>
         </div>

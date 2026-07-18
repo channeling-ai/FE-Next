@@ -11,7 +11,11 @@ const TABS = [
     { id: 'analysis', label: '분석' },
 ] as const
 
-export default function ReportTabs() {
+interface ReportTabsProps {
+    reportId: number
+}
+
+export default function ReportTabs({ reportId }: ReportTabsProps) {
     const [activeTab, setActiveTab] = useState<TabType>('overview')
 
     const tabBaseClass =
@@ -38,7 +42,7 @@ export default function ReportTabs() {
 
             {activeTab === 'overview' && <OverviewTab />}
 
-            {activeTab === 'analysis' && <AnalysisTab />}
+            {activeTab === 'analysis' && <AnalysisTab reportId={reportId} />}
         </div>
     )
 }
