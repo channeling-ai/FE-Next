@@ -108,3 +108,42 @@ export function DashboardSuggestionsSkeleton() {
         </section>
     )
 }
+
+export function DashboardSuggestionDetailSkeleton() {
+    return (
+        <article
+            aria-label="제안 상세 내용 불러오는 중"
+            className="flex w-full flex-col gap-4"
+            role="status"
+        >
+            <header className="flex flex-col gap-2">
+                <SkeletonBase sizeConfig="h-6 w-3/5 rounded-md" />
+                <div className="flex flex-wrap gap-1">
+                    <SkeletonBase sizeConfig="h-6 w-28 rounded-lg" />
+                    <SkeletonBase sizeConfig="h-6 w-32 rounded-lg" />
+                </div>
+            </header>
+
+            <div className="flex flex-col gap-[21px] desktop:gap-6">
+                <div className="flex flex-col gap-2">
+                    <SkeletonBase sizeConfig="h-5 w-full rounded-md" />
+                    <SkeletonBase sizeConfig="h-5 w-11/12 rounded-md" />
+                    <SkeletonBase sizeConfig="h-5 w-4/5 rounded-md" />
+                </div>
+                <div className="flex flex-col gap-2">
+                    <SkeletonBase sizeConfig="h-5 w-full rounded-md" />
+                    <SkeletonBase sizeConfig="h-5 w-5/6 rounded-md" />
+                    <SkeletonBase sizeConfig="h-5 w-2/3 rounded-md" />
+                </div>
+            </div>
+
+            <section className="flex flex-col gap-2">
+                <SkeletonBase sizeConfig="h-5 w-44 rounded-md" />
+                <div className="flex flex-col gap-1 pl-[21px] desktop:pl-6">
+                    <SkeletonBase sizeConfig="h-5 w-5/6 rounded-md" />
+                    <SkeletonBase sizeConfig="h-5 w-3/4 rounded-md" />
+                </div>
+            </section>
+        </article>
+    )
+}

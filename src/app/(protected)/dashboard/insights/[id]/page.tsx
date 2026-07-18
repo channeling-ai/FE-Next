@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import { getDashboardSuggestionDetail } from '@/api/dashboard'
 import Scroll from '@/components/Scroll'
+import { DashboardSuggestionDetailSkeleton } from '@/components/dashboard/DashboardSkeletons'
 import PageContent from '@/components/layout/PageContent'
 import InsightDetailContent from './_components/InsightDetailContent'
 import InsightDetailHeader from './_components/InsightDetailHeader'
@@ -25,9 +26,7 @@ export default function InsightDetailPage() {
                     <InsightDetailHeader />
                     {insight && <InsightDetailContent insight={insight} />}
                     {(isPending && isValidSuggestionId) && (
-                        <p className="font-body-14r text-text-secondary">
-                            제안 상세 내용을 불러오는 중입니다.
-                        </p>
+                        <DashboardSuggestionDetailSkeleton />
                     )}
                     {(!isValidSuggestionId || isError) && (
                         <p className="font-body-14r text-text-secondary">
