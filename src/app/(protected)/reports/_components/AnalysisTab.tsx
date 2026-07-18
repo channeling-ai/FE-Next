@@ -1,8 +1,6 @@
 'use client'
 
-import { getReportAnalysis } from '@/api/report'
 import type { AlgorithmGrade, AlgorithmIssueType, ReportAnalysis, RetentionPoint } from '@/api/report'
-import { useQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -340,25 +338,21 @@ function AnalysisTabContent({ analysis }: { analysis: ReportAnalysis }) {
     )
 }
 
-export default function AnalysisTab({ reportId }: { reportId: number }) {
-    const isValidReportId = Number.isInteger(reportId) && reportId > 0
-    const { data, isPending, isError, refetch } = useQuery({
-        queryKey: ['reports', reportId, 'analysis'],
-        queryFn: () => getReportAnalysis(reportId),
-        enabled: isValidReportId,
-    })
+interface AnalysisTabProps {
+    analysis?: ReportAnalysis
+    isPending: boolean
+    isError: boolean
+    onRetry?: () => void
+}
 
-    if (!isValidReportId) {
-        return <AnalysisTabError />
-    }
-
+export default function AnalysisTab({ analysis, isPending, isError, onRetry }: AnalysisTabProps) {
     if (isError) {
-        return <AnalysisTabError onRetry={() => void refetch()} />
+        return <AnalysisTabError onRetry={onRetry} />
     }
 
-    if (isPending) {
+    if (isPending || !analysis) {
         return <AnalysisTabSkeleton />
     }
 
-    return <AnalysisTabContent analysis={data} />
+    return <AnalysisTabContent analysis={analysis} />
 }

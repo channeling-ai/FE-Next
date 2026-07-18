@@ -1,5 +1,7 @@
 'use client'
 
+import { getReportAnalysis } from '@/api/report'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import AnalysisTab from './AnalysisTab'
 import OverviewTab from './OverviewTab'
@@ -17,6 +19,12 @@ interface ReportTabsProps {
 
 export default function ReportTabs({ reportId }: ReportTabsProps) {
     const [activeTab, setActiveTab] = useState<TabType>('overview')
+    const isValidReportId = Number.isInteger(reportId) && reportId > 0
+    const analysisQuery = useQuery({
+        queryKey: ['reports', reportId, 'analysis'],
+        queryFn: () => getReportAnalysis(reportId),
+        enabled: isValidReportId,
+    })
 
     const tabBaseClass =
         'flex flex-1 p-2 justify-center items-center rounded-2xl font-body-16sb desktop:font-body-18sb cursor-pointer transition-colors'
@@ -42,7 +50,14 @@ export default function ReportTabs({ reportId }: ReportTabsProps) {
 
             {activeTab === 'overview' && <OverviewTab />}
 
-            {activeTab === 'analysis' && <AnalysisTab reportId={reportId} />}
+            {activeTab === 'analysis' && (
+                <AnalysisTab
+                    analysis={analysisQuery.data}
+                    isPending={analysisQuery.isPending}
+                    isError={!isValidReportId || analysisQuery.isError}
+                    onRetry={isValidReportId ? () => void analysisQuery.refetch() : undefined}
+                />
+            )}
         </div>
     )
 }
