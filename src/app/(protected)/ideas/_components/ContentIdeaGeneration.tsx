@@ -10,7 +10,7 @@ import { useIdeasStore } from '@/stores/ideasStore'
 import { DropdownVideoType } from './DropdownVideotype'
 import TextField from '@/components/TextField'
 import GenerationButton from './GenerationButton'
-import { SkeletonBase } from '@/components/skeletonbase'
+import { SkeletonBase } from '@/components/Skeletonbase'
 import SavedIdeaCard from './SavedIdeaCard'
 import IdeaDetailView from './IdeaDetailView'
 

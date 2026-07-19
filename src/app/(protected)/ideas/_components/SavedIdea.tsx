@@ -6,7 +6,7 @@ import SavedIdeaCard from './SavedIdeaCard'
 import SearchBar from './SearchBar'
 import IdeaDetailView from './IdeaDetailView'
 import DropdownOrder from '@/components/dropdown-order'
-import { SkeletonBase } from '@/components/skeletonbase'
+import { SkeletonBase } from '@/components/Skeletonbase'
 import { useIdeasStore } from '@/stores/ideasStore'
 
 export default function SavedIdea() {
