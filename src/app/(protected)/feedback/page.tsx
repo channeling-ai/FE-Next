@@ -2,11 +2,13 @@
 
 import { useState, useRef } from 'react'
 import Header from '@/components/layout/Header'
+import PageContent from '@/components/layout/PageContent'
+import Scroll from '@/components/Scroll'
 import TextField from '@/components/TextField'
-import MenuIcon from '@/assets/icons/menu.svg'
+import { Modal } from '@/components/Modal'
 import ImageIcon from '@/assets/icons/image.svg'
 import XIcon from '@/assets/icons/X.svg'
-import { useLayoutStore } from '@/stores/layoutStore'
+import { createFeedback } from '@/api/feedback'
 
 const formatFileSize = (bytes: number) => {
     const mb = bytes / (1024 * 1024)
@@ -18,15 +20,15 @@ const formatFileSize = (bytes: number) => {
 }
 
 export default function FeedbackPage() {
-    const { openSidebar } = useLayoutStore()
-
     // Form states
     const [inquiry, setInquiry] = useState('')
     const [contact, setContact] = useState('')
     const [files, setFiles] = useState<File[]>([])
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [uploadProgress, setUploadProgress] = useState<number | null>(null)
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [isDragging, setIsDragging] = useState(false)
+    const [errorTitle, setErrorTitle] = useState('')
     const [uploadError, setUploadError] = useState('')
     const [showErrorModal, setShowErrorModal] = useState(false)
 
@@ -35,12 +37,20 @@ export default function FeedbackPage() {
     // Form validation
     const hasInquiry = inquiry.trim().length > 0
 
+    const showError = (title: string, message: string) => {
+        setErrorTitle(title)
+        setUploadError(message)
+        setShowErrorModal(true)
+    }
+
     // File Handlers
     const addFiles = (newFiles: File[]) => {
         // Validation: total files <= 5
         if (files.length + newFiles.length > 5) {
-            setUploadError('파일은 최대 5개까지만 업로드 가능합니다.')
-            setShowErrorModal(true)
+            showError(
+                '파일 업로드에 실패했습니다',
+                '첨부 파일은 최대 5개까지 업로드 가능하며,\n총 50MB 용량까지 가능해요.'
+            )
             return
         }
 
@@ -48,16 +58,17 @@ export default function FeedbackPage() {
         const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png']
         const hasInvalidType = newFiles.some(file => !allowedTypes.includes(file.type))
         if (hasInvalidType) {
-            setUploadError('JPG, JPEG, PNG 파일만 업로드 가능합니다.')
-            setShowErrorModal(true)
+            showError('파일 업로드에 실패했습니다', 'JPG, JPEG, PNG 파일만 업로드 가능합니다.')
             return
         }
 
         // Validation: total size <= 50MB (50 * 1024 * 1024 bytes)
         const newTotalSize = files.reduce((sum, f) => sum + f.size, 0) + newFiles.reduce((sum, f) => sum + f.size, 0)
         if (newTotalSize > 50 * 1024 * 1024) {
-            setUploadError('총 파일 크기는 50MB를 초과할 수 없습니다.')
-            setShowErrorModal(true)
+            showError(
+                '파일 업로드에 실패했습니다',
+                '첨부 파일은 최대 5개까지 업로드 가능하며,\n총 50MB 용량까지 가능해요.'
+            )
             return
         }
 
@@ -97,15 +108,30 @@ export default function FeedbackPage() {
     }
 
     // Submission Handler
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!hasInquiry) return
         setIsSubmitting(true)
-        
-        // Simulating API Call
-        setTimeout(() => {
-            setIsSubmitting(false)
+        setUploadProgress(files.length > 0 ? 0 : null)
+
+        try {
+            await createFeedback(
+                {
+                    content: inquiry.trim(),
+                    contactInfo: contact.trim() || undefined,
+                    images: files,
+                },
+                files.length > 0 ? setUploadProgress : undefined
+            )
             setShowSuccessModal(true)
-        }, 1200)
+        } catch {
+            showError(
+                '피드백을 전송하지 못했습니다',
+                '피드백 전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.'
+            )
+        } finally {
+            setIsSubmitting(false)
+            setUploadProgress(null)
+        }
     }
 
     const handleCloseModal = () => {
@@ -116,20 +142,12 @@ export default function FeedbackPage() {
     }
 
     return (
-        <div className="flex flex-col h-full w-full bg-gray-0 text-gray-95 overflow-hidden selection:bg-primary-60/30">
-            <div className="w-full flex items-center gap-2 px-4 tablet:px-5 desktop:px-16 pt-3 tablet:pt-4 desktop:pt-8">
-                <button
-                    onClick={openSidebar}
-                    className="desktop:hidden flex items-center justify-center p-1 text-text-primary hover:text-text-secondary transition-colors cursor-pointer bg-transparent border-none"
-                    aria-label="메뉴 열기"
-                >
-                    <MenuIcon className="w-6 h-6" />
-                </button>
-                <span className="font-title-18sb desktop:text-[20px] mt-[0.5px] desktop:mt-0 text-text-primary">피드백</span>
-            </div>
+        <div className="flex h-full w-full flex-col overflow-hidden bg-gray-0 text-gray-95 selection:bg-primary-60/30 desktop:pt-3">
+            <Header title="피드백" showMenu={true} />
 
-            <main className="overflow-y-auto px-4 tablet:px-5 desktop:px-16 py-7 custom-scrollbar">
-                <div className="w-full flex flex-col gap-4 pb-12">
+            <Scroll as="main" className="flex-1">
+                <PageContent className="py-2">
+                    <div className="w-full flex flex-col gap-4 pb-12">
                     {/* 타이틀 및 서브타이틀 */}
                     <div className="flex flex-col gap-2">
                         <h2 className="font-title-18sb desktop:text-[20px] text-gray-95">
@@ -175,7 +193,7 @@ export default function FeedbackPage() {
                                 showCounter={false}
                                 maxLength={2000}
                                 className="!w-full"
-                                fontClassName="font-body-14r desktop:text-[16px]"
+                                textareaClassName="desktop:text-[16px]"
                             />
                         </div>
 
@@ -197,7 +215,7 @@ export default function FeedbackPage() {
                                 showCounter={false}
                                 maxLength={100}
                                 className="!w-full"
-                                fontClassName="font-body-14r desktop:text-[16px]"
+                                textareaClassName="desktop:text-[16px]"
                             />
                         </div>
 
@@ -269,12 +287,13 @@ export default function FeedbackPage() {
                     {/* 피드백 보내기 버튼 */}
                     <div className="w-full flex justify-center mt-4">
                         <button
+                            type="button"
                             onClick={handleSubmit}
                             disabled={isSubmitting || !hasInquiry}
-                            className={`w-full py-3 font-body-16sb desktop:text-[18px] rounded-[20px] transition-all duration-200 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed ${
+                            className={`flex w-full items-center justify-center rounded-[20px] py-3 font-body-16sb transition-all duration-200 desktop:text-[18px] ${
                                 hasInquiry
-                                    ? 'bg-primary-60 text-gray-95'
-                                    : 'bg-primary-60 text-gray-95'
+                                    ? 'cursor-pointer bg-primary-60 text-gray-95 hover:bg-primary-70 disabled:cursor-not-allowed'
+                                    : 'cursor-not-allowed bg-gray-30 text-text-tertiary'
                             }`}
                         >
                             {isSubmitting ? (
@@ -283,58 +302,42 @@ export default function FeedbackPage() {
                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                                     </svg>
-                                    제출 중...
+                                    {uploadProgress !== null && uploadProgress < 100
+                                        ? `파일 업로드 중... ${uploadProgress}%`
+                                        : '피드백 처리 중...'}
                                 </span>
                             ) : (
                                 '피드백 보내기'
                             )}
                         </button>
                     </div>
-                </div>
-            </main>
-
-            {/* 성공 팝업 모달 */}
-            {showSuccessModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="w-full max-w-[296px] desktop:max-w-[322px] bg-gray-30 rounded-[20px] p-6 flex flex-col gap-4">
-                        <div className="flex flex-col gap-1">
-                            <h3 className="font-title-18sb desktop:text-[20px] text-gray-95">소중한 의견 감사합니다!</h3>
-                            <p className="font-body-14m desktop:text-[16px] text-text-secondary whitespace-pre-line">
-                                피드백이 정상적으로 접수되었어요.<br/>
-                                더 나은 기능으로 보답하겠습니다.
-                            </p>
-                        </div>
-                        <button
-                            onClick={handleCloseModal}
-                            className="w-[248px] desktop:w-[274px] py-2 bg-primary-60 text-gray-95 font-body-16sb desktop:text-[18px] rounded-[10px] transition-all duration-200 cursor-pointer"
-                        >
-                            확인
-                        </button>
                     </div>
-                </div>
-            )}
+                </PageContent>
+            </Scroll>
 
-            {/* 업로드 실패 팝업 모달 */}
-            {showErrorModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <div className="w-full max-w-[296px] desktop:max-w-[322px] bg-gray-30 rounded-[20px] p-6 flex flex-col gap-4">
-                        <div className="flex flex-col gap-1">
-                            <h3 className="font-title-18sb desktop:text-[20px] text-gray-95">파일 업로드에 실패했습니다</h3>
-                            <p className="font-body-14m desktop:text-[16px] text-text-secondary whitespace-pre-line">
-                                첨부 파일은 최대 5개까지 업로드 가능하며,<br/>
-                                총 50MB 용량까지 가능해요.
-                            </p>
-                        </div>
-                        <button
-                            type="button"
-                            onClick={() => setShowErrorModal(false)}
-                            className="w-[248px] desktop:w-[274px] py-2 bg-red-error text-gray-95 font-body-16sb desktop:text-[18px] rounded-[10px] transition-all duration-200 cursor-pointer"
-                        >
-                            확인
-                        </button>
-                    </div>
-                </div>
-            )}
+            <Modal isOpen={showSuccessModal} onClose={handleCloseModal}>
+                <Modal.Header
+                    title="소중한 의견 감사합니다!"
+                    caption={'피드백이 정상적으로 접수되었어요.\n더 나은 기능으로 보답하겠습니다.'}
+                />
+                <Modal.Footer>
+                    <Modal.Button onClick={handleCloseModal}>
+                        확인
+                    </Modal.Button>
+                </Modal.Footer>
+            </Modal>
+
+            <Modal isOpen={showErrorModal} onClose={() => setShowErrorModal(false)}>
+                <Modal.Header title={errorTitle} caption={uploadError} />
+                <Modal.Footer>
+                    <Modal.Button
+                        variant="error"
+                        onClick={() => setShowErrorModal(false)}
+                    >
+                        확인
+                    </Modal.Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     )
 }

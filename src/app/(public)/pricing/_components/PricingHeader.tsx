@@ -14,7 +14,6 @@ export default function PricingHeader({ isLoggedIn }: PricingHeaderProps) {
     return (
         <Header
             title="구독 관리"
-            className="px-4 tablet:px-5 tablet:py-4 desktop:px-16 desktop:py-5"
             data-auth-state={isLoggedIn ? 'logged-in' : 'guest'}
             leading={
                 <button

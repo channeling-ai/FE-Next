@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Header from '@/components/layout/Header'
+import PageContent from '@/components/layout/PageContent'
 import TextField from '@/components/TextField'
 
 export default function OnboardingPage() {
@@ -25,20 +27,23 @@ export default function OnboardingPage() {
     }
 
     return (
-        <div className="w-full min-h-screen bg-gray-0 text-gray-95 flex flex-col selection:bg-primary-60/30">
+        <div className="flex min-h-screen w-full flex-col bg-gray-0 text-gray-95 selection:bg-primary-60/30">
             {/* 상단 헤더 영역 */}
-            <header className="w-full mx-auto px-4 desktop:px-16 h-[72px] flex items-center justify-between shrink-0">
-                <h1 className="font-title-18sb desktop:font-title-20sb text-gray-95 tracking-tight">타겟과 컨셉</h1>
-                <button
-                    onClick={handleSkip}
-                    className="font-body-16m desktop:text-[18px] font-medium text-gray-50 hover:text-gray-95 transition-colors cursor-pointer focus:outline-none"
-                >
-                    건너뛰기
-                </button>
-            </header>
+            <Header
+                title="타겟과 컨셉"
+                trailing={
+                    <button
+                        type="button"
+                        onClick={handleSkip}
+                        className="cursor-pointer font-body-16m text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-border-active"
+                    >
+                        건너뛰기
+                    </button>
+                }
+            />
 
             {/* 메인 콘텐츠 영역 */}
-            <main className="w-full mx-auto px-4 desktop:px-16 pt-4 pb-4 flex flex-col">
+            <PageContent as="main" className="mx-auto flex flex-col pb-4 pt-2 tablet:pt-4">
                 <div className="flex flex-col gap-4 mx-auto w-full">
                     {/* 타이틀 및 서브타이틀 */}
                     <div className="flex flex-col gap-1">
@@ -60,7 +65,7 @@ export default function OnboardingPage() {
                             placeholder="더욱 최적화된 분석 및 제안을 위해 채널 타겟층을 입력해주세요"
                             value={target}
                             onChange={setTarget}
-                            heightVariant={{ mobile: 'small', tablet: 'xsmall', desktop: 'medium' }}
+                            heightVariant="small"
                             className="!w-full"
                         />
 
@@ -76,7 +81,7 @@ export default function OnboardingPage() {
                         />
                     </div>
                 </div>
-            </main>
+            </PageContent>
 
             {/* 완료 버튼 */}
                 <div className="w-full mx-auto px-4 desktop:px-16 flex justify-center mt-auto pb-8 tablet:mt-0 tablet:pb-0">
