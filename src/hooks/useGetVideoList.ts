@@ -1,42 +1,59 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getChannelVideoList } from '@/api/channels'
-import { VideoListRequest, VideoListResponse } from '@/types/channels'
+import { useAuthStore } from '@/stores/authStore'
+import { VideoListResponse } from '@/types/channels'
 
-export function useChannelVideoList({ channelId, type, page = 1, size = 8 }: VideoListRequest) {
+export function useChannelVideoList({
+    type,
+    page = 1,
+    size = 8,
+}: {
+    type: 'LONG' | 'SHORT'
+    page?: number
+    size?: number
+}) {
+    const channelId = useAuthStore((state) => state.user?.channelId)
+    const hasHydrated = useAuthStore((state) => state.hasHydrated)
+
     const [data, setData] = useState<VideoListResponse | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<unknown>(null)
 
-    const fetchVideoList = useCallback(async () => {
-        try {
-            setIsLoading(true)
-            setError(null)
-
-            const result = await getChannelVideoList({
-                channelId,
-                type,
-                page,
-                size,
-            })
-
-            setData(result)
-        } catch (error) {
-            setError(error)
-        } finally {
-            setIsLoading(false)
-        }
-    }, [channelId, type, page, size])
-
     useEffect(() => {
-        fetchVideoList()
-    }, [fetchVideoList])
+        if (!hasHydrated) return
+        if (channelId == null) return
+
+        // 여기서 새 변수에 담아주면 타입이 number로 고정됨
+        const currentChannelId = channelId
+
+        async function fetchVideos() {
+            try {
+                setIsLoading(true)
+                setError(null)
+
+                const result = await getChannelVideoList({
+                    channelId: currentChannelId,
+                    type,
+                    page,
+                    size,
+                })
+
+                setData(result)
+            } catch (error) {
+                setError(error)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+
+        void fetchVideos()
+    }, [hasHydrated, channelId, type, page, size])
 
     return {
         data,
         isLoading,
         error,
-        refetch: fetchVideoList,
     }
 }

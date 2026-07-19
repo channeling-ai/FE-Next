@@ -21,5 +21,5 @@ type Video = {
     videoThumbnailUrl: string
     videoCategory: 'LONG' | 'SHORT'
     viewCount: number
-    uploadDate: Date
+    uploadDate: string
 }
