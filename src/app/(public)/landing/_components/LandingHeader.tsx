@@ -1,10 +1,56 @@
+'use client'
+
 import Link from 'next/link'
+import { useEffect, useRef, useState } from 'react'
 import LogoIcon from '@/assets/icons/logo.svg'
 import LandingAuthButton from './LandingAuthButton'
 
 export default function LandingHeader() {
+    const headerRef = useRef<HTMLElement>(null)
+    const [isPastHero, setIsPastHero] = useState(false)
+
+    useEffect(() => {
+        const header = headerRef.current
+        const hero = header?.closest('section')
+
+        if (!header || !hero) return
+
+        let animationFrameId: number | null = null
+
+        const updateHeaderBackground = () => {
+            const hasPassedHero = hero.getBoundingClientRect().bottom <= header.getBoundingClientRect().bottom
+            setIsPastHero((current) => (current === hasPassedHero ? current : hasPassedHero))
+            animationFrameId = null
+        }
+
+        const handleViewportChange = () => {
+            if (animationFrameId !== null) return
+            animationFrameId = window.requestAnimationFrame(updateHeaderBackground)
+        }
+
+        updateHeaderBackground()
+        window.addEventListener('scroll', handleViewportChange, { passive: true })
+        window.addEventListener('resize', handleViewportChange)
+
+        return () => {
+            window.removeEventListener('scroll', handleViewportChange)
+            window.removeEventListener('resize', handleViewportChange)
+
+            if (animationFrameId !== null) {
+                window.cancelAnimationFrame(animationFrameId)
+            }
+        }
+    }, [])
+
     return (
-        <header className="fixed inset-x-0 top-0 z-40 mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between bg-transparent px-4 tablet:h-16 tablet:px-5 desktop:h-[72px] desktop:px-16">
+        <header
+            ref={headerRef}
+            className={`fixed inset-x-0 top-0 z-40 mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between border-b px-4 transition-[background-color,border-color,backdrop-filter] duration-300 tablet:h-16 tablet:px-5 desktop:h-[72px] desktop:px-16 ${
+                isPastHero
+                    ? 'border-white/8 bg-black/70 backdrop-blur-md'
+                    : 'border-transparent bg-transparent'
+            }`}
+        >
             <Link href="/" aria-label="채널링 홈" className="flex w-[88px] items-center">
                 <LogoIcon aria-hidden className="size-6 brightness-0 invert" />
                 <span className="text-[14px] font-semibold leading-none tracking-[-0.04em] text-white">
