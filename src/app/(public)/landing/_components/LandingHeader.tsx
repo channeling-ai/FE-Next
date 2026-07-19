@@ -4,7 +4,7 @@ import LandingAuthButton from './LandingAuthButton'
 
 export default function LandingHeader() {
     return (
-        <header className="fixed inset-x-0 top-0 z-40 mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between bg-bg-0 px-4 tablet:h-16 tablet:px-5 desktop:h-[72px] desktop:px-16">
+        <header className="fixed inset-x-0 top-0 z-40 mx-auto flex h-14 w-full max-w-[1440px] items-center justify-between bg-transparent px-4 tablet:h-16 tablet:px-5 desktop:h-[72px] desktop:px-16">
             <Link href="/" aria-label="채널링 홈" className="flex w-[88px] items-center">
                 <LogoIcon aria-hidden className="size-6 brightness-0 invert" />
                 <span className="text-[14px] font-semibold leading-none tracking-[-0.04em] text-white">
