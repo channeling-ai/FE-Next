@@ -7,10 +7,12 @@ import { VideoListResponse } from '@/types/channels'
 
 export function useChannelVideoList({
     type,
+    sort = 'LATEST',
     page = 1,
     size = 8,
 }: {
-    type: 'LONG' | 'SHORT'
+    type: 'ALL' | 'LONG' | 'SHORTS'
+    sort?: 'LATEST' | 'POPULAR' | 'DATE'
     page?: number
     size?: number
 }) {
@@ -36,6 +38,7 @@ export function useChannelVideoList({
                 const result = await getChannelVideoList({
                     channelId: currentChannelId,
                     type,
+                    sort,
                     page,
                     size,
                 })

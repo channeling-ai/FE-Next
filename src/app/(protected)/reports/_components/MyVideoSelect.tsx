@@ -1,3 +1,4 @@
+'use client'
 import Back from '@/assets/icons/back.svg'
 import { useState } from 'react'
 import SearchBar from './SearchBar'
@@ -5,15 +6,37 @@ import VideoCard from './VideoCard'
 import DropdownOrder from '@/components/dropdown-order'
 import Chip from '@/components/Chip'
 import PageContent from '@/components/layout/PageContent'
+import { useChannelVideoList } from '@/hooks/useGetVideoList'
+import { formatRelativeTime } from '@/utils/format'
+import { useRouter } from 'next/navigation'
 
 interface MyVideoSelectProps {
     onBack: () => void
 }
 
-export default function MyVideoSelect({ onBack }: MyVideoSelectProps) {
-    const [activeChip, setActiveChip] = useState<'all' | 'longform' | 'shortform'>('all')
+type OrderType = '최신순' | '인기순' | '날짜순'
+type SortType = 'LATEST' | 'POPULAR' | 'DATE'
 
-    const [order, setOrder] = useState('최신순')
+const sortMap: Record<OrderType, SortType> = {
+    최신순: 'LATEST',
+    인기순: 'POPULAR',
+    날짜순: 'DATE',
+}
+
+export default function MyVideoSelect({ onBack }: MyVideoSelectProps) {
+    const router = useRouter()
+    const [activeChip, setActiveChip] = useState<'ALL' | 'LONG' | 'SHORTS'>('ALL')
+
+    const [order, setOrder] = useState<OrderType>('최신순')
+
+    const sort = sortMap[order]
+
+    const { data, isLoading, error } = useChannelVideoList({
+        type: activeChip,
+        sort,
+        page: 1,
+        size: 8,
+    })
 
     return (
         <div className="absolute inset-0 z-30 overflow-y-auto bg-bg-0">
@@ -37,52 +60,47 @@ export default function MyVideoSelect({ onBack }: MyVideoSelectProps) {
 
                 <div className="flex items-center justify-between">
                     <div className="flex gap-1">
-                        <Chip title="전체" onClick={() => setActiveChip('all')} isActive={activeChip === 'all'} />
+                        <Chip title="전체" onClick={() => setActiveChip('ALL')} isActive={activeChip === 'ALL'} />
 
-                        <Chip
-                            title="롱폼"
-                            onClick={() => setActiveChip('longform')}
-                            isActive={activeChip === 'longform'}
-                        />
+                        <Chip title="롱폼" onClick={() => setActiveChip('LONG')} isActive={activeChip === 'LONG'} />
 
-                        <Chip
-                            title="숏폼"
-                            onClick={() => setActiveChip('shortform')}
-                            isActive={activeChip === 'shortform'}
-                        />
+                        <Chip title="숏폼" onClick={() => setActiveChip('SHORTS')} isActive={activeChip === 'SHORTS'} />
                     </div>
 
-                    <DropdownOrder onChange={setOrder} />
+                    <DropdownOrder onChange={(value) => setOrder(value as OrderType)} />
                 </div>
 
                 <div className="grid grid-cols-1 gap-2 tablet:grid-cols-2 desktop:grid-cols-4">
-                    <VideoCard
-                        title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                        leftside="조회수"
-                        rightside="17만회"
-                        period="3년 전"
-                    />
+                    {isLoading && (
+                        <div className="col-span-full py-6 text-center font-body-14m text-text-secondary">
+                            영상을 불러오는 중...
+                        </div>
+                    )}
 
-                    <VideoCard
-                        title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                        leftside="조회수"
-                        rightside="17만회"
-                        period="3년 전"
-                    />
+                    {/* {error && (
+                                        <div className="col-span-full py-6 text-center font-body-14m text-red-error">
+                                            영상 목록을 불러오지 못했습니다.
+                                        </div>
+                                    )} */}
 
-                    <VideoCard
-                        title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                        leftside="조회수"
-                        rightside="17만회"
-                        period="3년 전"
-                    />
+                    {!isLoading && !error && data?.videoList.length === 0 && (
+                        <div className="col-span-full py-6 text-center font-body-14m text-text-secondary">
+                            최근 영상이 없습니다.
+                        </div>
+                    )}
 
-                    <VideoCard
-                        title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
-                        leftside="조회수"
-                        rightside="17만회"
-                        period="3년 전"
-                    />
+                    {!isLoading &&
+                        !error &&
+                        data?.videoList?.map((video) => (
+                            <VideoCard
+                                key={video.videoId}
+                                title={video.videoTitle}
+                                leftside="조회수"
+                                leftsideamount={`${video.viewCount.toLocaleString()}회`}
+                                rightside={formatRelativeTime(video.uploadDate)}
+                                onClick={() => router.push('/reports/period')}
+                            />
+                        ))}
                 </div>
             </PageContent>
         </div>

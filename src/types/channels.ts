@@ -1,6 +1,7 @@
 export type VideoListRequest = {
     channelId: number
-    type: 'LONG' | 'SHORT'
+    type: 'ALL' | 'LONG' | 'SHORTS'
+    sort: 'LATEST' | 'POPULAR' | 'DATE'
     page: number
     size: number
 }
@@ -19,7 +20,7 @@ type Video = {
     videoId: number
     videoTitle: string
     videoThumbnailUrl: string
-    videoCategory: 'LONG' | 'SHORT'
+    videoCategory: 'ALL' | 'LONG' | 'SHORTS'
     viewCount: number
     uploadDate: string
 }
