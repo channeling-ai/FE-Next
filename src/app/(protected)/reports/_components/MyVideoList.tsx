@@ -7,6 +7,7 @@ import VideoSearchInputBar from './VideoSearchInputBar'
 import MyVideoSelect from './MyVideoSelect'
 import { Modal } from '@/components/Modal'
 import { useChannelVideoList } from '@/hooks/useGetVideoList'
+import { formatRelativeTime } from '@/utils/format'
 
 export default function MyVideoList() {
     const router = useRouter()
@@ -68,8 +69,8 @@ export default function MyVideoList() {
                             key={video.videoId}
                             title={video.videoTitle}
                             leftside="조회수"
-                            rightside={`${video.viewCount.toLocaleString()}회`}
-                            period={video.uploadDate}
+                            leftsideamount={`${video.viewCount.toLocaleString()}회`}
+                            rightside={formatRelativeTime(video.uploadDate)}
                             onClick={() => router.push('/reports/period')}
                         />
                     ))}
