@@ -5,6 +5,7 @@ interface VideoCardProps {
     rightside?: string
     rightsideamount?: string
     period?: string
+    imageUrl?: string
     onClick?: () => void
 }
 
@@ -15,6 +16,7 @@ export default function VideoCard({
     rightside,
     rightsideamount,
     period,
+    imageUrl,
     onClick,
 }: VideoCardProps) {
     return (
@@ -22,7 +24,15 @@ export default function VideoCard({
             className="flex flex-col max-w-82 border border-transparent hover:border-border-active rounded-[20px]"
             onClick={onClick}
         >
-            <div className="flex w-full h-46 bg-transparent rounded-t-[20px]"></div>
+            {imageUrl ? (
+                <img
+                    src={imageUrl}
+                    alt={title ?? '영상 썸네일'}
+                    className="block h-46 w-full rounded-t-[20px] object-cover"
+                />
+            ) : (
+                <div className="h-46 w-full rounded-t-[20px] bg-bg-1" />
+            )}
             <div className="flex flex-col p-4 w-full  items-start self-stretch bg-bg-1 rounded-b-[20px]">
                 {period && <div className="text-text-tertiary font-caption-14r">{period}</div>}
                 <div className="self-stretch text-text-primary font-body-16sb line-clamp-2">{title}</div>

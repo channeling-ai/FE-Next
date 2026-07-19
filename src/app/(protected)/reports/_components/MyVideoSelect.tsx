@@ -6,7 +6,7 @@ import VideoCard from './VideoCard'
 import DropdownOrder from '@/components/dropdown-order'
 import Chip from '@/components/Chip'
 import PageContent from '@/components/layout/PageContent'
-import { useChannelVideoList } from '@/hooks/useGetVideoList'
+import { useGetChannelVideoList } from '@/hooks/useGetChannelVideoList'
 import { formatRelativeTime } from '@/utils/format'
 import { useRouter } from 'next/navigation'
 
@@ -14,6 +14,7 @@ interface MyVideoSelectProps {
     onBack: () => void
 }
 
+type VideoType = 'ALL' | 'LONG' | 'SHORTS'
 type OrderType = '최신순' | '인기순' | '날짜순'
 type SortType = 'LATEST' | 'POPULAR' | 'DATE'
 
@@ -25,13 +26,13 @@ const sortMap: Record<OrderType, SortType> = {
 
 export default function MyVideoSelect({ onBack }: MyVideoSelectProps) {
     const router = useRouter()
-    const [activeChip, setActiveChip] = useState<'ALL' | 'LONG' | 'SHORTS'>('ALL')
+    const [activeChip, setActiveChip] = useState<VideoType>('ALL')
 
     const [order, setOrder] = useState<OrderType>('최신순')
 
     const sort = sortMap[order]
 
-    const { data, isLoading, error } = useChannelVideoList({
+    const { data, isLoading, error } = useGetChannelVideoList({
         type: activeChip,
         sort,
         page: 1,
@@ -98,6 +99,7 @@ export default function MyVideoSelect({ onBack }: MyVideoSelectProps) {
                                 leftside="조회수"
                                 leftsideamount={`${video.viewCount.toLocaleString()}회`}
                                 rightside={formatRelativeTime(video.uploadDate)}
+                                imageUrl={video.videoThumbnailUrl}
                                 onClick={() => router.push('/reports/period')}
                             />
                         ))}

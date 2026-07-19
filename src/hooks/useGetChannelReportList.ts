@@ -1,13 +1,12 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getChannelVideoList } from '@/api/channels'
+import { getChannelReportList } from '@/api/channel'
 import { useAuthStore } from '@/stores/authStore'
-import { VideoListResponse } from '@/types/channels'
+import { ReportListResponse } from '@/types/reports'
 
-export function useChannelVideoList({
+export function useGetChannelReportList({
     type,
-    sort = 'LATEST',
     page = 1,
     size = 8,
 }: {
@@ -19,7 +18,7 @@ export function useChannelVideoList({
     const channelId = useAuthStore((state) => state.user?.channelId)
     const hasHydrated = useAuthStore((state) => state.hasHydrated)
 
-    const [data, setData] = useState<VideoListResponse | null>(null)
+    const [data, setData] = useState<ReportListResponse | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState<unknown>(null)
 
@@ -27,7 +26,6 @@ export function useChannelVideoList({
         if (!hasHydrated) return
         if (channelId == null) return
 
-        // 여기서 새 변수에 담아주면 타입이 number로 고정됨
         const currentChannelId = channelId
 
         async function fetchVideos() {
@@ -35,10 +33,9 @@ export function useChannelVideoList({
                 setIsLoading(true)
                 setError(null)
 
-                const result = await getChannelVideoList({
+                const result = await getChannelReportList({
                     channelId: currentChannelId,
                     type,
-                    sort,
                     page,
                     size,
                 })

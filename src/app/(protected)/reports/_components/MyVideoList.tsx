@@ -6,7 +6,7 @@ import VideoCard from './VideoCard'
 import VideoSearchInputBar from './VideoSearchInputBar'
 import MyVideoSelect from './MyVideoSelect'
 import { Modal } from '@/components/Modal'
-import { useChannelVideoList } from '@/hooks/useGetVideoList'
+import { useGetChannelVideoList } from '@/hooks/useGetChannelVideoList'
 import { formatRelativeTime } from '@/utils/format'
 
 export default function MyVideoList() {
@@ -25,7 +25,7 @@ export default function MyVideoList() {
     const closeModal = () => {
         setIsModalOpen(false)
     }
-    const { data, isLoading, error } = useChannelVideoList({
+    const { data, isLoading, error } = useGetChannelVideoList({
         type: 'LONG',
         page: 1,
         size: 4,
@@ -71,6 +71,7 @@ export default function MyVideoList() {
                             leftside="조회수"
                             leftsideamount={`${video.viewCount.toLocaleString()}회`}
                             rightside={formatRelativeTime(video.uploadDate)}
+                            imageUrl={video.videoThumbnailUrl}
                             onClick={() => router.push('/reports/period')}
                         />
                     ))}
