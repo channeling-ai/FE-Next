@@ -10,6 +10,7 @@ import { getVideoInfo } from '@/api/video'
 import { useVideoStore } from '@/stores/videoStore'
 import { VideoInfoResponse } from '@/types/videos'
 import { formatKoreanDate, formatRelativeTime } from '@/utils/format'
+import { useGetVideoReportList } from '@/hooks/useGetVideoReportList'
 
 interface ReportListProps {
     totalCount: number
@@ -24,11 +25,13 @@ export default function ReportList({ totalCount, onBack, onCreate }: ReportListP
     const selectedVideoId = useVideoStore((state) => state.selectedVideoId)
     const [videoInfo, setVideoInfo] = useState<VideoInfoResponse | null>(null)
 
+    if (selectedVideoId == null) return
+
+    const videoId = selectedVideoId
+
+    const { data } = useGetVideoReportList({ videoId: videoId, page: 1, size: 8 })
+
     useEffect(() => {
-        if (selectedVideoId == null) return
-
-        const videoId = selectedVideoId
-
         async function fetchVideoInfo() {
             const video = await getVideoInfo(videoId)
             setVideoInfo(video)
@@ -60,7 +63,7 @@ export default function ReportList({ totalCount, onBack, onCreate }: ReportListP
                     </div>
                 </header>
                 <div className="pt-2 flex">
-                    <p className="font-body-16m text-text-primary">{totalCount}</p>
+                    <p className="font-body-16m text-text-primary">{data?.totalReportCount}</p>
                     <p className="font-body-16m text-text-secondary">개의 리포트</p>
                 </div>
                 {/* 영상 정보  */}
@@ -101,30 +104,14 @@ export default function ReportList({ totalCount, onBack, onCreate }: ReportListP
                     </div>
                 )}
                 <div className="flex flex-col gap-2">
-                    <ReportBox
-                        generatedDate="25년 12월 21일 (03:39)"
-                        startDate="25.12.21"
-                        endDate="26.12.21"
-                        isDelete={isDelete}
-                    />
-                    <ReportBox
-                        generatedDate="25년 12월 21일 (03:39)"
-                        startDate="25.12.21"
-                        endDate="26.12.21"
-                        isDelete={isDelete}
-                    />
-                    <ReportBox
-                        generatedDate="25년 12월 21일 (03:39)"
-                        startDate="25.12.21"
-                        endDate="26.12.21"
-                        isDelete={isDelete}
-                    />
-                    <ReportBox
-                        generatedDate="25년 12월 21일 (03:39)"
-                        startDate="25.12.21"
-                        endDate="26.12.21"
-                        isDelete={isDelete}
-                    />
+                    {data?.reportList.map((report) => (
+                        <ReportBox
+                            generatedDate={formatKoreanDate(report.createdAt)}
+                            startDate={report.startDate}
+                            endDate={report.endDate}
+                            isDelete={isDelete}
+                        />
+                    ))}
                 </div>
             </PageContent>
         </div>

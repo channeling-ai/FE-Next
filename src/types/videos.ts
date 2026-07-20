@@ -9,3 +9,24 @@ export type VideoInfoResponse = {
     ChannelName: string
     lastUpdatedDate: string
 }
+
+export type VideoReportListRequest = {
+    videoId: number
+    page: number
+    size: number
+}
+
+export type VideoReportListResponse = {
+    totalReportCount: number
+    page: number
+    size: number
+    hasNext: boolean
+    reportList: Report[]
+}
+
+type Report = {
+    reportId: 0
+    createdAt: string
+    startDate: string
+    endDate: string
+}
