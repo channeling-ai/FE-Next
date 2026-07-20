@@ -5,34 +5,30 @@ import { useEffect, useState } from 'react'
 import { VideoReportListRequest, VideoReportListResponse } from '@/types/videos'
 
 import { getVideoReportList } from '@/api/video'
+import { useQuery } from '@tanstack/react-query'
+
+export const videoReportListQueryKey = {
+    all: ['video-report-list'] as const,
+    byVideo: (videoId: number) => ['video-report-list', videoId] as const,
+    list: (videoId: number, page: number, size: number) => ['video-report-list', videoId, page, size] as const,
+}
 
 export function useGetVideoReportList({ videoId, page, size }: VideoReportListRequest) {
-    const [data, setData] = useState<VideoReportListResponse | null>(null)
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState<unknown>(null)
+    return useQuery({
+        queryKey: videoId == null ? videoReportListQueryKey.all : videoReportListQueryKey.list(videoId, page, size),
 
-    useEffect(() => {
-        async function fetchVideos() {
-            try {
-                setIsLoading(true)
-                setError(null)
-
-                const result = await getVideoReportList({ videoId, page, size })
-
-                setData(result)
-            } catch (error) {
-                setError(error)
-            } finally {
-                setIsLoading(false)
+        queryFn: () => {
+            if (videoId == null) {
+                throw new Error('videoId가 없습니다.')
             }
-        }
 
-        void fetchVideos()
-    }, [videoId, page, size])
+            return getVideoReportList({
+                videoId,
+                page,
+                size,
+            })
+        },
 
-    return {
-        data,
-        isLoading,
-        error,
-    }
+        enabled: videoId != null,
+    })
 }

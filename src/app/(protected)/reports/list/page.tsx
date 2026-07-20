@@ -11,23 +11,20 @@ import { useVideoStore } from '@/stores/videoStore'
 import { VideoInfoResponse } from '@/types/videos'
 import { formatKoreanDate, formatRelativeTime } from '@/utils/format'
 import { useGetVideoReportList } from '@/hooks/useGetVideoReportList'
+import { useDeleteReport } from '@/hooks/useDeleteReport'
 
 interface ReportListProps {
-    totalCount: number
-    onBack: () => void
     onCreate: () => void
 }
 
-export default function ReportList({ totalCount, onBack, onCreate }: ReportListProps) {
+export default function ReportList({ onCreate }: ReportListProps) {
     const router = useRouter()
     const [isDelete, setIsDelete] = useState(false)
 
     const selectedVideoId = useVideoStore((state) => state.selectedVideoId)
     const [videoInfo, setVideoInfo] = useState<VideoInfoResponse | null>(null)
 
-    if (selectedVideoId == null) return
-
-    const videoId = selectedVideoId
+    const videoId = selectedVideoId ?? 0
 
     const { data } = useGetVideoReportList({ videoId: videoId, page: 1, size: 8 })
 
@@ -39,6 +36,10 @@ export default function ReportList({ totalCount, onBack, onCreate }: ReportListP
 
         void fetchVideoInfo()
     }, [selectedVideoId])
+
+    if (selectedVideoId == null) {
+        return null
+    }
     return (
         <div className="absolute inset-0 z-30 overflow-y-auto bg-bg-0">
             <PageContent className="flex min-h-full flex-col gap-4 pb-16 pt-4">
@@ -57,8 +58,13 @@ export default function ReportList({ totalCount, onBack, onCreate }: ReportListP
                     </div>
                     <div className="flex gap-2">
                         <Bin onClick={() => setIsDelete((prev) => !prev)} />
-                        <button type="button" onClick={onCreate} className="flex" aria-label="리포트 생성">
-                            <Plus onClick={() => router.push('/reports/period')} />
+                        <button
+                            type="button"
+                            onClick={() => router.push('/reports/period')}
+                            className="flex"
+                            aria-label="리포트 생성"
+                        >
+                            <Plus />
                         </button>
                     </div>
                 </header>
@@ -103,16 +109,21 @@ export default function ReportList({ totalCount, onBack, onCreate }: ReportListP
                         </div>
                     </div>
                 )}
-                <div className="flex flex-col gap-2">
-                    {data?.reportList.map((report) => (
-                        <ReportBox
-                            generatedDate={formatKoreanDate(report.createdAt)}
-                            startDate={report.startDate}
-                            endDate={report.endDate}
-                            isDelete={isDelete}
-                        />
-                    ))}
-                </div>
+                {videoInfo && (
+                    <div className="flex flex-col gap-2">
+                        {data?.reportList.map((report) => (
+                            <ReportBox
+                                key={report.reportId}
+                                generatedDate={formatKoreanDate(report.createdAt)}
+                                startDate={report.startDate}
+                                endDate={report.endDate}
+                                isDelete={isDelete}
+                                reportId={report.reportId}
+                                videoId={videoInfo?.videoId}
+                            />
+                        ))}
+                    </div>
+                )}
             </PageContent>
         </div>
     )
