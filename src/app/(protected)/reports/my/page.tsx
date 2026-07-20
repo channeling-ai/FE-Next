@@ -42,7 +42,7 @@ export default function MyVideoSelectPage() {
                     <div className="flex items-center gap-2">
                         <button
                             type="button"
-                            onClick={() => router.push('/reports')}
+                            onClick={() => router.back()}
                             className="flex cursor-pointer items-center"
                             aria-label="뒤로 가기"
                         >

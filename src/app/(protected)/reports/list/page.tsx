@@ -1,10 +1,11 @@
+'use client'
 import Back from '@/assets/icons/back.svg'
 import Bin from '@/assets/icons/bin.svg'
 import Plus from '@/assets/icons/plus.svg'
 import { useState } from 'react'
 import PageContent from '@/components/layout/PageContent'
 import ReportBox from '../_components/ReportBox'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 interface ReportListProps {
     totalCount: number
@@ -23,7 +24,7 @@ export default function ReportList({ totalCount, onBack, onCreate }: ReportListP
                     <div className="flex items-center gap-2">
                         <button
                             type="button"
-                            onClick={() => router.push('/reports/list')}
+                            onClick={() => router.back()}
                             className="flex cursor-pointer items-center"
                             aria-label="뒤로 가기"
                         >
@@ -35,7 +36,7 @@ export default function ReportList({ totalCount, onBack, onCreate }: ReportListP
                     <div className="flex gap-2">
                         <Bin onClick={() => setIsDelete((prev) => !prev)} />
                         <button type="button" onClick={onCreate} className="flex" aria-label="리포트 생성">
-                            <Plus />
+                            <Plus onClick={() => router.push('/reports/period')} />
                         </button>
                     </div>
                 </header>
