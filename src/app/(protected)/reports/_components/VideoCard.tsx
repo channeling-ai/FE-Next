@@ -21,7 +21,7 @@ export default function VideoCard({
 }: VideoCardProps) {
     return (
         <div
-            className="flex flex-col max-w-82 border border-transparent hover:border-border-active rounded-[20px]"
+            className="flex flex-col w-full border border-transparent hover:border-border-active rounded-[20px]"
             onClick={onClick}
         >
             {imageUrl ? (
