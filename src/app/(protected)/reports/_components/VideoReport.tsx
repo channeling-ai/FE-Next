@@ -7,7 +7,6 @@ import SearchBar from './SearchBar'
 import Chip from '@/components/Chip'
 import VideoCard from './VideoCard'
 import DropdownOrder from '@/components/dropdown-order'
-import ReportList from './ReportList'
 import { useGetChannelReportList } from '@/hooks/useGetChannelReportList'
 import { formatKoreanDate, formatRelativeTime } from '@/utils/format'
 import { getCategoryLeadersVideo } from '@/api/report'
@@ -32,7 +31,6 @@ export default function VideoReport() {
 
     const [activeTab, setActiveTab] = useState<'myreport' | 'recommend'>('myreport')
     const [activeChip, setActiveChip] = useState<VideoType>('ALL')
-    const [isOpenReportList, setIsOpenReportList] = useState(false)
     const [order, setOrder] = useState<OrderType>('최신순')
 
     const sort = sortMap[order]
@@ -67,16 +65,6 @@ export default function VideoReport() {
 
         void fetchLeaderVideos()
     }, [activeTab])
-
-    if (isOpenReportList) {
-        return (
-            <ReportList
-                totalCount={reportData?.totalElements ?? 0}
-                onBack={() => setIsOpenReportList(false)}
-                onCreate={() => router.push('/reports/period')}
-            />
-        )
-    }
 
     return (
         <div>
@@ -131,7 +119,7 @@ export default function VideoReport() {
                                     rightside="최근생성"
                                     rightsideamount={formatKoreanDate(report.updatedAt)}
                                     imageUrl={report.videoThumbnailUrl}
-                                    onClick={() => router.push('/reports/period')}
+                                    onClick={() => router.push('/reports/list')}
                                 />
                             ))}
                     </div>

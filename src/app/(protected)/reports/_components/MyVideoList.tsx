@@ -4,19 +4,14 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import VideoCard from './VideoCard'
 import VideoSearchInputBar from './VideoSearchInputBar'
-import MyVideoSelect from './MyVideoSelect'
 import { Modal } from '@/components/Modal'
 import { useGetChannelVideoList } from '@/hooks/useGetChannelVideoList'
 import { formatRelativeTime } from '@/utils/format'
 
 export default function MyVideoList() {
     const router = useRouter()
-    const [selectedVideo, setSelectedVideo] = useState<boolean>(false)
-    const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const handleClose = () => {
-        setSelectedVideo(false)
-    }
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const openModal = () => {
         setIsModalOpen(true)
@@ -30,9 +25,7 @@ export default function MyVideoList() {
         page: 1,
         size: 4,
     })
-    if (selectedVideo) {
-        return <MyVideoSelect onBack={handleClose} />
-    }
+
     return (
         <div className="flex flex-col">
             <div className="font-title-18sb text-text-primary pb-2">내 영상 분석</div>
@@ -76,7 +69,10 @@ export default function MyVideoList() {
                         />
                     ))}
             </div>
-            <button className="px-4 py-2 w-full bg-bg-1 rounded-[20px]" onClick={() => setSelectedVideo(true)}>
+            <button
+                className="px-4 py-2 w-full bg-bg-1 hover:bg-bg-3 cursor-pointer rounded-[20px]"
+                onClick={() => router.push('/reports/list')}
+            >
                 더보기
             </button>
 

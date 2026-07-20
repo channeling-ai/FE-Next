@@ -1,18 +1,14 @@
 'use client'
 import Back from '@/assets/icons/back.svg'
 import { useState } from 'react'
-import SearchBar from './SearchBar'
-import VideoCard from './VideoCard'
+import SearchBar from '../_components/SearchBar'
+import VideoCard from '../_components/VideoCard'
 import DropdownOrder from '@/components/dropdown-order'
 import Chip from '@/components/Chip'
 import PageContent from '@/components/layout/PageContent'
 import { useGetChannelVideoList } from '@/hooks/useGetChannelVideoList'
 import { formatRelativeTime } from '@/utils/format'
 import { useRouter } from 'next/navigation'
-
-interface MyVideoSelectProps {
-    onBack: () => void
-}
 
 type VideoType = 'ALL' | 'LONG' | 'SHORTS'
 type OrderType = '최신순' | '인기순' | '날짜순'
@@ -24,7 +20,7 @@ const sortMap: Record<OrderType, SortType> = {
     날짜순: 'DATE',
 }
 
-export default function MyVideoSelect({ onBack }: MyVideoSelectProps) {
+export default function MyVideoSelectPage() {
     const router = useRouter()
     const [activeChip, setActiveChip] = useState<VideoType>('ALL')
 
@@ -46,7 +42,7 @@ export default function MyVideoSelect({ onBack }: MyVideoSelectProps) {
                     <div className="flex items-center gap-2">
                         <button
                             type="button"
-                            onClick={onBack}
+                            onClick={() => router.push('/reports')}
                             className="flex cursor-pointer items-center"
                             aria-label="뒤로 가기"
                         >
