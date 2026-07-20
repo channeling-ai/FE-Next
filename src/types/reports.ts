@@ -26,3 +26,15 @@ type Report = {
     uploadDate: string
     updatedAt: string
 }
+
+export type CategoryLeadersVideoResponse = LeadersVideo[]
+
+type LeadersVideo = {
+    poolVideoId: number
+    youtubeVideoId: string
+    title: string
+    thumbnail: string
+    publishedAt: string
+    channelTitle: string
+    channelThumbnail: string
+}
