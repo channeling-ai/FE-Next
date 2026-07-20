@@ -11,6 +11,7 @@ import { useGetChannelReportList } from '@/hooks/useGetChannelReportList'
 import { formatKoreanDate, formatRelativeTime } from '@/utils/format'
 import { getCategoryLeadersVideo } from '@/api/report'
 import { CategoryLeadersVideoResponse } from '@/types/reports'
+import { useVideoStore } from '@/stores/videoStore'
 
 type VideoType = 'ALL' | 'LONG' | 'SHORTS'
 type OrderType = '최신순' | '인기순' | '날짜순'
@@ -32,6 +33,8 @@ export default function VideoReport() {
     const [activeTab, setActiveTab] = useState<'myreport' | 'recommend'>('myreport')
     const [activeChip, setActiveChip] = useState<VideoType>('ALL')
     const [order, setOrder] = useState<OrderType>('최신순')
+
+    const setSelectedVideoId = useVideoStore((state) => state.setSelectedVideoId)
 
     const sort = sortMap[order]
 
@@ -119,7 +122,10 @@ export default function VideoReport() {
                                     rightside="최근생성"
                                     rightsideamount={formatKoreanDate(report.updatedAt)}
                                     imageUrl={report.videoThumbnailUrl}
-                                    onClick={() => router.push('/reports/list')}
+                                    onClick={() => {
+                                        setSelectedVideoId(report.videoId)
+                                        router.push('/reports/list')
+                                    }}
                                 />
                             ))}
                     </div>
