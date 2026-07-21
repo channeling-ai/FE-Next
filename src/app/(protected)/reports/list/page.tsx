@@ -11,7 +11,6 @@ import { useVideoStore } from '@/stores/videoStore'
 import { VideoInfoResponse } from '@/types/videos'
 import { formatKoreanDate, formatRelativeTime } from '@/utils/format'
 import { useGetVideoReportList } from '@/hooks/useGetVideoReportList'
-import { useDeleteReport } from '@/hooks/useDeleteReport'
 
 interface ReportListProps {
     onCreate: () => void

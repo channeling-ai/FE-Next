@@ -12,7 +12,7 @@ interface ReportBoxProps {
 }
 
 export default function ReportBox({ generatedDate, startDate, endDate, isDelete, reportId, videoId }: ReportBoxProps) {
-    const { mutate: deleteReport, isPending } = useDeleteReport(videoId)
+    const { mutate: deleteReport, isPending } = useDeleteReport({ videoId, page: 1, size: 8 })
 
     const handleDelete = () => {
         deleteReport(reportId)
