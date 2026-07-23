@@ -8,7 +8,7 @@ import Chip from '@/components/Chip'
 import VideoCard from './VideoCard'
 import DropdownOrder from '@/components/dropdown-order'
 import { useGetChannelReportList } from '@/hooks/useGetChannelReportList'
-import { formatKoreanDate, formatRelativeTime } from '@/utils/format'
+import { formatKoreanNumber, formatKoreanShortDate } from '@/utils/format'
 import { getCategoryLeadersVideo } from '@/api/report'
 import { CategoryLeadersVideoResponse } from '@/types/reports'
 import { useVideoStore } from '@/stores/videoStore'
@@ -118,9 +118,9 @@ export default function VideoReport() {
                                     key={report.videoId}
                                     title={report.videoTitle}
                                     leftside="리포트"
-                                    leftsideamount={`개`}
+                                    leftsideamount={formatKoreanNumber(report.reportCount, '개')}
                                     rightside="최근생성"
-                                    rightsideamount={formatKoreanDate(report.updatedAt)}
+                                    rightsideamount={formatKoreanShortDate(report.uploadDate)}
                                     imageUrl={report.videoThumbnailUrl}
                                     onClick={() => {
                                         setSelectedVideoId(report.videoId)

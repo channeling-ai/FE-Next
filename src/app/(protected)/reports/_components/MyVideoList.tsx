@@ -71,7 +71,7 @@ export default function MyVideoList() {
             </div>
             <button
                 className="px-4 py-2 w-full bg-bg-1 hover:bg-bg-3 cursor-pointer rounded-[20px]"
-                onClick={() => router.push('/reports/list')}
+                onClick={() => router.push('/reports/my')}
             >
                 더보기
             </button>

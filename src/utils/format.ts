@@ -48,27 +48,32 @@ export function formatRelativeTime(date: string | number | Date, isKST: boolean 
 
 /**
  * 날짜를 한국어 표기 형식으로 포맷합니다.
- * 예: 2024년 5월 9일 오전 10:30
+ * 예: 2024년 5월 9일 (오전 10:30)
  *
  * @param date - 문자열 또는 Date 객체
  * @param isKST - true면 KST 기준 입력, false면 UTC 기준 입력
  * @returns 한국어 형식의 날짜 문자열
  */
 export function formatKoreanDate(date: string | Date, isKST: boolean = false): string {
-    let parsedDate
+    const baseDate = new Date(date)
 
-    if (!isKST) {
-        parsedDate = new Date(new Date(date).getTime() + 9 * 60 * 60 * 1000)
+    if (Number.isNaN(baseDate.getTime())) {
+        return ''
     }
 
-    return new Intl.DateTimeFormat('ko-KR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-    }).format(parsedDate)
+    const parsedDate = isKST ? baseDate : new Date(baseDate.getTime() + 9 * 60 * 60 * 1000)
+
+    const year = parsedDate.getFullYear()
+    const month = parsedDate.getMonth() + 1
+    const day = parsedDate.getDate()
+
+    const hour = parsedDate.getHours()
+    const minute = String(parsedDate.getMinutes()).padStart(2, '0')
+
+    const period = hour < 12 ? '오전' : '오후'
+    const hour12 = hour % 12 || 12
+
+    return `${year}년 ${month}월 ${day}일 (${period} ${hour12}:${minute})`
 }
 
 /**
@@ -145,4 +150,59 @@ export const getJosa = (text: string, particle: string): string => {
     const hasFinalConsonant = (lastChar - 0xac00) % 28 > 0
 
     return hasFinalConsonant ? particleWithConsonant : particleWithoutConsonant
+}
+
+type DateInput = string | number | Date | null | undefined
+
+/**
+ * 날짜 포맷 함수에서 사용할 수 있는 값인지 확인한 뒤 Date 객체로 변환해 **반환**합니다.
+ * @param value 변환할 날짜 값 (문자열, 숫자 timestamp, Date 객체)
+ * @returns 유효한 날짜면 Date 객체, 유효하지 않으면 null
+ */
+function toDate(value: DateInput): Date | null {
+    if (!value) return null
+
+    const date = value instanceof Date ? value : new Date(value)
+
+    if (Number.isNaN(date.getTime())) return null
+
+    return date
+}
+
+/**
+ * 주어진 날짜 데이터를 `00년 00월 00일` 형식으로 변환해 **반환**합니다.
+ * @param value 변환할 날짜 값 (예: "2026-07-21T13:05:00")
+ * @returns 변환된 날짜 문자열 (예: "26년 07월 21일")
+ */
+export function formatKoreanShortDate(value: DateInput): string {
+    const date = toDate(value)
+    if (!date) return ''
+
+    const year = String(date.getFullYear()).slice(-2)
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+
+    return `${year}년 ${month}월 ${day}일`
+}
+
+function pad2(value: number) {
+    return String(value).padStart(2, '0')
+}
+
+/**
+ * 주어진 날짜 데이터를 `00년 00월 00일 (00:00)` 형식으로 변환해 **반환**합니다.
+ * @param value 변환할 날짜 값 (예: "2026-07-21T13:05:00")
+ * @returns 변환된 날짜와 시간 문자열 (예: "2026년 07월 21일 (13:05)")
+ */
+export function formatKoreanDateTime(value: DateInput): string {
+    const date = toDate(value)
+    if (!date) return ''
+
+    const year = String(date.getFullYear()).slice(-2)
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    const hour = pad2(date.getHours())
+    const minute = pad2(date.getMinutes())
+
+    return `${year}년 ${month}월 ${day}일 (${hour}:${minute})`
 }

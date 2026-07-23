@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 import { getVideoInfo } from '@/api/video'
 import { useVideoStore } from '@/stores/videoStore'
 import { VideoInfoResponse } from '@/types/videos'
-import { formatKoreanDate, formatRelativeTime } from '@/utils/format'
+import { formatKoreanDate, formatKoreanDateTime, formatRelativeTime } from '@/utils/format'
 import { useGetVideoReportList } from '@/hooks/useGetVideoReportList'
 
 interface ReportListProps {
@@ -81,7 +81,7 @@ export default function ReportList({ onCreate }: ReportListProps) {
                         ></img>
                         <div className="flex flex-col gap-1 justify-start items-start">
                             <div className="px-2 py-1 rounded-[20px] bg-bg-2 font-caption-12m desktop:font-caption-14m text-text-primary">
-                                Long-Form
+                                {videoInfo.videoType == 'LONG' ? 'Long-Form' : 'Short-Form'}
                             </div>
                             <div className="font-title-14sb desktop:font-title-20sb text-text-primary">
                                 {videoInfo?.videoTitle}
@@ -113,7 +113,7 @@ export default function ReportList({ onCreate }: ReportListProps) {
                         {data?.reportList.map((report) => (
                             <ReportBox
                                 key={report.reportId}
-                                generatedDate={formatKoreanDate(report.createdAt)}
+                                generatedDate={formatKoreanDateTime(report.createdAt)}
                                 startDate={report.startDate}
                                 endDate={report.endDate}
                                 isDelete={isDelete}

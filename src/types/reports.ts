@@ -16,15 +16,12 @@ export type ReportListResponse = {
 }
 
 type Report = {
-    reportId: number
-    channelName: string
     videoId: number
     videoTitle: string
     videoThumbnailUrl: string
     videoCategory: string
-    viewCount: number
+    reportCount: number
     uploadDate: string
-    updatedAt: string
 }
 
 export type CategoryLeadersVideoResponse = LeadersVideo[]
