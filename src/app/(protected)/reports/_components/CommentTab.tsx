@@ -1,5 +1,6 @@
 'use client'
 
+import { CommentSummary, ReportOverviewresponse } from '@/types/reports'
 import { useState } from 'react'
 
 type CommentType = 'positive' | 'negative' | 'neutral' | 'advice'
@@ -16,55 +17,83 @@ interface CommentTabData {
     activeClassName: string
 }
 
-const commentTabs: CommentTabData[] = [
-    {
-        id: 'positive',
-        label: '긍정',
-        percentage: 25,
-        count: 100,
-        title: '긍정적 댓글 분석',
-        description:
-            '시청자들은 화자의 솔직한 태도와 진정성에 큰 호감을 느꼈습니다. 특히 "힐링된다", "위로받았다"는 키워드가 상위권에 랭크되었습니다.',
-        dotClassName: 'bg-green',
-        textClassName: 'text-green',
-        activeClassName: 'border-green bg-green-op8',
-    },
-    {
-        id: 'negative',
-        label: '부정',
-        percentage: 25,
-        count: 100,
-        title: '부정적 댓글 분석',
-        description: '일부 시청자들은 영상의 전개가 다소 느리고 핵심 내용이 늦게 등장한다는 의견을 남겼습니다.',
-        dotClassName: 'bg-red-error',
-        textClassName: 'text-red-error',
-        activeClassName: 'border-red-error bg-red-error-op8',
-    },
-    {
-        id: 'neutral',
-        label: '중립',
-        percentage: 25,
-        count: 100,
-        title: '중립적 댓글 분석',
-        description: '영상의 주제와 관련된 질문이나 개인적인 경험을 공유하는 중립적인 댓글이 주로 나타났습니다.',
-        dotClassName: 'bg-gray-500',
-        textClassName: 'text-gray-500',
-        activeClassName: 'border-gray-500 bg-gray-500/10',
-    },
-    {
-        id: 'advice',
-        label: '조언',
-        percentage: 25,
-        count: 100,
-        title: '조언 댓글 분석',
-        description: '자막의 가독성을 높이고 영상의 주요 구간을 조금 더 간결하게 편집하면 좋겠다는 의견이 있었습니다.',
-        dotClassName: 'bg-blue-400',
-        textClassName: 'text-blue-400',
-        activeClassName: 'border-blue-400 bg-blue-op8',
-    },
-]
+interface OverviewCommentTabProps {
+    comment: CommentSummary
+    positiveCount: number
+    positiveSummary?: string
+    positivePercent: number
+    negativeCount: number
+    negativeSummary?: string
+    negativePercent: number
+    neutralCount: number
+    neutralSummary?: string
+    neutralPercent: number
+    adviceCount: number
+    adviceSummary?: string
+    advicePercent: number
+}
 
-export default function CommentTab() {
+export default function CommentTab({
+    comment,
+    positiveCount,
+    positiveSummary,
+    positivePercent,
+    negativeCount,
+    negativeSummary,
+    negativePercent,
+    neutralCount,
+    neutralSummary,
+    neutralPercent,
+    adviceCount,
+    adviceSummary,
+    advicePercent,
+}: OverviewCommentTabProps) {
+    const commentTabs: CommentTabData[] = [
+        {
+            id: 'positive',
+            label: '긍정',
+            percentage: positivePercent,
+            count: positiveCount,
+            title: '긍정적 댓글 분석',
+            description: 'positiveSummary',
+            dotClassName: 'bg-green',
+            textClassName: 'text-green',
+            activeClassName: 'border-green bg-green-op8',
+        },
+        {
+            id: 'negative',
+            label: '부정',
+            percentage: negativePercent,
+            count: negativeCount,
+            title: '부정적 댓글 분석',
+            description: 'negativeSummary',
+            dotClassName: 'bg-red-error',
+            textClassName: 'text-red-error',
+            activeClassName: 'border-red-error bg-red-error-op8',
+        },
+        {
+            id: 'neutral',
+            label: '중립',
+            percentage: negativePercent,
+            count: neutralCount,
+            title: '중립적 댓글 분석',
+            description: 'neutralSummary',
+            dotClassName: 'bg-gray-500',
+            textClassName: 'text-gray-500',
+            activeClassName: 'border-gray-500 bg-gray-500/10',
+        },
+        {
+            id: 'advice',
+            label: '조언',
+            percentage: advicePercent,
+            count: adviceCount,
+            title: '조언 댓글 분석',
+            description: 'adviceSummary',
+            dotClassName: 'bg-blue-400',
+            textClassName: 'text-blue-400',
+            activeClassName: 'border-blue-400 bg-blue-op8',
+        },
+    ]
     const [activeTab, setActiveTab] = useState<CommentType>('positive')
 
     const selectedTab = commentTabs.find((tab) => tab.id === activeTab) ?? commentTabs[0]
@@ -109,7 +138,7 @@ export default function CommentTab() {
             {/* 선택된 탭 내용 */}
             <div className="w-full flex flex-col gap-1">
                 <div className="flex items-center">
-                    <p className={`font-body-14m ${selectedTab.textClassName}`}>{selectedTab.title}</p>
+                    <p className={`font-body-14m text-text-secondary`}>{selectedTab.title}</p>
 
                     <p className="font-body-14r text-text-secondary">({selectedTab.count}개)</p>
                 </div>

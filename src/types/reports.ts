@@ -35,3 +35,55 @@ type LeadersVideo = {
     channelTitle: string
     channelThumbnail: string
 }
+
+export type ReportOverviewresponse = {
+    reportId: number
+    view: number
+    viewChannelAvg: number
+    likeCount: number
+    likeChannelAvg: number
+    comment: number
+    commentChannelAvg: number
+    concept: number
+    seo: number
+    revisit: number
+    summary: VideoSummary[]
+    totalCommentCount: number
+    neutralComment: number
+    adviceComment: number
+    positiveComment: number
+    negativeComment: number
+    positiveCommentPercent: number
+    negativeCommentPercent: number
+    neutralCommentPercent: number
+    adviceCommentPercent: number
+    commentSummary: CommentSummary[]
+    overviewSummary: OverviewSummary
+}
+
+type VideoSummary = {
+    time: string
+    title: string
+    content: string
+}
+
+type OverviewSummary = {
+    tag:
+        | '최상'
+        | '조언'
+        | '우수'
+        | '긍정'
+        | '최적화 원활'
+        | '보통'
+        | '중립'
+        | '양호'
+        | '주의'
+        | '개선 필요'
+        | '최적화 필요'
+        | '위험'
+        | '부정'
+    title: string
+    content: string
+}
+
+export type CommentSummary = {}

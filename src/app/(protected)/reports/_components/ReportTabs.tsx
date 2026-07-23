@@ -1,6 +1,6 @@
 'use client'
 
-import { getReportAnalysis } from '@/api/report'
+import { getReportAnalysis, getReportOVerview } from '@/api/report'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import AnalysisTab from './AnalysisTab'
@@ -23,6 +23,11 @@ export default function ReportTabs({ reportId }: ReportTabsProps) {
     const analysisQuery = useQuery({
         queryKey: ['reports', reportId, 'analysis'],
         queryFn: () => getReportAnalysis(reportId),
+        enabled: isValidReportId,
+    })
+    const overviewQuery = useQuery({
+        queryKey: ['reports', reportId, 'overview'],
+        queryFn: () => getReportOVerview(reportId),
         enabled: isValidReportId,
     })
 
@@ -48,7 +53,9 @@ export default function ReportTabs({ reportId }: ReportTabsProps) {
                 ))}
             </div>
 
-            {activeTab === 'overview' && <OverviewTab />}
+            {activeTab === 'overview' && (
+                <OverviewTab overview={overviewQuery.data} isPending={overviewQuery.isPending} />
+            )}
 
             {activeTab === 'analysis' && (
                 <AnalysisTab

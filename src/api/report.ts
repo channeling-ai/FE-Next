@@ -1,6 +1,6 @@
 import api from '@/lib/axios'
 import type { ApiResponse } from '@/types'
-import { CategoryLeadersVideoResponse } from '@/types/reports'
+import { CategoryLeadersVideoResponse, ReportOverviewresponse } from '@/types/reports'
 
 export interface RetentionPoint {
     time: string
@@ -63,5 +63,10 @@ export async function getReportAnalysis(reportId: number): Promise<ReportAnalysi
 
 export async function getCategoryLeadersVideo(): Promise<CategoryLeadersVideoResponse> {
     const { data } = await api.get<ApiResponse<CategoryLeadersVideoResponse>>(`/recommend-reports/leaders`)
+    return data.result
+}
+
+export async function getReportOVerview(reportId: number): Promise<ReportOverviewresponse> {
+    const { data } = await api.get<ApiResponse<ReportOverviewresponse>>(`/reports/${reportId}/overviews`)
     return data.result
 }

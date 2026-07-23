@@ -1,7 +1,7 @@
 interface EvaluationCardProps {
     type: 'view' | 'likes' | 'comments' | 'concept-consistency' | 'SEO' | 'revisit-rate'
-    score: number
-    average: number
+    score?: number
+    average?: number
 }
 
 const CardTitle = {
