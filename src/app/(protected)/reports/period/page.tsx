@@ -154,7 +154,7 @@ function ReportPeriodContent() {
         })
     }
 
-    if (createReportMutation.isPending) {
+    if (createReportMutation.isPending || createReportMutation.isSuccess) {
         return (
             <ReportDetailSkeleton
                 currentStep={1}
