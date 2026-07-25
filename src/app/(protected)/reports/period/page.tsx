@@ -9,7 +9,6 @@ import Chip from '@/components/Chip'
 import Header from '@/components/layout/Header'
 import PageContent from '@/components/layout/PageContent'
 import { Modal } from '@/components/Modal'
-import { useReportGenerationStore } from '@/stores/reportGenerationStore'
 import { useVideoStore } from '@/stores/videoStore'
 import ReportDetailSkeleton from '../_components/ReportDetailSkeleton'
 
@@ -93,7 +92,6 @@ function ReportPeriodContent() {
     const [creationError, setCreationError] = useState('')
     const selectedVideoId = useVideoStore((state) => state.selectedVideoId)
     const setSelectedVideoId = useVideoStore((state) => state.setSelectedVideoId)
-    const addProcessingReport = useReportGenerationStore((state) => state.addReport)
     const queryVideoId = Number(searchParams.get('videoId'))
     const videoId = Number.isInteger(queryVideoId) && queryVideoId > 0 ? queryVideoId : (selectedVideoId ?? 0)
     const isVideoIdValid = Number.isInteger(videoId) && videoId > 0
@@ -103,10 +101,6 @@ function ReportPeriodContent() {
     const createReportMutation = useMutation({
         mutationFn: createReport,
         onSuccess: ({ reportId, videoId: createdVideoId }) => {
-            addProcessingReport({
-                reportId,
-                videoId: createdVideoId,
-            })
             setSelectedVideoId(createdVideoId)
             router.replace(`/reports/${reportId}?videoId=${createdVideoId}`)
         },
