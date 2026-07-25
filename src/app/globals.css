@@ -118,6 +118,14 @@
         @apply box-border;
     }
 
+    button:not(:disabled) {
+        @apply cursor-pointer;
+    }
+
+    button:disabled {
+        @apply cursor-not-allowed;
+    }
+
     html,
     body {
         @apply h-full m-0 p-0;
