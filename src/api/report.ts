@@ -51,9 +51,9 @@ export interface AlgorithmOptimization {
 
 export interface ReportAnalysis {
     reportId: number
-    retentionGraph: RetentionPoint[]
-    viewerRetentionAnalysis: ViewerRetentionAnalysis
-    algorithmOptimization: AlgorithmOptimization
+    retentionGraph: string
+    viewerRetentionAnalysis: string
+    algorithmOptimization: string
 }
 
 export interface CreateReportRequest {
