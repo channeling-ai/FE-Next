@@ -62,7 +62,9 @@ function formatKoreanTime(time: string) {
     return `${minutes}분 ${seconds}초`
 }
 
-function parseJson(value: string): unknown {
+function parseJson(value: unknown): unknown {
+    if (typeof value !== 'string') return value
+
     try {
         return JSON.parse(value)
     } catch {
@@ -78,7 +80,7 @@ function isRetentionPoint(value: unknown): value is RetentionPoint {
     return isRecord(value) && typeof value.time === 'string' && typeof value.retentionRate === 'number'
 }
 
-function parseRetentionGraph(value: string): RetentionPoint[] {
+function parseRetentionGraph(value: unknown): RetentionPoint[] {
     const parsed = parseJson(value)
     const points =
         isRecord(parsed) && Array.isArray(parsed.points)
@@ -113,7 +115,7 @@ function isViewerRetentionAnalysis(value: unknown): value is ViewerRetentionAnal
     )
 }
 
-function parseViewerRetentionAnalysis(value: string) {
+function parseViewerRetentionAnalysis(value: unknown) {
     const parsed = parseJson(value)
     return isViewerRetentionAnalysis(parsed) ? parsed : null
 }
@@ -149,12 +151,24 @@ function isAlgorithmOptimization(value: unknown): value is AlgorithmOptimization
     )
 }
 
-function parseAlgorithmOptimization(value: string) {
+function parseAlgorithmOptimization(value: unknown) {
     const parsed = parseJson(value)
     return isAlgorithmOptimization(parsed) ? parsed : null
 }
 
-function AnalysisMarkdown({ content }: { content: string }) {
+function formatAnalysisText(content: unknown) {
+    if (typeof content === 'string') {
+        return content.replace(/\\n/g, '\n').trim()
+    }
+
+    try {
+        return JSON.stringify(content, null, 2) ?? ''
+    } catch {
+        return ''
+    }
+}
+
+function AnalysisMarkdown({ content }: { content: unknown }) {
     return (
         <ReactMarkdown
             remarkPlugins={[remarkGfm]}
@@ -168,7 +182,7 @@ function AnalysisMarkdown({ content }: { content: string }) {
                 li: ({ ...props }) => <li className="pl-1 text-text-primary marker:text-text-secondary" {...props} />,
             }}
         >
-            {content.replace(/\\n/g, '\n').trim()}
+            {formatAnalysisText(content)}
         </ReactMarkdown>
     )
 }

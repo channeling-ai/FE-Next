@@ -56,6 +56,13 @@ export interface ReportAnalysis {
     algorithmOptimization: string
 }
 
+interface ReportAnalysisResponse {
+    reportId: number
+    retentionGraph: unknown
+    viewerRetentionAnalysis: unknown
+    algorithmOptimization: unknown
+}
+
 export interface CreateReportRequest {
     videoId: number
     startDate: string
@@ -87,8 +94,24 @@ export async function getReportStatus(reportId: number): Promise<ReportGeneratio
 }
 
 export async function getReportAnalysis(reportId: number): Promise<ReportAnalysis> {
-    const { data } = await api.get<ApiResponse<ReportAnalysis>>(`/reports/${reportId}/analysis`)
-    return data.result
+    const { data } = await api.get<ApiResponse<ReportAnalysisResponse>>(`/reports/${reportId}/analysis`)
+
+    return {
+        reportId: data.result.reportId,
+        retentionGraph: normalizeAnalysisField(data.result.retentionGraph),
+        viewerRetentionAnalysis: normalizeAnalysisField(data.result.viewerRetentionAnalysis),
+        algorithmOptimization: normalizeAnalysisField(data.result.algorithmOptimization),
+    }
+}
+
+function normalizeAnalysisField(value: unknown) {
+    if (typeof value === 'string') return value
+
+    try {
+        return JSON.stringify(value) ?? ''
+    } catch {
+        return ''
+    }
 }
 
 export async function getCategoryLeadersVideo(): Promise<CategoryLeadersVideoResponse> {
