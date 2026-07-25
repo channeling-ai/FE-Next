@@ -7,6 +7,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useMemo } from 'react'
 
 const REPORT_STATUS_POLL_INTERVAL = 3_000
+const REPORT_STATUS_ERROR_RETRY_INTERVAL = 10_000
 
 function isReportCompleted(status?: ReportGenerationStatus) {
     if (!status) return false
@@ -41,7 +42,7 @@ export function useReportProgress(reportId: number) {
         staleTime: 0,
         retry: false,
         refetchInterval: (query) => {
-            if (query.state.status === 'error') return false
+            if (query.state.status === 'error') return REPORT_STATUS_ERROR_RETRY_INTERVAL
 
             const status = query.state.data
             return isReportCompleted(status) || isReportFailed(status) ? false : REPORT_STATUS_POLL_INTERVAL
@@ -51,7 +52,9 @@ export function useReportProgress(reportId: number) {
 
     const isCompleted = isReportCompleted(statusQuery.data)
     const hasGenerationFailed = isReportFailed(statusQuery.data)
-    const isFailed = !isValidReportId || statusQuery.isError || hasGenerationFailed
+    const isStatusError = statusQuery.isError
+    const isGenerationFailed = !isValidReportId || hasGenerationFailed
+    const isFailed = isStatusError || isGenerationFailed
     const isProcessing = isValidReportId && !isFailed && !isCompleted
     const currentStep = useMemo(() => getCurrentStep(statusQuery.data), [statusQuery.data])
 
@@ -89,7 +92,9 @@ export function useReportProgress(reportId: number) {
         currentStep,
         isCompleted,
         isFailed,
+        isGenerationFailed,
         isProcessing,
+        isStatusError,
         refetch: statusQuery.refetch,
     }
 }

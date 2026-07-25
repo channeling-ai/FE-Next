@@ -23,7 +23,14 @@ function ReportProgressCard({ item, onHide }: ReportProgressCardProps) {
     const router = useRouter()
     const hideReport = useReportGenerationStore((state) => state.hideReport)
     const removeReport = useReportGenerationStore((state) => state.removeReport)
-    const { currentStep, isCompleted, isFailed, isProcessing } = useReportProgress(item.reportId)
+    const {
+        currentStep,
+        isCompleted,
+        isGenerationFailed,
+        isProcessing,
+        isStatusError,
+        refetch,
+    } = useReportProgress(item.reportId)
     const progressStyle = useMemo(() => {
         switch (currentStep) {
             case 1:
@@ -40,11 +47,11 @@ function ReportProgressCard({ item, onHide }: ReportProgressCardProps) {
     }, [currentStep])
 
     useEffect(() => {
-        if (!isFailed) return
+        if (!isGenerationFailed) return
 
         removeReport(item.reportId)
         void deleteReport(item.reportId).catch(() => undefined)
-    }, [isFailed, item.reportId, removeReport])
+    }, [isGenerationFailed, item.reportId, removeReport])
 
     const moveToReport = () => {
         router.push(`/reports/${item.reportId}?videoId=${item.videoId}`)
@@ -64,7 +71,7 @@ function ReportProgressCard({ item, onHide }: ReportProgressCardProps) {
         removeReport(item.reportId)
     }
 
-    if (isFailed) return null
+    if (isGenerationFailed) return null
 
     if (isCompleted) {
         return (
@@ -100,7 +107,29 @@ function ReportProgressCard({ item, onHide }: ReportProgressCardProps) {
         )
     }
 
-    if (item.isHidden || !isProcessing) return null
+    if (item.isHidden) return null
+
+    if (isStatusError) {
+        return (
+            <article className="pointer-events-auto relative mx-auto flex w-[calc(100%-16px)] flex-col gap-4 rounded-[20px] bg-bg-2 p-6 shadow-2xl tablet:w-96 desktop:w-[486px]">
+                <div className="flex flex-col gap-2">
+                    <h2 className="font-title-20sb text-text-primary">리포트 진행 상태를 확인하지 못했습니다.</h2>
+                    <p className="font-body-16r text-text-secondary">
+                        생성은 백그라운드에서 계속될 수 있습니다. 잠시 후 다시 확인해 주세요.
+                    </p>
+                </div>
+                <button
+                    type="button"
+                    className="flex h-10 w-full cursor-pointer items-center justify-center rounded-[10px] bg-primary-60 px-4 font-body-16sb text-text-primary"
+                    onClick={() => void refetch()}
+                >
+                    다시 확인
+                </button>
+            </article>
+        )
+    }
+
+    if (!isProcessing) return null
 
     return (
         <article

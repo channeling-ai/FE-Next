@@ -75,7 +75,14 @@ export default function ReportDetailContent({ reportId, videoId: videoIdFromUrl 
         queryFn: () => getVideoInfo(videoId),
         enabled: isValidVideoId,
     })
-    const { currentStep, isCompleted, isFailed, isProcessing, refetch } = useReportProgress(reportId)
+    const {
+        currentStep,
+        isCompleted,
+        isFailed,
+        isProcessing,
+        isStatusError,
+        refetch,
+    } = useReportProgress(reportId)
 
     useEffect(() => {
         if (isProcessing && videoQuery.data) {
@@ -130,8 +137,16 @@ export default function ReportDetailContent({ reportId, videoId: videoIdFromUrl 
 
                     {isFailed && (
                         <div className="flex min-h-64 flex-col items-center justify-center gap-3 rounded-[20px] bg-bg-1 text-center">
-                            <p className="font-body-16sb text-text-primary">리포트를 생성하지 못했습니다.</p>
-                            <p className="font-body-14r text-text-secondary">잠시 후 다시 확인해 주세요.</p>
+                            <p className="font-body-16sb text-text-primary">
+                                {isStatusError
+                                    ? '리포트 진행 상태를 확인하지 못했습니다.'
+                                    : '리포트를 생성하지 못했습니다.'}
+                            </p>
+                            <p className="font-body-14r text-text-secondary">
+                                {isStatusError
+                                    ? '생성은 백그라운드에서 계속될 수 있습니다.'
+                                    : '잠시 후 다시 확인해 주세요.'}
+                            </p>
                             <button
                                 type="button"
                                 className="rounded-xl bg-bg-2 px-4 py-2 font-body-14m text-text-primary"
