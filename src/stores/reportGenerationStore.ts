@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware'
 export interface ProcessingReport {
     reportId: number
     videoId: number
-    title: string
+    title?: string
     isHidden: boolean
 }
 
@@ -32,7 +32,13 @@ export const useReportGenerationStore = create<ReportGenerationState>()(
 
                     return {
                         reports: state.reports.map((item) =>
-                            item.reportId === report.reportId ? { ...item, ...report } : item
+                            item.reportId === report.reportId
+                                ? {
+                                      ...item,
+                                      ...report,
+                                      title: report.title ?? item.title,
+                                  }
+                                : item
                         ),
                     }
                 }),

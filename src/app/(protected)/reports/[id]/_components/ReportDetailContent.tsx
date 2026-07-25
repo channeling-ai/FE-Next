@@ -85,11 +85,11 @@ export default function ReportDetailContent({ reportId, videoId: videoIdFromUrl 
     } = useReportProgress(reportId)
 
     useEffect(() => {
-        if (isProcessing && videoQuery.data) {
+        if (isProcessing && isValidVideoId) {
             addProcessingReport({
                 reportId,
-                videoId: videoQuery.data.videoId,
-                title: videoQuery.data.videoTitle,
+                videoId,
+                title: videoQuery.data?.videoTitle,
             })
             return
         }
@@ -97,7 +97,16 @@ export default function ReportDetailContent({ reportId, videoId: videoIdFromUrl 
         if (isCompleted) {
             removeProcessingReport(reportId)
         }
-    }, [addProcessingReport, isCompleted, isProcessing, removeProcessingReport, reportId, videoQuery.data])
+    }, [
+        addProcessingReport,
+        isCompleted,
+        isProcessing,
+        isValidVideoId,
+        removeProcessingReport,
+        reportId,
+        videoId,
+        videoQuery.data?.videoTitle,
+    ])
 
     return (
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">

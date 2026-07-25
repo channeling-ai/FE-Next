@@ -23,6 +23,7 @@ function ReportProgressCard({ item, onHide }: ReportProgressCardProps) {
     const router = useRouter()
     const hideReport = useReportGenerationStore((state) => state.hideReport)
     const removeReport = useReportGenerationStore((state) => state.removeReport)
+    const reportTitle = item.title?.trim() || '선택한 영상'
     const {
         currentStep,
         isCompleted,
@@ -90,7 +91,7 @@ function ReportProgressCard({ item, onHide }: ReportProgressCardProps) {
 
                 <div className="flex flex-col gap-2 pr-7">
                     <h2 className="font-title-20sb text-text-primary">리포트 생성이 완료되었습니다.</h2>
-                    <p className="font-body-16r text-text-secondary">[{item.title}] 리포트가 완성되었습니다.</p>
+                    <p className="font-body-16r text-text-secondary">[{reportTitle}] 리포트가 완성되었습니다.</p>
                 </div>
 
                 <button
@@ -147,7 +148,7 @@ function ReportProgressCard({ item, onHide }: ReportProgressCardProps) {
 
             <div className="flex flex-col gap-2 pr-7">
                 <h2 className="font-title-20sb text-text-primary">{STEP_TITLES[currentStep]}</h2>
-                <p className="font-body-16r text-text-secondary">[{item.title}] 리포트를 생성 중입니다.</p>
+                <p className="font-body-16r text-text-secondary">[{reportTitle}] 리포트를 생성 중입니다.</p>
                 <div
                     className="h-1 w-full overflow-hidden rounded-full bg-bg-3"
                     role="progressbar"
