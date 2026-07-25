@@ -9,6 +9,7 @@ import Chip from '@/components/Chip'
 import Header from '@/components/layout/Header'
 import PageContent from '@/components/layout/PageContent'
 import { Modal } from '@/components/Modal'
+import { useVideoStore } from '@/stores/videoStore'
 import ReportDetailSkeleton from '../_components/ReportDetailSkeleton'
 
 type PeriodPreset = 'all' | 'today' | 'last7Days' | 'last30Days' | 'thisMonth'
@@ -79,7 +80,9 @@ function ReportPeriodContent() {
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     const [creationError, setCreationError] = useState('')
-    const videoId = Number(searchParams.get('videoId'))
+    const selectedVideoId = useVideoStore((state) => state.selectedVideoId)
+    const queryVideoId = Number(searchParams.get('videoId'))
+    const videoId = Number.isInteger(queryVideoId) && queryVideoId > 0 ? queryVideoId : (selectedVideoId ?? 0)
     const isVideoIdValid = Number.isInteger(videoId) && videoId > 0
     const createReportMutation = useMutation({
         mutationFn: createReport,
