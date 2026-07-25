@@ -119,11 +119,11 @@
     }
 
     button:not(:disabled) {
-        @apply cursor-pointer;
+        cursor: pointer !important;
     }
 
     button:disabled {
-        @apply cursor-not-allowed;
+        cursor: not-allowed !important;
     }
 
     html,
