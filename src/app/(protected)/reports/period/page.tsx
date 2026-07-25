@@ -81,13 +81,15 @@ function ReportPeriodContent() {
     const [endDate, setEndDate] = useState('')
     const [creationError, setCreationError] = useState('')
     const selectedVideoId = useVideoStore((state) => state.selectedVideoId)
+    const setSelectedVideoId = useVideoStore((state) => state.setSelectedVideoId)
     const queryVideoId = Number(searchParams.get('videoId'))
     const videoId = Number.isInteger(queryVideoId) && queryVideoId > 0 ? queryVideoId : (selectedVideoId ?? 0)
     const isVideoIdValid = Number.isInteger(videoId) && videoId > 0
     const createReportMutation = useMutation({
         mutationFn: createReport,
-        onSuccess: ({ reportId }) => {
-            router.replace(`/reports/${reportId}`)
+        onSuccess: ({ reportId, videoId: createdVideoId }) => {
+            setSelectedVideoId(createdVideoId)
+            router.replace(`/reports/${reportId}?videoId=${createdVideoId}`)
         },
         onError: () => {
             setCreationError('잠시 후 다시 시도해 주세요.')
