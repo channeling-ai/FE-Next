@@ -18,12 +18,7 @@ export default function ReportDetailSkeleton({ currentStep, statusMessage, title
                 <span className="sr-only">{statusMessage}</span>
                 <div className="flex flex-col gap-4 tablet:flex-row">
                     <SkeletonBase sizeConfig="aspect-[328/184] h-auto w-full tablet:h-33.25 tablet:w-59.25 desktop:h-44.5 desktop:w-79" />
-                    <div className="flex flex-1 flex-col gap-3">
-                        <SkeletonBase sizeConfig="h-6 w-20" />
-                        <SkeletonBase sizeConfig="h-7 w-3/4" />
-                        <SkeletonBase sizeConfig="h-5 w-1/2" />
-                        <SkeletonBase sizeConfig="h-5 w-1/3" />
-                    </div>
+                    <SkeletonBase sizeConfig="h-28 w-full flex-1 tablet:h-33.25 desktop:h-44.5" />
                 </div>
                 <SkeletonBase sizeConfig="h-14 w-full" />
                 <div className="grid grid-cols-1 gap-4 tablet:grid-cols-2">
