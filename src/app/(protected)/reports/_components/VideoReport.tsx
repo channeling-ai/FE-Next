@@ -22,7 +22,7 @@ export default function VideoReport() {
             <ReportList
                 totalCount={9}
                 onBack={() => setIsOpenReportList(false)}
-                onCreate={() => router.push('/reports/period')}
+                onCreate={() => router.push('/reports/period?videoId=1')}
             />
         )
     }

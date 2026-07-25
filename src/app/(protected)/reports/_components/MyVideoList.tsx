@@ -41,28 +41,28 @@ export default function MyVideoList() {
                     leftside="조회수"
                     rightside="17만회"
                     period="3년 전"
-                    onClick={() => router.push('/reports/period')}
+                    onClick={() => router.push('/reports/period?videoId=1')}
                 />
                 <VideoCard
                     title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
                     leftside="조회수"
                     rightside="17만회"
                     period="3년 전"
-                    onClick={() => router.push('/reports/period')}
+                    onClick={() => router.push('/reports/period?videoId=1')}
                 />
                 <VideoCard
                     title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
                     leftside="조회수"
                     rightside="17만회"
                     period="3년 전"
-                    onClick={() => router.push('/reports/period')}
+                    onClick={() => router.push('/reports/period?videoId=1')}
                 />
                 <VideoCard
                     title="영상제목이 들어가는 곳입니다. 2줄까지 가능합니다. 나머지는 ...처리해주세요"
                     leftside="조회수"
                     rightside="17만회"
                     period="3년 전"
-                    onClick={() => router.push('/reports/period')}
+                    onClick={() => router.push('/reports/period?videoId=1')}
                 />
             </div>
             <button className="px-4 py-2 w-full bg-bg-1 rounded-[20px]" onClick={() => setSelectedVideo(true)}>

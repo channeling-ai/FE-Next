@@ -1,11 +1,15 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { createReport } from '@/api/report'
+import { useMutation } from '@tanstack/react-query'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Suspense, useState } from 'react'
 import BackIcon from '@/assets/icons/back.svg'
 import Chip from '@/components/Chip'
 import Header from '@/components/layout/Header'
 import PageContent from '@/components/layout/PageContent'
+import { Modal } from '@/components/Modal'
+import ReportDetailSkeleton from '../_components/ReportDetailSkeleton'
 
 type PeriodPreset = 'all' | 'today' | 'last7Days' | 'last30Days' | 'thisMonth'
 
@@ -24,6 +28,8 @@ const periodPresets: Array<{ label: string; value: PeriodPreset }> = [
     { label: '최근 30일', value: 'last30Days' },
     { label: '이번 달', value: 'thisMonth' },
 ]
+
+const YOUTUBE_SERVICE_START_DATE = '2005-04-23'
 
 function toDateInputValue(date: Date) {
     const year = date.getFullYear()
@@ -66,11 +72,24 @@ function DateField({ label, max, min, onChange, value }: DateFieldProps) {
     )
 }
 
-export default function ReportPeriodPage() {
+function ReportPeriodContent() {
     const router = useRouter()
+    const searchParams = useSearchParams()
     const [activePreset, setActivePreset] = useState<PeriodPreset | null>('all')
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
+    const [creationError, setCreationError] = useState('')
+    const videoId = Number(searchParams.get('videoId'))
+    const isVideoIdValid = Number.isInteger(videoId) && videoId > 0
+    const createReportMutation = useMutation({
+        mutationFn: createReport,
+        onSuccess: ({ reportId }) => {
+            router.replace(`/reports/${reportId}`)
+        },
+        onError: () => {
+            setCreationError('잠시 후 다시 시도해 주세요.')
+        },
+    })
 
     const selectPreset = (preset: PeriodPreset) => {
         setActivePreset(preset)
@@ -110,8 +129,29 @@ export default function ReportPeriodPage() {
         setEndDate(value)
     }
 
-    const isPeriodValid =
-        activePreset !== null || (startDate !== '' && endDate !== '' && startDate <= endDate)
+    const isPeriodValid = activePreset !== null || (startDate !== '' && endDate !== '' && startDate <= endDate)
+
+    const handleCreateReport = () => {
+        if (!isVideoIdValid) {
+            setCreationError('분석할 영상을 다시 선택해 주세요.')
+            return
+        }
+
+        const today = toDateInputValue(new Date())
+        const requestStartDate = activePreset === 'all' ? YOUTUBE_SERVICE_START_DATE : startDate
+        const requestEndDate = activePreset === 'all' ? today : endDate
+
+        setCreationError('')
+        createReportMutation.mutate({
+            videoId,
+            startDate: requestStartDate,
+            endDate: requestEndDate,
+        })
+    }
+
+    if (createReportMutation.isPending) {
+        return <ReportDetailSkeleton title="리포트 생성 중" statusMessage="리포트를 생성하고 있습니다." />
+    }
 
     return (
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3">
@@ -172,11 +212,31 @@ export default function ReportPeriodPage() {
                 <button
                     type="button"
                     disabled={!isPeriodValid}
+                    onClick={handleCreateReport}
                     className="fixed bottom-8 left-4 right-4 flex h-12 cursor-pointer items-center justify-center rounded-[20px] bg-primary-60 px-2 font-body-16sb text-text-primary disabled:cursor-not-allowed disabled:bg-gray-30 disabled:text-text-secondary tablet:static tablet:mt-4 tablet:w-full desktop:h-[49px]"
                 >
                     리포트 생성 시작
                 </button>
             </PageContent>
+
+            <Modal isOpen={Boolean(creationError)} onClose={() => setCreationError('')}>
+                <Modal.Header title="리포트를 생성하지 못했어요" caption={creationError} />
+                <Modal.Footer>
+                    <Modal.Button type="button" variant="error" onClick={() => setCreationError('')}>
+                        확인
+                    </Modal.Button>
+                </Modal.Footer>
+            </Modal>
         </div>
+    )
+}
+
+export default function ReportPeriodPage() {
+    return (
+        <Suspense
+            fallback={<ReportDetailSkeleton title="리포트 생성 중" statusMessage="리포트를 생성하고 있습니다." />}
+        >
+            <ReportPeriodContent />
+        </Suspense>
     )
 }

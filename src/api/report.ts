@@ -55,6 +55,22 @@ export interface ReportAnalysis {
     algorithmOptimization: AlgorithmOptimization
 }
 
+export interface CreateReportRequest {
+    videoId: number
+    startDate: string
+    endDate: string
+}
+
+export interface CreateReportResult {
+    reportId: number
+    videoId: number
+}
+
+export async function createReport(request: CreateReportRequest): Promise<CreateReportResult> {
+    const { data } = await api.post<ApiResponse<CreateReportResult>>('/reports', request)
+    return data.result
+}
+
 export async function getReportAnalysis(reportId: number): Promise<ReportAnalysis> {
     const { data } = await api.get<ApiResponse<ReportAnalysis>>(`/reports/${reportId}/analysis`)
     return data.result
