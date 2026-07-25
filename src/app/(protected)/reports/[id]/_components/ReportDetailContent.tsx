@@ -62,19 +62,6 @@ function VideoInfo({ video }: { video: VideoInfoResponse }) {
     )
 }
 
-function ReportTabsSkeleton() {
-    return (
-        <div className="flex flex-col gap-4" aria-label="리포트를 생성하는 중">
-            <SkeletonBase sizeConfig="h-14 w-full" />
-            <div className="grid grid-cols-1 gap-4 tablet:grid-cols-2">
-                <SkeletonBase sizeConfig="h-48 w-full" />
-                <SkeletonBase sizeConfig="h-48 w-full" />
-            </div>
-            <SkeletonBase sizeConfig="h-64 w-full" />
-        </div>
-    )
-}
-
 export default function ReportDetailContent({ reportId, videoId: videoIdFromUrl }: ReportDetailContentProps) {
     const selectedVideoId = useVideoStore((state) => state.selectedVideoId)
     const videoId = Number.isInteger(videoIdFromUrl) && videoIdFromUrl > 0 ? videoIdFromUrl : (selectedVideoId ?? 0)
@@ -111,16 +98,16 @@ export default function ReportDetailContent({ reportId, videoId: videoIdFromUrl 
                         </div>
                     )}
 
-                    {isProcessing && (
+                    {(isProcessing || isCompleted) && (
                         <>
-                            <span className="sr-only" aria-live="polite">
-                                리포트를 생성하고 있습니다.
-                            </span>
-                            <ReportTabsSkeleton />
+                            {isProcessing && (
+                                <span className="sr-only" aria-live="polite">
+                                    리포트를 생성하고 있습니다.
+                                </span>
+                            )}
+                            <ReportTabs reportId={reportId} isProcessing={isProcessing} />
                         </>
                     )}
-
-                    {isCompleted && <ReportTabs reportId={reportId} />}
 
                     {isFailed && (
                         <div className="flex min-h-64 flex-col items-center justify-center gap-3 rounded-[20px] bg-bg-1 text-center">

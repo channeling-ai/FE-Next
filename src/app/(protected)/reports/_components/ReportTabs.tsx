@@ -14,16 +14,17 @@ const TABS = [
 ] as const
 
 interface ReportTabsProps {
+    isProcessing?: boolean
     reportId: number
 }
 
-export default function ReportTabs({ reportId }: ReportTabsProps) {
+export default function ReportTabs({ isProcessing = false, reportId }: ReportTabsProps) {
     const [activeTab, setActiveTab] = useState<TabType>('overview')
     const isValidReportId = Number.isInteger(reportId) && reportId > 0
     const analysisQuery = useQuery({
         queryKey: ['reports', reportId, 'analysis'],
         queryFn: () => getReportAnalysis(reportId),
-        enabled: isValidReportId,
+        enabled: isValidReportId && !isProcessing,
     })
 
     const tabBaseClass =
@@ -48,9 +49,9 @@ export default function ReportTabs({ reportId }: ReportTabsProps) {
                 ))}
             </div>
 
-            {activeTab === 'overview' && <OverviewTab />}
+            {!isProcessing && activeTab === 'overview' && <OverviewTab />}
 
-            {activeTab === 'analysis' && (
+            {!isProcessing && activeTab === 'analysis' && (
                 <AnalysisTab
                     analysis={analysisQuery.data}
                     isPending={analysisQuery.isPending}
