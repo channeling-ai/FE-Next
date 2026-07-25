@@ -191,12 +191,7 @@ function AnalysisTabSkeleton() {
             {[0, 1].map((section) => (
                 <section key={section} className="flex flex-col gap-2">
                     <div className="h-5 w-28 rounded bg-bg-2" />
-                    <div className="flex h-80 flex-col gap-4 rounded-[20px] bg-bg-1 p-5">
-                        <div className="h-4 w-2/3 rounded bg-bg-2" />
-                        <div className="h-36 rounded bg-bg-2" />
-                        <div className="h-4 w-full rounded bg-bg-2" />
-                        <div className="h-4 w-5/6 rounded bg-bg-2" />
-                    </div>
+                    <div className="h-[528px] w-full rounded-[20px] bg-bg-1" />
                 </section>
             ))}
         </div>
