@@ -20,6 +20,12 @@ export default function ReportDetailSkeleton({ currentStep, statusMessage, title
                     <SkeletonBase sizeConfig="aspect-[328/184] h-auto w-full tablet:h-33.25 tablet:w-59.25 desktop:h-44.5 desktop:w-79" />
                     <SkeletonBase sizeConfig="h-28 w-full flex-1 tablet:h-33.25 desktop:h-44.5" />
                 </div>
+                <SkeletonBase sizeConfig="h-14 w-full" />
+                <div className="grid grid-cols-1 gap-4 tablet:grid-cols-2">
+                    <SkeletonBase sizeConfig="h-48 w-full" />
+                    <SkeletonBase sizeConfig="h-48 w-full" />
+                </div>
+                <SkeletonBase sizeConfig="h-64 w-full" />
             </PageContent>
         </div>
     )
