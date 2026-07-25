@@ -78,8 +78,9 @@ export function useReportProgress(reportId: number) {
             onmessage: () => {
                 void queryClient.invalidateQueries({ queryKey: ['reports', reportId, 'status'] })
             },
-            onerror: () => {
+            onerror: (error) => {
                 controller.abort()
+                throw error
             },
         }).catch(() => {
             // SSE 연결이 끊겨도 상태 폴링이 진행률 동기화를 계속 담당합니다.
