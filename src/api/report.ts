@@ -66,8 +66,22 @@ export interface CreateReportResult {
     videoId: number
 }
 
+export type ReportGenerationStepStatus = 'PENDING' | 'COMPLETED' | 'FAILED'
+
+export interface ReportGenerationStatus {
+    reportId: number
+    overviewStatus: ReportGenerationStepStatus
+    analysisStatus: ReportGenerationStepStatus
+    ideaStatus?: ReportGenerationStepStatus
+}
+
 export async function createReport(request: CreateReportRequest): Promise<CreateReportResult> {
     const { data } = await api.post<ApiResponse<CreateReportResult>>('/reports', request)
+    return data.result
+}
+
+export async function getReportStatus(reportId: number): Promise<ReportGenerationStatus> {
+    const { data } = await api.get<ApiResponse<ReportGenerationStatus>>(`/reports/${reportId}/status`)
     return data.result
 }
 

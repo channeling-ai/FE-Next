@@ -150,7 +150,13 @@ function ReportPeriodContent() {
     }
 
     if (createReportMutation.isPending) {
-        return <ReportDetailSkeleton title="리포트 생성 중" statusMessage="리포트를 생성하고 있습니다." />
+        return (
+            <ReportDetailSkeleton
+                currentStep={1}
+                title="리포트 생성 중"
+                statusMessage="유튜브 데이터를 수집하고 있습니다."
+            />
+        )
     }
 
     return (
@@ -234,7 +240,7 @@ function ReportPeriodContent() {
 export default function ReportPeriodPage() {
     return (
         <Suspense
-            fallback={<ReportDetailSkeleton title="리포트 생성 중" statusMessage="리포트를 생성하고 있습니다." />}
+            fallback={<ReportDetailSkeleton title="리포트 기간 설정" statusMessage="기간 설정을 불러오고 있습니다." />}
         >
             <ReportPeriodContent />
         </Suspense>
