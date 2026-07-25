@@ -14,10 +14,7 @@ export default function ReportDetailSkeleton({ currentStep, statusMessage, title
         <div className="flex h-full w-full flex-col bg-bg-0 desktop:pt-3" aria-busy="true" aria-live="polite">
             <Header title={title} className="tablet:min-h-16 desktop:min-h-18" />
             {currentStep !== undefined && <ReportProgressBar currentStep={currentStep} />}
-            <PageContent
-                as="main"
-                className={`flex flex-1 flex-col gap-4 pb-16 ${currentStep === undefined ? 'pt-4' : 'pt-36 tablet:pt-40'}`}
-            >
+            <PageContent as="main" className="flex flex-1 flex-col gap-4 pb-16 pt-4">
                 <span className="sr-only">{statusMessage}</span>
                 <div className="flex flex-col gap-4 tablet:flex-row">
                     <SkeletonBase sizeConfig="aspect-[328/184] h-auto w-full tablet:h-33.25 tablet:w-59.25 desktop:h-44.5 desktop:w-79" />
