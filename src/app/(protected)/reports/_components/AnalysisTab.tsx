@@ -1,6 +1,7 @@
 'use client'
 
 import type { AlgorithmGrade, AlgorithmIssueType, ReportAnalysis, RetentionPoint } from '@/api/report'
+import { SkeletonBase } from '@/components/skeletonbase'
 import type { ReactNode } from 'react'
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -186,12 +187,12 @@ function AnalysisTabSkeleton() {
     return (
         <div
             aria-label="분석 결과를 불러오는 중"
-            className="-ml-0.5 flex w-[calc(100%+8px)] animate-pulse flex-col gap-8 pt-4 tablet:ml-0 tablet:w-full"
+            className="-ml-0.5 flex w-[calc(100%+8px)] flex-col gap-8 pt-4 tablet:ml-0 tablet:w-full"
         >
             {[0, 1].map((section) => (
                 <section key={section} className="flex flex-col gap-2">
-                    <div className="h-5 w-28 rounded bg-bg-2" />
-                    <div className="h-[528px] w-full rounded-[20px] bg-bg-1" />
+                    <SkeletonBase sizeConfig="h-6 w-28" />
+                    <SkeletonBase sizeConfig="h-[528px] w-full" />
                 </section>
             ))}
         </div>
