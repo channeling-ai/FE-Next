@@ -30,14 +30,24 @@ const periodPresets: Array<{ label: string; value: PeriodPreset }> = [
     { label: '이번 달', value: 'thisMonth' },
 ]
 
-const YOUTUBE_SERVICE_START_DATE = '2005-04-23'
-
 function toDateInputValue(date: Date) {
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
     const day = String(date.getDate()).padStart(2, '0')
 
     return `${year}-${month}-${day}`
+}
+
+function normalizeDateValue(value: string | null) {
+    const dateValue = value?.match(/^\d{4}-\d{2}-\d{2}/)?.[0]
+    if (!dateValue) return null
+
+    const [year, month, day] = dateValue.split('-').map(Number)
+    const date = new Date(year, month - 1, day)
+    const isValidDate =
+        date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day
+
+    return isValidDate ? dateValue : null
 }
 
 function formatDate(value: string) {
@@ -85,6 +95,9 @@ function ReportPeriodContent() {
     const queryVideoId = Number(searchParams.get('videoId'))
     const videoId = Number.isInteger(queryVideoId) && queryVideoId > 0 ? queryVideoId : (selectedVideoId ?? 0)
     const isVideoIdValid = Number.isInteger(videoId) && videoId > 0
+    const today = toDateInputValue(new Date())
+    const videoUploadDate = normalizeDateValue(searchParams.get('uploadDate'))
+    const isVideoUploadDateValid = videoUploadDate !== null && videoUploadDate <= today
     const createReportMutation = useMutation({
         mutationFn: createReport,
         onSuccess: ({ reportId, videoId: createdVideoId }) => {
@@ -105,23 +118,26 @@ function ReportPeriodContent() {
             return
         }
 
-        const today = new Date()
-        const start = new Date(today)
+        const todayDate = new Date()
+        const start = new Date(todayDate)
 
         if (preset === 'last7Days') {
-            start.setDate(today.getDate() - 6)
+            start.setDate(todayDate.getDate() - 6)
         }
 
         if (preset === 'last30Days') {
-            start.setDate(today.getDate() - 29)
+            start.setDate(todayDate.getDate() - 29)
         }
 
         if (preset === 'thisMonth') {
             start.setDate(1)
         }
 
-        setStartDate(toDateInputValue(start))
-        setEndDate(toDateInputValue(today))
+        const presetStartDate = toDateInputValue(start)
+        setStartDate(
+            isVideoUploadDateValid && presetStartDate < videoUploadDate ? videoUploadDate : presetStartDate
+        )
+        setEndDate(today)
     }
 
     const changeStartDate = (value: string) => {
@@ -134,7 +150,14 @@ function ReportPeriodContent() {
         setEndDate(value)
     }
 
-    const isPeriodValid = activePreset !== null || (startDate !== '' && endDate !== '' && startDate <= endDate)
+    const isPeriodValid =
+        activePreset !== null ||
+        (startDate !== '' &&
+            endDate !== '' &&
+            startDate <= endDate &&
+            isVideoUploadDateValid &&
+            startDate >= videoUploadDate &&
+            endDate <= today)
 
     const handleCreateReport = () => {
         if (!isVideoIdValid) {
@@ -142,8 +165,12 @@ function ReportPeriodContent() {
             return
         }
 
-        const today = toDateInputValue(new Date())
-        const requestStartDate = activePreset === 'all' ? YOUTUBE_SERVICE_START_DATE : startDate
+        if (!isVideoUploadDateValid) {
+            setCreationError('영상 업로드 날짜를 다시 확인해 주세요.')
+            return
+        }
+
+        const requestStartDate = activePreset === 'all' ? videoUploadDate : startDate
         const requestEndDate = activePreset === 'all' ? today : endDate
 
         setCreationError('')
@@ -207,13 +234,15 @@ function ReportPeriodContent() {
                     <div className="mt-2 flex flex-col gap-2">
                         <DateField
                             label="시작일"
-                            max={endDate || undefined}
+                            max={endDate || today}
+                            min={videoUploadDate ?? undefined}
                             onChange={changeStartDate}
                             value={startDate}
                         />
                         <DateField
                             label="종료일"
-                            min={startDate || undefined}
+                            max={today}
+                            min={startDate || videoUploadDate || undefined}
                             onChange={changeEndDate}
                             value={endDate}
                         />

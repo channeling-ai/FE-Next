@@ -100,7 +100,9 @@ export default function MyVideoSelectPage() {
                                 imageUrl={video.videoThumbnailUrl}
                                 onClick={() => {
                                     setSelectedVideoId(video.videoId)
-                                    router.push(`/reports/period?videoId=${video.videoId}`)
+                                    router.push(
+                                        `/reports/period?videoId=${video.videoId}&uploadDate=${encodeURIComponent(video.uploadDate)}`
+                                    )
                                 }}
                             />
                         ))}

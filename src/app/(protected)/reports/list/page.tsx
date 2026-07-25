@@ -55,8 +55,15 @@ export default function ReportList() {
                         <Bin onClick={() => setIsDelete((prev) => !prev)} />
                         <button
                             type="button"
-                            onClick={() => router.push(`/reports/period?videoId=${selectedVideoId}`)}
-                            className="flex"
+                            disabled={!videoInfo}
+                            onClick={() => {
+                                if (!videoInfo) return
+
+                                router.push(
+                                    `/reports/period?videoId=${selectedVideoId}&uploadDate=${encodeURIComponent(videoInfo.videoCreatedDate)}`
+                                )
+                            }}
+                            className="flex disabled:cursor-not-allowed disabled:opacity-40"
                             aria-label="리포트 생성"
                         >
                             <Plus />
