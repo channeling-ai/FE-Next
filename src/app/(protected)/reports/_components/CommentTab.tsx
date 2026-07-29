@@ -1,6 +1,6 @@
 'use client'
 
-import { CommentSummary, ReportOverviewresponse } from '@/types/reports'
+import { CommentSummary } from '@/types/reports'
 import { useState } from 'react'
 
 type CommentType = 'positive' | 'negative' | 'neutral' | 'advice'
@@ -18,7 +18,6 @@ interface CommentTabData {
 }
 
 interface OverviewCommentTabProps {
-    comment: CommentSummary
     positiveCount: number
     positiveSummary?: string
     positivePercent: number
@@ -34,7 +33,6 @@ interface OverviewCommentTabProps {
 }
 
 export default function CommentTab({
-    comment,
     positiveCount,
     positiveSummary,
     positivePercent,

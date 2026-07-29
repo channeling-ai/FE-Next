@@ -86,4 +86,10 @@ type OverviewSummary = {
     content: string
 }
 
-export type CommentSummary = {}
+export type CommentSummary = {
+    category: string // 카테고리 (positive/negative/neutral/advice)
+    content: string
+    author: string
+    publishedAt: string
+    likeCount: number
+}
