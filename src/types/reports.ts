@@ -58,7 +58,6 @@ export type ReportOverviewresponse = {
     neutralCommentPercent: number
     adviceCommentPercent: number
     commentSummary: CommentSummary[]
-    overviewSummary: OverviewSummary
 }
 
 type VideoSummary = {
@@ -67,7 +66,14 @@ type VideoSummary = {
     content: string
 }
 
-type OverviewSummary = {
+export type ReportSummaryResponse = {
+    reportId: number
+    overviewSummary: SummaryType
+    seoSummary: SummaryType
+    analysisSummary: SummaryType
+}
+
+type SummaryType = {
     tag:
         | '최상'
         | '조언'

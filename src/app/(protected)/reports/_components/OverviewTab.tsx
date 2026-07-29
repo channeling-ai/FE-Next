@@ -1,35 +1,37 @@
 import EvaluationCard from './EvaluationCard'
 import SummaryComment from './SummaryComment'
 import SummaryCard from './SummaryCard'
-import { ReportOverviewresponse } from '@/types/reports'
+import { ReportOverviewresponse, ReportSummaryResponse } from '@/types/reports'
 import { formatKoreanNumber } from '@/utils/format'
 import CommentSummarySection from './CommentSummarySection'
 
 interface OverviewProps {
     overview?: ReportOverviewresponse
+    summary?: ReportSummaryResponse
     isPending: boolean
 }
-
-export default function OverviewTab({ overview, isPending }: OverviewProps) {
+export default function OverviewTab({ overview, summary, isPending }: OverviewProps) {
+    const overviewSummary = summary?.overviewSummary
+    const analysisSummary = summary?.analysisSummary
+    const seoSummary = summary?.seoSummary
     return (
         <div className="flex flex-col pt-8 gap-8">
-            <section id="report-summary" className="flex flex-col gap-2">
-                <p className="font-body-16sb text-text-primary">리포트 요약</p>
-                {/* {overview?.overviewSummary.map((reportSummary) => (
+            {overviewSummary && seoSummary && analysisSummary && (
+                <section id="report-summary" className="flex flex-col gap-2">
+                    <p className="font-body-16sb text-text-primary">리포트 요약</p>
                     <SummaryCard
-                        status={reportSummary.tag}
-                        summaryTitle={reportSummary.title}
-                        details={reportSummary.content}
+                        status={overviewSummary.tag}
+                        summaryTitle={overviewSummary.title}
+                        details={overviewSummary.content}
                     />
-                ))} */}
-                {overview?.overviewSummary && (
                     <SummaryCard
-                        status={overview.overviewSummary.tag}
-                        summaryTitle={overview.overviewSummary.title}
-                        details={overview.overviewSummary.content}
+                        status={analysisSummary.tag}
+                        summaryTitle={analysisSummary.title}
+                        details={analysisSummary.content}
                     />
-                )}
-            </section>
+                    <SummaryCard status={seoSummary.tag} summaryTitle={seoSummary.title} details={seoSummary.content} />
+                </section>
+            )}
             {overview && (
                 <section id="video-evaluation" className="flex flex-col gap-2">
                     <p className="font-body-16sb text-text-primary">영상 평가</p>
@@ -68,9 +70,8 @@ export default function OverviewTab({ overview, isPending }: OverviewProps) {
                     ))}
                 </div>
             </section>
-            <section id="comments" className="flex flex-col gap-2">
-                {overview && <CommentSummarySection overview={overview} />}
-            </section>
+
+            {overview && <CommentSummarySection overview={overview} />}
         </div>
     )
 }
