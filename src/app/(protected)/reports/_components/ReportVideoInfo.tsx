@@ -12,7 +12,7 @@ type ReportVideoInfoData = Pick<
     'videoTitle' | 'videoThumbnailUrl' | 'videoType' | 'lastUpdatedDate' | 'ChannelName' | 'videoCreatedDate'
 >
 
-export default function ReportVideoInfo({ video }: { video: ReportVideoInfoData }) {
+export default function ReportVideoInfo({ video, requestedAt }: { video: ReportVideoInfoData; requestedAt?: Date }) {
     return (
         <section className="flex flex-col gap-4 tablet:flex-row" aria-labelledby="report-video-title">
             <div
@@ -29,7 +29,7 @@ export default function ReportVideoInfo({ video }: { video: ReportVideoInfoData 
                     {video.videoTitle}
                 </h1>
                 <p className="font-body-14r text-text-secondary desktop:font-body-16r">
-                    업데이트: {formatKoreanDate(video.lastUpdatedDate)}
+                    업데이트: {formatKoreanDate(requestedAt ?? video.lastUpdatedDate, Boolean(requestedAt))}
                 </p>
                 <div className="flex min-w-0 gap-1 font-body-14r text-text-secondary desktop:font-body-16r">
                     <span className="truncate">{video.ChannelName}</span>

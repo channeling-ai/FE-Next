@@ -80,6 +80,7 @@ function DummyReportPageContent() {
     const searchParams = useSearchParams()
     const url = searchParams.get('url')?.trim() ?? ''
     const [currentStep, setCurrentStep] = useState(1)
+    const [requestedAt, setRequestedAt] = useState(() => new Date())
     const reportQuery = useQuery({
         queryKey: ['dummy-report', url],
         queryFn: () => generateDummyReportData(url),
@@ -114,13 +115,14 @@ function DummyReportPageContent() {
                 message={getErrorMessage(reportQuery.error)}
                 onRetry={() => {
                     setCurrentStep(1)
+                    setRequestedAt(new Date())
                     void reportQuery.refetch()
                 }}
             />
         )
     }
 
-    return <DummyReportContent data={reportQuery.data} />
+    return <DummyReportContent data={reportQuery.data} requestedAt={requestedAt} />
 }
 
 export default function DummyReportPage() {

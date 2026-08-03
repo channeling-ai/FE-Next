@@ -10,7 +10,7 @@ import PageContent from '@/components/layout/PageContent'
 import Scroll from '@/components/Scroll'
 import { useState } from 'react'
 
-export default function DummyReportContent({ data }: { data: DummyReportData }) {
+export default function DummyReportContent({ data, requestedAt }: { data: DummyReportData; requestedAt: Date }) {
     const [activeTab, setActiveTab] = useState<ReportTabType>('overview')
 
     return (
@@ -18,7 +18,7 @@ export default function DummyReportContent({ data }: { data: DummyReportData }) 
             <Scroll as="main" className="flex-1">
                 <ReportDetailHeader />
                 <PageContent as="main" className="flex flex-col gap-4 pb-16 pt-4">
-                    <ReportVideoInfo video={data.video} />
+                    <ReportVideoInfo video={data.video} requestedAt={requestedAt} />
                     <div className="flex flex-col gap-4">
                         <ReportTabBar activeTab={activeTab} onChange={setActiveTab} />
                         {activeTab === 'overview' ? (
