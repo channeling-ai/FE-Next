@@ -1,6 +1,8 @@
+'use client'
+
 import type { ReportOverview } from '@/api/report'
 import { formatKoreanNumber, formatRelativeTime } from '@/utils/format'
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import CommentDonutChart from './CommentDoughnutChart'
 import CommentTab, { type CommentTabValue, type CommentType } from './CommentTab'
 import EvaluationCard from './EvaluationCard'
@@ -331,6 +333,7 @@ function LockedContent({ children, message }: { children: ReactNode; message: st
 }
 
 export default function OverviewTab({ data, lockRestrictedSections = false }: OverviewTabProps) {
+    const [isVideoSummaryExpanded, setIsVideoSummaryExpanded] = useState(false)
     const positivePercent = toPercent(data?.positiveCommentPercent ?? 30)
     const reportSummaryFallback: ReportSummaryItem[] = [
         {
@@ -359,6 +362,8 @@ export default function OverviewTab({ data, lockRestrictedSections = false }: Ov
     const reportSummary = reportSummaryFallback.map((fallback, index) => parsedSummary[index] ?? fallback)
     const parsedVideoSummary = data ? parseVideoSummary(data.summary) : []
     const videoSummary = data ? parsedVideoSummary : FALLBACK_VIDEO_SUMMARY
+    const visibleVideoSummary = isVideoSummaryExpanded ? videoSummary : videoSummary.slice(0, 3)
+    const showAllVideoSummaryButton = !isVideoSummaryExpanded && videoSummary.length >= 3
     const commentDescriptions = data ? parseCommentDescriptions(data.commentSummary) : {}
     const commentTabValues: Partial<Record<CommentType, CommentTabValue>> | undefined = data
         ? {
@@ -437,16 +442,29 @@ export default function OverviewTab({ data, lockRestrictedSections = false }: Ov
                 <p className="font-body-16sb text-text-primary">영상 요약</p>
                 <div className="flex flex-col gap-4 rounded-[20px] bg-bg-1 p-5">
                     {videoSummary.length > 0 ? (
-                        videoSummary.map((item, index) => (
-                            <SummaryComment
-                                key={`${item.timestamp}-${index}`}
-                                timestamp={item.timestamp}
-                                comment={item.title}
-                                detail={item.description}
-                            />
-                        ))
+                        <div id="video-summary-items" className="flex flex-col gap-4">
+                            {visibleVideoSummary.map((item, index) => (
+                                <SummaryComment
+                                    key={`${item.timestamp}-${index}`}
+                                    timestamp={item.timestamp}
+                                    comment={item.title}
+                                    detail={item.description}
+                                />
+                            ))}
+                        </div>
                     ) : (
                         <p className="font-body-14r text-text-secondary">영상 요약 정보가 없습니다.</p>
+                    )}
+                    {showAllVideoSummaryButton && (
+                        <button
+                            type="button"
+                            aria-controls="video-summary-items"
+                            aria-expanded={isVideoSummaryExpanded}
+                            onClick={() => setIsVideoSummaryExpanded(true)}
+                            className="flex w-full items-center justify-center border-t-[1.5px] border-border-default px-4 py-2 text-[16px] leading-[1.5] font-normal tracking-[-0.025em] text-text-secondary"
+                        >
+                            전체 보기
+                        </button>
                     )}
                 </div>
             </section>
