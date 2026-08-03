@@ -1,6 +1,6 @@
 import api from '@/lib/axios'
 import type { ApiResponse } from '@/types'
-import type { ReportAnalysis } from '@/api/report'
+import type { ReportAnalysis, ReportOverview } from '@/api/report'
 import type { VideoInfoResponse } from '@/types/videos'
 
 export type DummyReportSection = 'VIDEO' | 'OVERVIEW' | 'ANALYSIS' | 'COMMENTS'
@@ -16,40 +16,7 @@ export interface DummyReportVideoInfo extends Omit<VideoInfoResponse, 'videoId'>
     videoId: number | null
 }
 
-export interface DummyRepresentativeComment {
-    category: string
-    content: string
-    author: string
-    authorProfileImageUrl: string | null
-    publishedAt: string
-    likeCount: number
-}
-
-export interface DummyReportOverview {
-    reportId: number | null
-    view: number
-    viewChannelAvg: number
-    likeCount: number
-    likeChannelAvg: number
-    comment: number
-    commentChannelAvg: number
-    concept: number
-    seo: number
-    revisit: number
-    summary: string
-    totalCommentCount: number
-    neutralComment: number
-    adviceComment: number
-    positiveComment: number
-    negativeComment: number
-    positiveCommentPercent: number
-    negativeCommentPercent: number
-    neutralCommentPercent: number
-    adviceCommentPercent: number
-    commentSummary: string
-    comments: DummyRepresentativeComment[]
-    overviewSummary: string
-}
+export type DummyReportOverview = ReportOverview
 
 export interface DummyReportData {
     video: DummyReportVideoInfo
@@ -78,6 +45,7 @@ export async function generateDummyReport<T = unknown>({
 }
 
 function normalizeAnalysisField(value: unknown) {
+    if (value == null) return ''
     if (typeof value === 'string') return value
 
     try {

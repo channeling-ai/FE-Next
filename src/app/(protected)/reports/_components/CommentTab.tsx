@@ -2,7 +2,13 @@
 
 import { useState } from 'react'
 
-type CommentType = 'positive' | 'negative' | 'neutral' | 'advice'
+export type CommentType = 'positive' | 'negative' | 'neutral' | 'advice'
+
+export interface CommentTabValue {
+    percentage: number
+    count: number
+    description?: string
+}
 
 interface CommentTabData {
     id: CommentType
@@ -64,16 +70,24 @@ const commentTabs: CommentTabData[] = [
     },
 ]
 
-export default function CommentTab() {
+export default function CommentTab({ values }: { values?: Partial<Record<CommentType, CommentTabValue>> }) {
     const [activeTab, setActiveTab] = useState<CommentType>('positive')
+    const displayedTabs = commentTabs.map((tab) => {
+        const value = values?.[tab.id]
 
-    const selectedTab = commentTabs.find((tab) => tab.id === activeTab) ?? commentTabs[0]
+        return {
+            ...tab,
+            ...value,
+            description: value?.description ?? tab.description,
+        }
+    })
+    const selectedTab = displayedTabs.find((tab) => tab.id === activeTab) ?? displayedTabs[0]
 
     return (
         <div className="w-full flex flex-col gap-8">
             {/* 탭 버튼 */}
             <div className="flex flex-row tablet:flex-col gap-1">
-                {commentTabs.map((tab) => {
+                {displayedTabs.map((tab) => {
                     const isActive = activeTab === tab.id
 
                     return (

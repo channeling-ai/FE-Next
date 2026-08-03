@@ -33,6 +33,37 @@ const GRADE_STYLES: Record<AlgorithmGrade, { label: string; tone: ScoreBadgeProp
     GOOD: { label: '좋음', tone: 'positive' },
 }
 
+const LOCKED_RETENTION_POINTS: RetentionPoint[] = [
+    { time: '00:00', retentionRate: 100 },
+    { time: '00:15', retentionRate: 82 },
+    { time: '00:30', retentionRate: 71 },
+    { time: '00:45', retentionRate: 58 },
+    { time: '01:00', retentionRate: 52 },
+    { time: '01:15', retentionRate: 43 },
+    { time: '01:30', retentionRate: 37 },
+]
+
+const LOCKED_VIEWER_RETENTION_ANALYSIS: ViewerRetentionAnalysis = {
+    criticalSection: {
+        startTime: '00:30',
+        endTime: '00:45',
+        duration: 15,
+    },
+    causes: [
+        {
+            title: '영상 흐름 변화',
+            description: '시청자 이탈이 발생한 구간의 원인을 분석한 내용입니다.',
+        },
+    ],
+    improvements: [
+        {
+            title: '편집 구성 개선',
+            description: '시청 흐름을 유지하기 위한 구체적인 개선 방안입니다.',
+        },
+    ],
+    expectedEffect: '개선 적용 시 기대할 수 있는 시청 지속 효과입니다.',
+}
+
 interface AnalysisItemProps {
     label: ReactNode
     children: ReactNode
@@ -361,8 +392,14 @@ function AnalysisTabContent({
     lockViewerRetentionDetails?: boolean
 }) {
     const { retentionGraph, viewerRetentionAnalysis, algorithmOptimization } = analysis
-    const retentionPoints = parseRetentionGraph(retentionGraph)
-    const structuredViewerAnalysis = parseViewerRetentionAnalysis(viewerRetentionAnalysis)
+    const parsedRetentionPoints = parseRetentionGraph(retentionGraph)
+    const parsedViewerAnalysis = parseViewerRetentionAnalysis(viewerRetentionAnalysis)
+    const retentionPoints =
+        parsedRetentionPoints.length > 0 || !lockViewerRetentionDetails
+            ? parsedRetentionPoints
+            : LOCKED_RETENTION_POINTS
+    const structuredViewerAnalysis =
+        parsedViewerAnalysis ?? (lockViewerRetentionDetails ? LOCKED_VIEWER_RETENTION_ANALYSIS : null)
     const structuredAlgorithmOptimization = parseAlgorithmOptimization(algorithmOptimization)
 
     return (
