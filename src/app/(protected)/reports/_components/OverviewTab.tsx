@@ -82,12 +82,40 @@ function isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === 'object' && value !== null
 }
 
-function parseJson(value: string): unknown {
-    try {
-        return JSON.parse(value)
-    } catch {
-        return null
+function parseJson(value: unknown): unknown {
+    if (typeof value !== 'string') return value
+
+    let candidate: unknown = value.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
+
+    for (let index = 0; index < 3 && typeof candidate === 'string'; index += 1) {
+        const text = candidate.trim()
+        if (!text) return null
+
+        try {
+            candidate = JSON.parse(text)
+        } catch {
+            const arrayStart = text.indexOf('[')
+            const arrayEnd = text.lastIndexOf(']')
+            const objectStart = text.indexOf('{')
+            const objectEnd = text.lastIndexOf('}')
+            const jsonSlice =
+                arrayStart >= 0 && arrayEnd > arrayStart
+                    ? text.slice(arrayStart, arrayEnd + 1)
+                    : objectStart >= 0 && objectEnd > objectStart
+                      ? text.slice(objectStart, objectEnd + 1)
+                      : ''
+
+            if (!jsonSlice || jsonSlice === text) return text
+
+            try {
+                candidate = JSON.parse(jsonSlice)
+            } catch {
+                return text
+            }
+        }
     }
+
+    return candidate
 }
 
 function getText(record: Record<string, unknown>, keys: string[]) {
@@ -107,23 +135,133 @@ function toPercent(value: number) {
     return Math.min(100, Math.max(0, Math.round(percent)))
 }
 
-function parseVideoSummary(value: string): VideoSummaryItem[] {
+function findSummaryItems(value: unknown): unknown[] {
+    if (Array.isArray(value)) return value
+    if (!isRecord(value)) return []
+
+    const itemContentKeys = [
+        'title',
+        'subtitle',
+        'heading',
+        'headline',
+        'description',
+        'content',
+        'caption',
+        'summary',
+        'summaryText',
+        'summary_text',
+        '요약',
+        '내용',
+    ]
+
+    if (itemContentKeys.some((key) => typeof value[key] === 'string')) return [value]
+
+    const containerKeys = [
+        'summary',
+        'videoSummary',
+        'video_summary',
+        'summaries',
+        'sections',
+        'segments',
+        'chapters',
+        'timestamps',
+        'items',
+        'result',
+    ]
+
+    for (const key of containerKeys) {
+        const nested = value[key]
+        if (Array.isArray(nested)) return nested
+
+        if (isRecord(nested)) {
+            const items: unknown[] = findSummaryItems(nested)
+            if (items.length > 0) return items
+        }
+    }
+
+    const nestedArray = Object.values(value).find(Array.isArray)
+    if (nestedArray) return nestedArray
+
+    const keyedItems = Object.entries(value).flatMap(([timestamp, item]) => {
+        if (typeof item === 'string') return [{ timestamp, content: item }]
+        if (isRecord(item)) return [{ timestamp, ...item }]
+        return []
+    })
+
+    if (keyedItems.length > 0) return keyedItems
+
+    return []
+}
+
+function parseVideoSummary(value: unknown): VideoSummaryItem[] {
     const parsed = parseJson(value)
-    const items = Array.isArray(parsed)
-        ? parsed
-        : isRecord(parsed) && Array.isArray(parsed.summary)
-          ? parsed.summary
-          : []
+    const items = findSummaryItems(parsed)
+
+    if (items.length === 0) {
+        const content =
+            typeof parsed === 'string'
+                ? parsed.trim()
+                : isRecord(parsed)
+                  ? getText(parsed, ['summary', 'description', 'content', 'caption', 'text', '요약', '내용'])
+                  : ''
+
+        return content ? [{ timestamp: '00:00', title: content, description: '' }] : []
+    }
 
     return items
-        .filter(isRecord)
-        .map((item) => ({
-            timestamp: getText(item, ['timestamp', 'time', 'startTime']) || '00:00',
-            title: getText(item, ['title', 'subtitle', 'heading']),
-            description: getText(item, ['description', 'detail', 'content', 'summary']),
-        }))
+        .map((item) => {
+            if (typeof item === 'string') {
+                return { timestamp: '00:00', title: item.trim(), description: '' }
+            }
+
+            if (!isRecord(item)) return null
+
+            const startTime = getText(item, [
+                'timestamp',
+                'timeStamp',
+                'time',
+                'timeRange',
+                'time_range',
+                'startTime',
+                'start_time',
+                'start',
+                '구간',
+                '시간',
+            ])
+            const endTime = getText(item, ['endTime', 'end_time', 'end'])
+            const title = getText(item, [
+                'title',
+                'subtitle',
+                'heading',
+                'headline',
+                'topic',
+                'sectionTitle',
+                'section_title',
+                'subject',
+                '소제목',
+                '제목',
+            ])
+            const description = getText(item, [
+                'description',
+                'detail',
+                'content',
+                'summary',
+                'caption',
+                'text',
+                'summaryText',
+                'summary_text',
+                '요약',
+                '내용',
+            ])
+
+            return {
+                timestamp: startTime ? `${startTime}${endTime ? `~${endTime}` : ''}` : '00:00',
+                title: title || description,
+                description: title ? description : '',
+            }
+        })
+        .filter((item): item is VideoSummaryItem => item !== null)
         .filter((item) => item.title || item.description)
-        .slice(0, 3)
 }
 
 function parseReportSummary(value: string): ReportSummaryItem[] {
@@ -220,7 +358,7 @@ export default function OverviewTab({ data, lockRestrictedSections = false }: Ov
     const parsedSummary = data ? parseReportSummary(data.overviewSummary) : []
     const reportSummary = reportSummaryFallback.map((fallback, index) => parsedSummary[index] ?? fallback)
     const parsedVideoSummary = data ? parseVideoSummary(data.summary) : []
-    const videoSummary = parsedVideoSummary.length > 0 ? parsedVideoSummary : FALLBACK_VIDEO_SUMMARY
+    const videoSummary = data ? parsedVideoSummary : FALLBACK_VIDEO_SUMMARY
     const commentDescriptions = data ? parseCommentDescriptions(data.commentSummary) : {}
     const commentTabValues: Partial<Record<CommentType, CommentTabValue>> | undefined = data
         ? {
@@ -298,14 +436,18 @@ export default function OverviewTab({ data, lockRestrictedSections = false }: Ov
             <section id="video-summary" className="flex flex-col gap-2">
                 <p className="font-body-16sb text-text-primary">영상 요약</p>
                 <div className="flex flex-col gap-4 rounded-[20px] bg-bg-1 p-5">
-                    {videoSummary.map((item, index) => (
-                        <SummaryComment
-                            key={`${item.timestamp}-${index}`}
-                            timestamp={item.timestamp}
-                            comment={item.title}
-                            detail={item.description}
-                        />
-                    ))}
+                    {videoSummary.length > 0 ? (
+                        videoSummary.map((item, index) => (
+                            <SummaryComment
+                                key={`${item.timestamp}-${index}`}
+                                timestamp={item.timestamp}
+                                comment={item.title}
+                                detail={item.description}
+                            />
+                        ))
+                    ) : (
+                        <p className="font-body-14r text-text-secondary">영상 요약 정보가 없습니다.</p>
+                    )}
                 </div>
             </section>
 
