@@ -1,5 +1,7 @@
 import api from '@/lib/axios'
 import type { ApiResponse } from '@/types'
+import type { ReportAnalysis } from '@/api/report'
+import type { VideoInfoResponse } from '@/types/videos'
 
 export type DummyReportSection = 'VIDEO' | 'OVERVIEW' | 'ANALYSIS' | 'COMMENTS'
 export type DummyReportCommentType = 'NEUTRAL' | 'POSITIVE' | 'NEGATIVE' | 'ADVICE_OPINION'
@@ -8,6 +10,51 @@ interface GenerateDummyReportParams {
     section: DummyReportSection
     url: string
     commentType?: DummyReportCommentType
+}
+
+export interface DummyReportVideoInfo extends Omit<VideoInfoResponse, 'videoId'> {
+    videoId: number | null
+}
+
+export interface DummyRepresentativeComment {
+    category: string
+    content: string
+    author: string
+    authorProfileImageUrl: string | null
+    publishedAt: string
+    likeCount: number
+}
+
+export interface DummyReportOverview {
+    reportId: number | null
+    view: number
+    viewChannelAvg: number
+    likeCount: number
+    likeChannelAvg: number
+    comment: number
+    commentChannelAvg: number
+    concept: number
+    seo: number
+    revisit: number
+    summary: string
+    totalCommentCount: number
+    neutralComment: number
+    adviceComment: number
+    positiveComment: number
+    negativeComment: number
+    positiveCommentPercent: number
+    negativeCommentPercent: number
+    neutralCommentPercent: number
+    adviceCommentPercent: number
+    commentSummary: string
+    comments: DummyRepresentativeComment[]
+    overviewSummary: string
+}
+
+export interface DummyReportData {
+    video: DummyReportVideoInfo
+    overview: DummyReportOverview
+    analysis: ReportAnalysis
 }
 
 export async function generateDummyReport<T = unknown>({
@@ -28,4 +75,41 @@ export async function generateDummyReport<T = unknown>({
     }
 
     return data.result
+}
+
+function normalizeAnalysisField(value: unknown) {
+    if (typeof value === 'string') return value
+
+    try {
+        return JSON.stringify(value) ?? ''
+    } catch {
+        return ''
+    }
+}
+
+export async function generateDummyReportData(url: string): Promise<DummyReportData> {
+    const video = await generateDummyReport<DummyReportVideoInfo>({
+        section: 'VIDEO',
+        url,
+    })
+    const [overview, rawAnalysis] = await Promise.all([
+        generateDummyReport<DummyReportOverview>({ section: 'OVERVIEW', url }),
+        generateDummyReport<{
+            reportId: number | null
+            retentionGraph: unknown
+            viewerRetentionAnalysis: unknown
+            algorithmOptimization: unknown
+        }>({ section: 'ANALYSIS', url }),
+    ])
+
+    return {
+        video,
+        overview,
+        analysis: {
+            reportId: rawAnalysis.reportId ?? 0,
+            retentionGraph: normalizeAnalysisField(rawAnalysis.retentionGraph),
+            viewerRetentionAnalysis: normalizeAnalysisField(rawAnalysis.viewerRetentionAnalysis),
+            algorithmOptimization: normalizeAnalysisField(rawAnalysis.algorithmOptimization),
+        },
+    }
 }

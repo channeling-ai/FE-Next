@@ -1,13 +1,11 @@
 'use client'
 
-import { FormEvent, useRef, useState } from 'react'
-import axios from 'axios'
+import { FormEvent, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { generateDummyReport } from '@/api/dummy-report'
+import { useRouter } from 'next/navigation'
 import ArrowRightIcon from '@/assets/icons/arrow_right.svg'
 import SearchIcon from '@/assets/icons/search.svg'
-import type { ApiResponse } from '@/types'
 
 type ReportTab = 'overview' | 'analysis'
 
@@ -33,35 +31,17 @@ const reportSummaries = [
 ]
 
 export default function ReportPreviewSection() {
+    const router = useRouter()
     const [videoLink, setVideoLink] = useState('')
     const [activeTab, setActiveTab] = useState<ReportTab>('overview')
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [submitError, setSubmitError] = useState('')
-    const reportRef = useRef<HTMLDivElement>(null)
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
 
         const url = videoLink.trim()
-        if (!url || isSubmitting) return
+        if (!url) return
 
-        setIsSubmitting(true)
-        setSubmitError('')
-
-        try {
-            await generateDummyReport({ section: 'VIDEO', url })
-            reportRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        } catch (error) {
-            const message = axios.isAxiosError<ApiResponse<unknown>>(error)
-                ? error.response?.data.message
-                : error instanceof Error
-                  ? error.message
-                  : null
-
-            setSubmitError(message || '체험 리포트를 생성하지 못했습니다. 잠시 후 다시 시도해주세요.')
-        } finally {
-            setIsSubmitting(false)
-        }
+        router.push(`/landing/report?url=${encodeURIComponent(url)}`)
     }
 
     return (
@@ -76,46 +56,30 @@ export default function ReportPreviewSection() {
                 </p>
             </div>
 
-            <div className="flex flex-col gap-2">
-                <form onSubmit={handleSubmit} className="flex items-center gap-2">
-                    <label className="flex min-w-0 flex-1 items-center gap-2 rounded-[20px] bg-bg-1 px-4 py-3">
-                        <SearchIcon aria-hidden className="size-6 shrink-0 text-icon-secondary" />
-                        <span className="sr-only">유튜브 영상 링크</span>
-                        <input
-                            type="url"
-                            required
-                            value={videoLink}
-                            onChange={(event) => setVideoLink(event.target.value)}
-                            disabled={isSubmitting}
-                            aria-describedby={submitError ? 'dummy-report-error' : undefined}
-                            aria-invalid={Boolean(submitError)}
-                            placeholder="분석할 영상 링크를 입력해주세요"
-                            className="min-w-0 flex-1 bg-transparent font-body-16r text-text-primary outline-none placeholder:text-text-secondary disabled:cursor-wait"
-                        />
-                    </label>
-                    <button
-                        type="submit"
-                        disabled={isSubmitting || !videoLink.trim()}
-                        aria-label={isSubmitting ? '영상 리포트 생성 중' : '영상 리포트 보기'}
-                        aria-busy={isSubmitting}
-                        className="flex size-12 shrink-0 items-center justify-center rounded-[20px] bg-bg-3 text-icon-secondary disabled:cursor-not-allowed disabled:opacity-50 desktop:size-[51px]"
-                    >
-                        <ArrowRightIcon aria-hidden className={`size-6 ${isSubmitting ? 'animate-pulse' : ''}`} />
-                    </button>
-                </form>
-                {isSubmitting && (
-                    <p className="font-caption-12r text-text-secondary" role="status">
-                        영상을 분석하고 있어요. 처음 생성하는 리포트는 수 분이 걸릴 수 있어요.
-                    </p>
-                )}
-                {submitError && (
-                    <p id="dummy-report-error" className="font-caption-12r text-red-error" role="alert">
-                        {submitError}
-                    </p>
-                )}
-            </div>
+            <form onSubmit={handleSubmit} className="flex items-center gap-2">
+                <label className="flex min-w-0 flex-1 items-center gap-2 rounded-[20px] bg-bg-1 px-4 py-3">
+                    <SearchIcon aria-hidden className="size-6 shrink-0 text-icon-secondary" />
+                    <span className="sr-only">유튜브 영상 링크</span>
+                    <input
+                        type="url"
+                        required
+                        value={videoLink}
+                        onChange={(event) => setVideoLink(event.target.value)}
+                        placeholder="분석할 영상 링크를 입력해주세요"
+                        className="min-w-0 flex-1 bg-transparent font-body-16r text-text-primary outline-none placeholder:text-text-secondary"
+                    />
+                </label>
+                <button
+                    type="submit"
+                    disabled={!videoLink.trim()}
+                    aria-label="영상 리포트 보기"
+                    className="flex size-12 shrink-0 items-center justify-center rounded-[20px] bg-bg-3 text-icon-secondary disabled:cursor-not-allowed disabled:opacity-50 desktop:size-[51px]"
+                >
+                    <ArrowRightIcon aria-hidden className="size-6" />
+                </button>
+            </form>
 
-            <div ref={reportRef} className="relative flex flex-col gap-4 border-t-[1.5px] border-border-subtitle pt-[15px]">
+            <div className="relative flex flex-col gap-4 border-t-[1.5px] border-border-subtitle pt-[15px]">
                 <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 bg-bg-0 px-1 font-body-14r text-text-secondary">
                     리포트 예시
                 </span>
