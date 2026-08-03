@@ -394,43 +394,49 @@ function AnalysisTabContent({
                         />
                     )}
 
-                    {structuredViewerAnalysis ? (
-                        <>
-                            <AnalysisItem label="1. 이탈 원인">
-                                {structuredViewerAnalysis.causes.map((cause, index) => (
-                                    <Bullet key={`${cause.title}-${index}`} label={cause.title}>
-                                        {cause.description}
-                                    </Bullet>
-                                ))}
-                            </AnalysisItem>
+                    <div
+                        className={`relative flex flex-col gap-4 ${
+                            lockViewerRetentionDetails ? '-mx-5 -mb-5 min-h-[319px] px-5 pb-5' : ''
+                        }`}
+                    >
+                        {structuredViewerAnalysis ? (
+                            <>
+                                <AnalysisItem label="1. 이탈 원인">
+                                    {structuredViewerAnalysis.causes.map((cause, index) => (
+                                        <Bullet key={`${cause.title}-${index}`} label={cause.title}>
+                                            {cause.description}
+                                        </Bullet>
+                                    ))}
+                                </AnalysisItem>
 
-                            <Divider />
+                                <Divider />
 
-                            <AnalysisItem label="2. 개선 방안">
-                                {structuredViewerAnalysis.improvements.map((improvement, index) => (
-                                    <Bullet key={`${improvement.title}-${index}`} label={improvement.title}>
-                                        {improvement.description}
-                                    </Bullet>
-                                ))}
-                            </AnalysisItem>
+                                <AnalysisItem label="2. 개선 방안">
+                                    {structuredViewerAnalysis.improvements.map((improvement, index) => (
+                                        <Bullet key={`${improvement.title}-${index}`} label={improvement.title}>
+                                            {improvement.description}
+                                        </Bullet>
+                                    ))}
+                                </AnalysisItem>
 
-                            <Divider />
+                                <Divider />
 
-                            <AnalysisItem label="3. 기대 효과">
-                                <Bullet>{structuredViewerAnalysis.expectedEffect}</Bullet>
-                            </AnalysisItem>
-                        </>
-                    ) : (
-                        <AnalysisMarkdown content={viewerRetentionAnalysis} />
-                    )}
+                                <AnalysisItem label="3. 기대 효과">
+                                    <Bullet>{structuredViewerAnalysis.expectedEffect}</Bullet>
+                                </AnalysisItem>
+                            </>
+                        ) : (
+                            <AnalysisMarkdown content={viewerRetentionAnalysis} />
+                        )}
 
-                    {lockViewerRetentionDetails && (
-                        <div className="absolute bottom-0 left-0 right-0 z-10 flex h-[319px] flex-col items-center justify-center bg-white/1 p-6 text-center backdrop-blur-[10px] transition-all duration-300">
-                            <span className="font-body-16m text-text-primary">
-                                로그인 시, 본인 영상의 분석에서 확인할 수 있어요
-                            </span>
-                        </div>
-                    )}
+                        {lockViewerRetentionDetails && (
+                            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/1 p-6 text-center backdrop-blur-[10px] transition-all duration-300">
+                                <span className="font-body-16m text-text-primary">
+                                    로그인 시, 본인 영상의 분석에서 확인할 수 있어요
+                                </span>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </section>
 
