@@ -226,14 +226,12 @@ export default function DummyReportContent({ data }: { data: DummyReportData }) 
                     {activeTab === 'overview' ? (
                         <DummyOverview data={data} />
                     ) : (
-                        <div className="relative max-h-[920px] overflow-hidden">
-                            <AnalysisTab analysis={data.analysis} isPending={false} isError={false} />
-                            <div className="absolute inset-x-0 bottom-0 z-10 flex h-72 items-center justify-center bg-white/1 p-6 text-center backdrop-blur-[10px]">
-                                <p className="font-body-16m text-text-primary">
-                                    로그인 시, 본인 영상의 분석에서 확인할 수 있어요
-                                </p>
-                            </div>
-                        </div>
+                        <AnalysisTab
+                            analysis={data.analysis}
+                            isPending={false}
+                            isError={false}
+                            lockViewerRetentionDetails
+                        />
                     )}
                 </div>
             </PageContent>

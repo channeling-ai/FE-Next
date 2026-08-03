@@ -353,7 +353,13 @@ function AnalysisTabError({ onRetry }: { onRetry?: () => void }) {
     )
 }
 
-function AnalysisTabContent({ analysis }: { analysis: ReportAnalysis }) {
+function AnalysisTabContent({
+    analysis,
+    lockViewerRetentionDetails = false,
+}: {
+    analysis: ReportAnalysis
+    lockViewerRetentionDetails?: boolean
+}) {
     const { retentionGraph, viewerRetentionAnalysis, algorithmOptimization } = analysis
     const retentionPoints = parseRetentionGraph(retentionGraph)
     const structuredViewerAnalysis = parseViewerRetentionAnalysis(viewerRetentionAnalysis)
@@ -366,7 +372,7 @@ function AnalysisTabContent({ analysis }: { analysis: ReportAnalysis }) {
                     시청자 이탈 분석
                 </h2>
 
-                <div className="flex flex-col gap-4 overflow-hidden rounded-[20px] bg-bg-1 p-5">
+                <div className="relative flex flex-col gap-4 overflow-hidden rounded-[20px] bg-bg-1 p-5">
                     {structuredViewerAnalysis ? (
                         <div className="flex flex-col gap-1">
                             <p className="font-body-14m text-text-brand">
@@ -416,6 +422,14 @@ function AnalysisTabContent({ analysis }: { analysis: ReportAnalysis }) {
                         </>
                     ) : (
                         <AnalysisMarkdown content={viewerRetentionAnalysis} />
+                    )}
+
+                    {lockViewerRetentionDetails && (
+                        <div className="absolute bottom-0 left-0 right-0 z-10 flex h-[319px] flex-col items-center justify-center bg-white/1 p-6 text-center backdrop-blur-[10px] transition-all duration-300">
+                            <span className="font-body-16m text-text-primary">
+                                로그인 시, 본인 영상의 분석에서 확인할 수 있어요
+                            </span>
+                        </div>
                     )}
                 </div>
             </section>
@@ -499,10 +513,17 @@ interface AnalysisTabProps {
     analysis?: ReportAnalysis
     isPending: boolean
     isError: boolean
+    lockViewerRetentionDetails?: boolean
     onRetry?: () => void
 }
 
-export default function AnalysisTab({ analysis, isPending, isError, onRetry }: AnalysisTabProps) {
+export default function AnalysisTab({
+    analysis,
+    isPending,
+    isError,
+    lockViewerRetentionDetails = false,
+    onRetry,
+}: AnalysisTabProps) {
     if (isError) {
         return <AnalysisTabError onRetry={onRetry} />
     }
@@ -511,5 +532,10 @@ export default function AnalysisTab({ analysis, isPending, isError, onRetry }: A
         return <AnalysisTabSkeleton />
     }
 
-    return <AnalysisTabContent analysis={analysis} />
+    return (
+        <AnalysisTabContent
+            analysis={analysis}
+            lockViewerRetentionDetails={lockViewerRetentionDetails}
+        />
+    )
 }
