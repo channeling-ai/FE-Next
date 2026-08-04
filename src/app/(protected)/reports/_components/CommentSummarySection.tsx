@@ -24,24 +24,6 @@ interface CommentReactionSectionProps {
     overview: ReportOverviewresponse
 }
 
-// function normalizeCommentCategory(category: string): CommentType | null {
-//     switch (category) {
-//         case '긍정':
-//             return 'positive'
-
-//         case '부정':
-//             return 'negative'
-
-//         case '중립':
-//             return 'neutral'
-
-//         case '조언':
-//             return 'advice'
-//         default:
-//             return null
-//     }
-// }
-
 export default function CommentSummarySection({ overview }: CommentReactionSectionProps) {
     const [activeTab, setActiveTab] = useState<CommentType>('positive')
 
@@ -68,6 +50,13 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
         },
     ]
 
+    const commentSummary = overview.commentSummary ?? {
+        positive: '',
+        negative: '',
+        neutral: '',
+        advice: '',
+    }
+
     const commentTabs: CommentTabData[] = [
         {
             id: 'positive',
@@ -75,7 +64,7 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
             percentage: overview.positiveCommentPercent,
             count: overview.positiveComment,
             title: '긍정적 댓글 분석',
-            description: '',
+            description: commentSummary.positive,
             dotClassName: 'bg-green',
             textClassName: 'text-green',
             activeClassName: 'border-green bg-green-op8',
@@ -86,7 +75,7 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
             percentage: overview.negativeCommentPercent,
             count: overview.negativeComment,
             title: '부정적 댓글 분석',
-            description: '',
+            description: commentSummary.negative,
             dotClassName: 'bg-red-error',
             textClassName: 'text-red-error',
             activeClassName: 'border-red-error bg-red-error-op8',
@@ -97,7 +86,7 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
             percentage: overview.neutralCommentPercent,
             count: overview.neutralComment,
             title: '중립적 댓글 분석',
-            description: '',
+            description: commentSummary.neutral,
             dotClassName: 'bg-gray-500',
             textClassName: 'text-gray-500',
             activeClassName: 'border-gray-500 bg-gray-500/10',
@@ -108,7 +97,7 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
             percentage: overview.adviceCommentPercent,
             count: overview.adviceComment,
             title: '조언 댓글 분석',
-            description: '',
+            description: commentSummary.advice,
             dotClassName: 'bg-blue-400',
             textClassName: 'text-blue-400',
             activeClassName: 'border-blue-400 bg-blue-op8',
@@ -116,12 +105,6 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
     ]
 
     const selectedTab = commentTabs.find((tab) => tab.id === activeTab) ?? commentTabs[0]
-
-    // const filteredComments = useMemo(() => {
-    //     return overview.commentSummary.filter((comment) => {
-    //         return comment.category === activeTab
-    //     })
-    // }, [overview.commentSummary, activeTab])
 
     return (
         <section id="comments" className="flex flex-col gap-2">
@@ -172,7 +155,7 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
                         </div>
 
                         <div className="flex w-full flex-col gap-1">
-                            <div className="flex items-center">
+                            <div className="flex items-center gap-1">
                                 <p className="font-body-14m text-text-secondary">{selectedTab.title}</p>
                                 <p className="font-body-14r text-text-secondary">
                                     {formatKoreanNumber(selectedTab.count, '개')}
@@ -183,16 +166,16 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
                         </div>
                     </div>
                 </div>
-
+                {/* 댓글 */}
                 <div className="flex flex-col">
                     <p className="font-body-14m text-text-secondary">주요 댓글</p>
 
                     <div className="flex flex-col gap-2">
-                        {overview.commentSummary.length === 0 && (
+                        {overview.comments.length === 0 && (
                             <p className="py-4 font-body-14r text-text-secondary">해당 유형의 주요 댓글이 없습니다.</p>
                         )}
 
-                        {overview.commentSummary.map((comment, index) => (
+                        {overview.comments.map((comment, index) => (
                             <Fragment key={`${comment.author}-${comment.publishedAt}-${index}`}>
                                 <Comment
                                     tag={comment.category}
@@ -203,7 +186,7 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
                                     like={comment.likeCount}
                                 />
 
-                                {index !== overview.commentSummary.length - 1 && (
+                                {index !== overview.comments.length - 1 && (
                                     <div className="h-px w-full bg-border-default" />
                                 )}
                             </Fragment>

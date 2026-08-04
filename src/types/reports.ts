@@ -57,7 +57,8 @@ export type ReportOverviewresponse = {
     negativeCommentPercent: number
     neutralCommentPercent: number
     adviceCommentPercent: number
-    commentSummary: CommentSummary[]
+    commentSummary: CommentSummary | null
+    comments: Comments[]
 }
 
 type VideoSummary = {
@@ -92,10 +93,18 @@ type SummaryType = {
     content: string
 }
 
-export type CommentSummary = {
+type CommentSummary = {
+    advice: string
+    neutral: string
+    negative: string
+    positive: string
+}
+
+export type Comments = {
     category: string // 카테고리 (positive/negative/neutral/advice)
     content: string
     author: string
+    authorProfileImageUrl: string
     publishedAt: string
     likeCount: number
 }
