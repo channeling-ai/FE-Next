@@ -1,7 +1,8 @@
-import ReportDetailClient from './_components/ReportDetailClient'
+import ReportDetailContent from './_components/ReportDetailContent'
 
 interface ReportDetailPageProps {
     params: Promise<{ id: string }>
+    searchParams: Promise<{ videoId?: string | string[] }>
 }
 
 /**
@@ -10,9 +11,10 @@ interface ReportDetailPageProps {
  * - AI 구간 분석
  * - 개선 제안
  */
-export default async function ReportDetailPage({ params }: ReportDetailPageProps) {
-    const { id } = await params
+export default async function ReportDetailPage({ params, searchParams }: ReportDetailPageProps) {
+    const [{ id }, { videoId: videoIdParam }] = await Promise.all([params, searchParams])
     const reportId = Number(id)
+    const videoId = Number(Array.isArray(videoIdParam) ? videoIdParam[0] : videoIdParam)
 
-    return <ReportDetailClient reportId={reportId} />
+    return <ReportDetailContent reportId={reportId} videoId={videoId} />
 }
