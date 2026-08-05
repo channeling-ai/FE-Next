@@ -55,11 +55,24 @@ function normalizeAnalysisField(value: unknown) {
     }
 }
 
+function getYoutubeVideoId(url: string) {
+    try {
+        const parsedUrl = new URL(url)
+        const hostname = parsedUrl.hostname.replace(/^www\./, '')
+        const candidate = hostname === 'youtu.be' ? parsedUrl.pathname.split('/')[1] : parsedUrl.searchParams.get('v')
+
+        return candidate && /^[A-Za-z0-9_-]{11}$/.test(candidate) ? candidate : ''
+    } catch {
+        return ''
+    }
+}
+
 export async function generateDummyReportData(url: string): Promise<DummyReportData> {
     const video = await generateDummyReport<DummyReportVideoInfo>({
         section: 'VIDEO',
         url,
     })
+    const youtubeVideoId = video.youtubeVideoId || getYoutubeVideoId(url)
     const [overview, rawAnalysis] = await Promise.all([
         generateDummyReport<DummyReportOverview>({ section: 'OVERVIEW', url }),
         generateDummyReport<{
@@ -71,7 +84,7 @@ export async function generateDummyReportData(url: string): Promise<DummyReportD
     ])
 
     return {
-        video,
+        video: { ...video, youtubeVideoId },
         overview,
         analysis: {
             reportId: rawAnalysis.reportId ?? 0,

@@ -9,17 +9,21 @@ const VIDEO_TYPE_LABEL: Record<VideoInfoResponse['videoType'], string> = {
 
 type ReportVideoInfoData = Pick<
     VideoInfoResponse,
-    'videoTitle' | 'videoThumbnailUrl' | 'videoType' | 'lastUpdatedDate' | 'ChannelName' | 'videoCreatedDate'
+    'youtubeVideoId' | 'videoTitle' | 'videoType' | 'lastUpdatedDate' | 'ChannelName' | 'videoCreatedDate'
 >
 
 export default function ReportVideoInfo({ video, requestedAt }: { video: ReportVideoInfoData; requestedAt?: Date }) {
+    const embedUrl = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(video.youtubeVideoId)}`
+
     return (
         <section className="flex flex-col gap-4 tablet:flex-row" aria-labelledby="report-video-title">
-            <div
-                role="img"
-                aria-label={`${video.videoTitle} 썸네일`}
-                className="aspect-[328/184] w-full rounded-[20px] bg-bg-3 bg-cover bg-center tablet:aspect-auto tablet:h-33.25 tablet:w-59.25 desktop:h-44.5 desktop:w-79"
-                style={{ backgroundImage: `url(${video.videoThumbnailUrl})` }}
+            <iframe
+                src={embedUrl}
+                title={`${video.videoTitle} YouTube 영상`}
+                className="aspect-[328/184] w-full shrink-0 rounded-[20px] border-0 bg-bg-3 tablet:aspect-auto tablet:h-33.25 tablet:w-59.25 desktop:h-44.5 desktop:w-79"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
             />
             <div className="flex min-w-0 flex-1 flex-col items-start justify-start gap-1">
                 <div className="rounded-[20px] bg-bg-2 px-2 py-1 font-caption-12m text-text-primary desktop:font-caption-14m">
