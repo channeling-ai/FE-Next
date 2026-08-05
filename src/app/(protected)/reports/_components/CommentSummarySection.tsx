@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useMemo, useState } from 'react'
+import { Fragment, useState } from 'react'
 import CommentDonutChart from './CommentDoughnutChart'
 import Comment from './Comment'
 import { ReportOverviewresponse } from '@/types/reports'
@@ -51,10 +51,10 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
     ]
 
     const commentSummary = overview.commentSummary ?? {
-        positive: '',
-        negative: '',
-        neutral: '',
-        advice: '',
+        positive: '긍정적 댓글 분석이 없습니다.',
+        negative: '부정적 댓글 분석이 없습니다.',
+        neutral: '중립적 댓글 분석이 없습니다.',
+        advice: '조언 댓글 분석이 없습니다.',
     }
 
     const commentTabs: CommentTabData[] = [
@@ -180,7 +180,7 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
                                 <Comment
                                     tag={comment.category}
                                     comment={comment.content}
-                                    profileImageUrl=""
+                                    profileImageUrl={comment.authorProfileImageUrl}
                                     nickname={comment.author}
                                     time={formatRelativeTime(comment.publishedAt)}
                                     like={comment.likeCount}
