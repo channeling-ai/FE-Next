@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import {
+    cancelSubscription,
     getSubscriptionPage,
     previewPlanChange,
     subscribe,
@@ -51,6 +52,8 @@ export default function PricingPage() {
     const [paymentPlan, setPaymentPlan] = useState<PaidPlanName | null>(null)
     const [isPaymentSubmitting, setIsPaymentSubmitting] = useState(false)
     const [isPaymentFailureOpen, setIsPaymentFailureOpen] = useState(false)
+    const [isPlanChangeSubmitting, setIsPlanChangeSubmitting] = useState(false)
+    const [planChangeError, setPlanChangeError] = useState<string | null>(null)
     const [locallyActivatedPlan, setLocallyActivatedPlan] = useState<PlanName | null>(null)
     const currentSubscriptionQuery = useQuery({
         queryKey: ['subscription', 'me'],
@@ -68,7 +71,9 @@ export default function PricingPage() {
                 ? getCurrentPlan(user, isLoggedIn)
                 : null))
     const recommendedPlan = currentPlan ? getRecommendedPlan(currentPlan) : null
-    const targetPlanId = paymentPlan ? subscriptionPlanId[paymentPlan] : null
+    const pendingPaidPlan = pendingPlanChange && pendingPlanChange !== 'Free' ? pendingPlanChange : null
+    const previewPlan = paymentPlan ?? pendingPaidPlan
+    const targetPlanId = previewPlan ? subscriptionPlanId[previewPlan] : null
     const targetBillingCycle = billingCycle === 'monthly' ? 'MONTHLY' : 'YEARLY'
     const paymentPreviewQuery = useQuery({
         queryKey: ['subscription', 'change-preview', targetPlanId, targetBillingCycle],
@@ -80,6 +85,8 @@ export default function PricingPage() {
     const handleSelectPlan = (planName: PlanName) => {
         if (!isLoggedIn || !currentPlan) return
 
+        setPlanChangeError(null)
+
         if (planName !== 'Free' && currentPlan === 'Free') {
             setPaymentPlan(planName)
             return
@@ -90,13 +97,34 @@ export default function PricingPage() {
     }
 
     const closePlanChangeModal = () => {
+        if (isPlanChangeSubmitting) return
         setPlanChangeModalVariant(null)
         setPendingPlanChange(null)
+        setPlanChangeError(null)
     }
 
-    const handleConfirmPlanChange = () => {
-        if (pendingPlanChange && pendingPlanChange !== 'Free') setPaymentPlan(pendingPlanChange)
-        closePlanChangeModal()
+    const handleConfirmPlanChange = async () => {
+        if (!pendingPlanChange || isPlanChangeSubmitting) return
+
+        if (pendingPlanChange !== 'Free') {
+            setPaymentPlan(pendingPlanChange)
+            closePlanChangeModal()
+            return
+        }
+
+        setIsPlanChangeSubmitting(true)
+        setPlanChangeError(null)
+
+        try {
+            await cancelSubscription()
+            setPlanChangeModalVariant(null)
+            setPendingPlanChange(null)
+            void queryClient.invalidateQueries({ queryKey: ['subscription', 'me'] })
+        } catch {
+            setPlanChangeError('구독을 취소하지 못했습니다. 잠시 후 다시 시도해주세요.')
+        } finally {
+            setIsPlanChangeSubmitting(false)
+        }
     }
 
     const handlePaymentSubmit = async (request: SubscribeRequest) => {
@@ -158,11 +186,26 @@ export default function PricingPage() {
                 </div>
             </section>
 
-            {planChangeModalVariant && (
+            {planChangeModalVariant && pendingPlanChange && (
                 <PricingPlanChangeModal
+                    actionError={planChangeError}
+                    currentPlanEndDate={currentSubscriptionQuery.data?.nextBillingDate}
                     isOpen
+                    isPending={isPlanChangeSubmitting}
+                    isPreviewError={
+                        pendingPlanChange !== 'Free' &&
+                        paymentPreviewQuery.isError &&
+                        !paymentPreviewQuery.isFetching
+                    }
+                    isPreviewLoading={
+                        pendingPlanChange !== 'Free' &&
+                        (paymentPreviewQuery.isPending || paymentPreviewQuery.isFetching)
+                    }
                     onClose={closePlanChangeModal}
-                    onConfirm={handleConfirmPlanChange}
+                    onConfirm={() => void handleConfirmPlanChange()}
+                    onRetryPreview={() => void paymentPreviewQuery.refetch()}
+                    preview={pendingPlanChange === 'Free' ? null : paymentPreviewQuery.data}
+                    targetPlan={pendingPlanChange}
                     variant={planChangeModalVariant}
                 />
             )}
