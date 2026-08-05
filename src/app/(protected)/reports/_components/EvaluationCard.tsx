@@ -4,6 +4,7 @@ interface EvaluationCardProps {
     type: 'view' | 'likes' | 'comments' | 'concept-consistency' | 'SEO' | 'revisit-rate'
     score: number
     average: number
+    isAveragePrivate?: boolean
 }
 
 const CardTitle = {
@@ -24,7 +25,7 @@ const CardUnit = {
     'revisit-rate': '%',
 }
 
-export default function EvaluationCard({ type, score, average }: EvaluationCardProps) {
+export default function EvaluationCard({ type, score, average, isAveragePrivate = false }: EvaluationCardProps) {
     return (
         <div className="p-4 rounded-[20px] bg-bg-1 flex flex-col gap-2">
             <p className="font-body-14m text-text-secondary">{CardTitle[type]}</p>
@@ -35,8 +36,7 @@ export default function EvaluationCard({ type, score, average }: EvaluationCardP
             <div className="flex gap-2">
                 <p className="font-caption-12r text-text-tertiary">평균</p>
                 <p className="font-caption-12m text-text-tertiary">
-                    {formatReportMetric(average)}
-                    {CardUnit[type]}
+                    {isAveragePrivate ? '비공개' : `${formatReportMetric(average)}${CardUnit[type]}`}
                 </p>
             </div>
         </div>

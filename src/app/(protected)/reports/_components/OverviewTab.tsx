@@ -423,26 +423,26 @@ export default function OverviewTab({ data, lockRestrictedSections = false }: Ov
             <section id="video-evaluation" className="flex flex-col gap-2">
                 <p className="font-body-16sb text-text-primary">영상 평가</p>
                 <div className="grid grid-cols-2 gap-2 tablet:grid-cols-3">
-                    <EvaluationCard type="view" score={data?.view ?? 120} average={data?.viewChannelAvg ?? 900} />
-                    <EvaluationCard type="likes" score={data?.likeCount ?? 120} average={data?.likeChannelAvg ?? 900} />
-                    <EvaluationCard type="comments" score={data?.comment ?? 120} average={data?.commentChannelAvg ?? 900} />
+                    <EvaluationCard type="view" score={data?.view ?? 120} average={data?.viewChannelAvg ?? 900} isAveragePrivate={lockRestrictedSections} />
+                    <EvaluationCard type="likes" score={data?.likeCount ?? 120} average={data?.likeChannelAvg ?? 900} isAveragePrivate={lockRestrictedSections} />
+                    <EvaluationCard type="comments" score={data?.comment ?? 120} average={data?.commentChannelAvg ?? 900} isAveragePrivate={lockRestrictedSections} />
                     {lockRestrictedSections ? (
                         <LockedContent message="로그인 후 확인할 수 있어요">
-                            <EvaluationCard type="concept-consistency" score={data?.concept ?? 0} average={data ? 0 : 900} />
+                            <EvaluationCard type="concept-consistency" score={data?.concept ?? 0} average={data ? 0 : 900} isAveragePrivate />
                         </LockedContent>
                     ) : (
                         <EvaluationCard type="concept-consistency" score={data?.concept ?? 120} average={data ? 0 : 900} />
                     )}
                     {lockRestrictedSections ? (
                         <LockedContent message="로그인 후 확인할 수 있어요">
-                            <EvaluationCard type="SEO" score={data?.seo ?? 0} average={data ? 0 : 900} />
+                            <EvaluationCard type="SEO" score={data?.seo ?? 0} average={data ? 0 : 900} isAveragePrivate />
                         </LockedContent>
                     ) : (
                         <EvaluationCard type="SEO" score={data?.seo ?? 120} average={data ? 0 : 900} />
                     )}
                     {lockRestrictedSections ? (
                         <LockedContent message="로그인 후 확인할 수 있어요">
-                            <EvaluationCard type="revisit-rate" score={data?.revisit ?? 0} average={data ? 0 : 900} />
+                            <EvaluationCard type="revisit-rate" score={data?.revisit ?? 0} average={data ? 0 : 900} isAveragePrivate />
                         </LockedContent>
                     ) : (
                         <EvaluationCard type="revisit-rate" score={data?.revisit ?? 120} average={data ? 0 : 900} />
