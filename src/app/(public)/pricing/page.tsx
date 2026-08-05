@@ -2,7 +2,13 @@
 
 import { useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { previewPlanChange, subscribe, type SubscribeRequest } from '@/api/subscription'
+import {
+    getSubscriptionPage,
+    previewPlanChange,
+    subscribe,
+    type SubscribeRequest,
+    type SubscriptionPlan,
+} from '@/api/subscription'
 import { useAuthStore } from '@/stores/authStore'
 import BillingTabs from './_components/BillingTabs'
 import EnterpriseCard from './_components/EnterpriseCard'
@@ -29,6 +35,12 @@ const subscriptionPlanId: Record<PaidPlanName, SubscribeRequest['planId']> = {
     Pro: 'ENTERPRISE',
 }
 
+const pricingPlanNameBySubscriptionPlan: Record<SubscriptionPlan, PlanName> = {
+    FREE: 'Free',
+    BASIC: 'Creator',
+    ENTERPRISE: 'Pro',
+}
+
 export default function PricingPage() {
     const queryClient = useQueryClient()
     const isLoggedIn = useAuthStore((state) => state.isAuth)
@@ -40,8 +52,22 @@ export default function PricingPage() {
     const [isPaymentSubmitting, setIsPaymentSubmitting] = useState(false)
     const [isPaymentFailureOpen, setIsPaymentFailureOpen] = useState(false)
     const [locallyActivatedPlan, setLocallyActivatedPlan] = useState<PlanName | null>(null)
-    const currentPlan = locallyActivatedPlan ?? getCurrentPlan(user, isLoggedIn)
-    const recommendedPlan = getRecommendedPlan(currentPlan)
+    const currentSubscriptionQuery = useQuery({
+        queryKey: ['subscription', 'me'],
+        queryFn: getSubscriptionPage,
+        enabled: isLoggedIn,
+        staleTime: 60_000,
+    })
+    const isCurrentPlanLoading = isLoggedIn && !locallyActivatedPlan && currentSubscriptionQuery.isPending
+    const currentPlan: PlanName | null = !isLoggedIn
+        ? 'Free'
+        : (locallyActivatedPlan ??
+          (currentSubscriptionQuery.data
+              ? pricingPlanNameBySubscriptionPlan[currentSubscriptionQuery.data.plan]
+              : currentSubscriptionQuery.isError
+                ? getCurrentPlan(user, isLoggedIn)
+                : null))
+    const recommendedPlan = currentPlan ? getRecommendedPlan(currentPlan) : null
     const targetPlanId = paymentPlan ? subscriptionPlanId[paymentPlan] : null
     const targetBillingCycle = billingCycle === 'monthly' ? 'MONTHLY' : 'YEARLY'
     const paymentPreviewQuery = useQuery({
@@ -52,7 +78,7 @@ export default function PricingPage() {
     })
 
     const handleSelectPlan = (planName: PlanName) => {
-        if (!isLoggedIn) return
+        if (!isLoggedIn || !currentPlan) return
 
         if (planName !== 'Free' && currentPlan === 'Free') {
             setPaymentPlan(planName)
@@ -118,6 +144,7 @@ export default function PricingPage() {
                                 billingCycle={billingCycle}
                                 currentPlan={currentPlan}
                                 isLoggedIn={isLoggedIn}
+                                isPlanLoading={isCurrentPlanLoading}
                                 isRecommended={recommendedPlan === plan.name}
                                 onSelectPlan={handleSelectPlan}
                                 plan={plan}
