@@ -58,6 +58,18 @@ export interface SubscribeResult {
     message: string
 }
 
+export interface PlanChangePreview {
+    type: 'NEW' | 'UPGRADE' | 'DOWNGRADE' | 'CYCLE_CHANGE' | 'SAME'
+    currentPlan: SubscriptionPlan
+    currentCycle: SubscriptionBillingCycle | null
+    targetPlan: Exclude<SubscriptionPlan, 'FREE'>
+    targetCycle: SubscriptionBillingCycle
+    immediateCharge: number
+    nextAmount: number
+    nextBillingDate: string
+    remainingDays: number
+}
+
 export async function getSubscriptionPage(): Promise<SubscriptionPageData> {
     const { data } = await api.get<ApiResponse<SubscriptionPageData>>('/subscriptions/me')
     return {
@@ -87,5 +99,15 @@ export async function subscribe(request: SubscribeRequest): Promise<SubscribeRes
     }
 
     const { data } = await api.post<ApiResponse<SubscribeResult>>('/subscriptions', request)
+    return data.result
+}
+
+export async function previewPlanChange(
+    targetPlan: Exclude<SubscriptionPlan, 'FREE'>,
+    targetCycle: SubscriptionBillingCycle
+): Promise<PlanChangePreview> {
+    const { data } = await api.get<ApiResponse<PlanChangePreview>>('/subscriptions/change/preview', {
+        params: { targetPlan, targetCycle },
+    })
     return data.result
 }

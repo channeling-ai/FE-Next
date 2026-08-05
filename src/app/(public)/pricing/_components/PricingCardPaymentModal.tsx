@@ -10,10 +10,16 @@ type PaymentField = 'cardNo' | 'expMonth' | 'expYear' | 'idNo' | 'cardPw' | 'agr
 type PaymentErrors = Partial<Record<PaymentField, string>>
 
 interface PricingCardPaymentModalProps {
+    amount: number | null
+    amountError: boolean
     billingCycle: BillingCycle
     isOpen: boolean
+    isAmountLoading: boolean
     isSubmitting: boolean
+    nextAmount: number | null
+    nextBillingDate: string | null
     onClose: () => void
+    onRetryAmount: () => void
     onSubmit: (request: SubscribeRequest) => Promise<boolean>
     planName: PaidPlanName
     planId: SubscribeRequest['planId']
@@ -56,11 +62,25 @@ const isValidExpiry = (expMonth: string, expYear: string) => {
 const fieldClassName =
     'h-10 w-full rounded-[10px] border border-border-normal bg-bg-2 px-3 font-body-14m text-text-primary outline-none placeholder:text-text-tertiary focus:border-border-active disabled:cursor-not-allowed disabled:opacity-60'
 
+const formatCurrency = (amount: number) => `${amount.toLocaleString('ko-KR')}원`
+
+const formatDate = (date: string) => {
+    const [year, month, day] = date.split('-').map(Number)
+    if (!year || !month || !day) return date
+    return `${year}년 ${month}월 ${day}일`
+}
+
 export default function PricingCardPaymentModal({
+    amount,
+    amountError,
     billingCycle,
     isOpen,
+    isAmountLoading,
     isSubmitting,
+    nextAmount,
+    nextBillingDate,
     onClose,
+    onRetryAmount,
     onSubmit,
     planName,
     planId,
@@ -166,13 +186,42 @@ export default function PricingCardPaymentModal({
                     </button>
                 </div>
 
-                <div className="rounded-[12px] bg-bg-2 p-3">
-                    <dl className="flex items-center justify-between gap-4 font-body-14m">
-                        <dt className="text-text-secondary">선택 요금제</dt>
-                        <dd className="text-text-primary">
-                            {planName} · {billingCycle === 'monthly' ? '월간 결제' : '연간 결제'}
-                        </dd>
+                <div className="flex flex-col gap-2 rounded-[12px] bg-bg-2 p-3">
+                    <dl className="flex flex-col gap-2 font-body-14m">
+                        <div className="flex items-center justify-between gap-4">
+                            <dt className="text-text-secondary">선택 요금제</dt>
+                            <dd className="text-text-primary">
+                                {planName} · {billingCycle === 'monthly' ? '월간 결제' : '연간 결제'}
+                            </dd>
+                        </div>
+                        <div className="flex items-center justify-between gap-4">
+                            <dt className="text-text-secondary">결제 금액</dt>
+                            <dd className="font-body-16sb text-text-primary">
+                                {isAmountLoading ? '계산 중' : amount === null ? '-' : formatCurrency(amount)}
+                            </dd>
+                        </div>
+                        {nextAmount !== null && nextBillingDate && (
+                            <div className="flex items-start justify-between gap-4 font-caption-12r">
+                                <dt className="text-text-tertiary">다음 정기 결제</dt>
+                                <dd className="text-right text-text-secondary">
+                                    {formatCurrency(nextAmount)} · {formatDate(nextBillingDate)}
+                                </dd>
+                            </div>
+                        )}
                     </dl>
+                    <p className="text-right font-caption-12r text-text-tertiary">부가세 별도</p>
+                    {amountError && (
+                        <div className="flex items-center justify-between gap-3 rounded-lg bg-bg-1 px-3 py-2">
+                            <p className="font-caption-12r text-red-error">결제 금액을 불러오지 못했습니다.</p>
+                            <button
+                                type="button"
+                                onClick={onRetryAmount}
+                                className="shrink-0 font-caption-12m text-text-primary underline underline-offset-2"
+                            >
+                                다시 시도
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex flex-col gap-4">
@@ -287,10 +336,10 @@ export default function PricingCardPaymentModal({
                     </button>
                     <button
                         type="submit"
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || isAmountLoading || amount === null || amountError}
                         className="h-10 flex-1 rounded-[10px] bg-primary-60 font-body-16sb text-text-primary transition-colors hover:bg-primary-50 disabled:cursor-wait disabled:opacity-60"
                     >
-                        {isSubmitting ? '결제 중' : '결제하기'}
+                        {isSubmitting ? '결제 중' : isAmountLoading ? '금액 확인 중' : '결제하기'}
                     </button>
                 </div>
             </form>

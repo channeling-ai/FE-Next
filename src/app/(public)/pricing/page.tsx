@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
-import { subscribe, type SubscribeRequest } from '@/api/subscription'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { previewPlanChange, subscribe, type SubscribeRequest } from '@/api/subscription'
 import { useAuthStore } from '@/stores/authStore'
 import BillingTabs from './_components/BillingTabs'
 import EnterpriseCard from './_components/EnterpriseCard'
@@ -42,6 +42,14 @@ export default function PricingPage() {
     const [locallyActivatedPlan, setLocallyActivatedPlan] = useState<PlanName | null>(null)
     const currentPlan = locallyActivatedPlan ?? getCurrentPlan(user, isLoggedIn)
     const recommendedPlan = getRecommendedPlan(currentPlan)
+    const targetPlanId = paymentPlan ? subscriptionPlanId[paymentPlan] : null
+    const targetBillingCycle = billingCycle === 'monthly' ? 'MONTHLY' : 'YEARLY'
+    const paymentPreviewQuery = useQuery({
+        queryKey: ['subscription', 'change-preview', targetPlanId, targetBillingCycle],
+        queryFn: () => previewPlanChange(targetPlanId!, targetBillingCycle),
+        enabled: Boolean(targetPlanId),
+        staleTime: 0,
+    })
 
     const handleSelectPlan = (planName: PlanName) => {
         if (!isLoggedIn) return
@@ -134,12 +142,18 @@ export default function PricingPage() {
 
             {paymentPlan && (
                 <PricingCardPaymentModal
+                    amount={paymentPreviewQuery.data?.immediateCharge ?? null}
+                    amountError={paymentPreviewQuery.isError && !paymentPreviewQuery.isFetching}
                     billingCycle={billingCycle}
                     isOpen
+                    isAmountLoading={paymentPreviewQuery.isPending || paymentPreviewQuery.isFetching}
                     isSubmitting={isPaymentSubmitting}
+                    nextAmount={paymentPreviewQuery.data?.nextAmount ?? null}
+                    nextBillingDate={paymentPreviewQuery.data?.nextBillingDate ?? null}
                     onClose={() => {
                         if (!isPaymentSubmitting) setPaymentPlan(null)
                     }}
+                    onRetryAmount={() => void paymentPreviewQuery.refetch()}
                     onSubmit={handlePaymentSubmit}
                     planName={paymentPlan}
                     planId={subscriptionPlanId[paymentPlan]}
