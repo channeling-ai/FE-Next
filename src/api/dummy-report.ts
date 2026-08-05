@@ -59,9 +59,24 @@ function getYoutubeVideoId(url: string) {
     try {
         const parsedUrl = new URL(url)
         const hostname = parsedUrl.hostname.replace(/^www\./, '')
-        const candidate = hostname === 'youtu.be' ? parsedUrl.pathname.split('/')[1] : parsedUrl.searchParams.get('v')
+        const pathSegments = parsedUrl.pathname.split('/').filter(Boolean)
+        const isYoutubeHost = hostname === 'youtube.com' || hostname.endsWith('.youtube.com')
+        const isYoutubeNoCookieHost =
+            hostname === 'youtube-nocookie.com' || hostname.endsWith('.youtube-nocookie.com')
 
-        return candidate && /^[A-Za-z0-9_-]{11}$/.test(candidate) ? candidate : ''
+        let candidate = ''
+
+        if (hostname === 'youtu.be') {
+            candidate = pathSegments[0] ?? ''
+        } else if (isYoutubeHost || isYoutubeNoCookieHost) {
+            candidate = parsedUrl.searchParams.get('v') ?? ''
+
+            if (!candidate && ['shorts', 'embed', 'live'].includes(pathSegments[0] ?? '')) {
+                candidate = pathSegments[1] ?? ''
+            }
+        }
+
+        return /^[A-Za-z0-9_-]{11}$/.test(candidate) ? candidate : ''
     } catch {
         return ''
     }
