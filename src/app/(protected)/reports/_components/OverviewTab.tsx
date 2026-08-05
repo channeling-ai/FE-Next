@@ -410,7 +410,7 @@ export default function OverviewTab({ data, lockRestrictedSections = false }: Ov
                         />
                     )
 
-                    return lockRestrictedSections && index === 1 ? (
+                    return lockRestrictedSections && index > 0 ? (
                         <LockedContent key={`${item.title}-${index}`} message="로그인 시, 본인 영상의 분석에서 확인할 수 있어요">
                             {card}
                         </LockedContent>
