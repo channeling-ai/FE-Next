@@ -1,17 +1,22 @@
 'use client'
 
 import { useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { subscribe, type SubscribeRequest } from '@/api/subscription'
 import { useAuthStore } from '@/stores/authStore'
 import BillingTabs from './_components/BillingTabs'
 import EnterpriseCard from './_components/EnterpriseCard'
+import PricingCardPaymentModal from './_components/PricingCardPaymentModal'
 import PricingHeader from './_components/PricingHeader'
 import PricingPlanChangeModal from './_components/PricingPlanChangeModal'
 import PricingPlanCard from './_components/PricingPlanCard'
+import PricingPaymentFailureModal from './_components/PricingPaymentFailureModal'
 import { getCurrentPlan, getRecommendedPlan } from './pricingPlan'
 import { plans } from './pricingPlans'
 import type { BillingCycle, PlanName } from './types'
 
 type PlanChangeModalVariant = 'downgrade' | 'upgrade'
+type PaidPlanName = Exclude<PlanName, 'Free'>
 
 const planPriority: Record<PlanName, number> = {
     Free: 0,
@@ -19,24 +24,68 @@ const planPriority: Record<PlanName, number> = {
     Pro: 2,
 }
 
+const subscriptionPlanId: Record<PaidPlanName, SubscribeRequest['planId']> = {
+    Creator: 'BASIC',
+    Pro: 'ENTERPRISE',
+}
+
 export default function PricingPage() {
+    const queryClient = useQueryClient()
     const isLoggedIn = useAuthStore((state) => state.isAuth)
     const user = useAuthStore((state) => state.user)
     const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly')
     const [planChangeModalVariant, setPlanChangeModalVariant] = useState<PlanChangeModalVariant | null>(null)
-    const currentPlan = getCurrentPlan(user, isLoggedIn)
+    const [pendingPlanChange, setPendingPlanChange] = useState<PlanName | null>(null)
+    const [paymentPlan, setPaymentPlan] = useState<PaidPlanName | null>(null)
+    const [isPaymentSubmitting, setIsPaymentSubmitting] = useState(false)
+    const [isPaymentFailureOpen, setIsPaymentFailureOpen] = useState(false)
+    const [locallyActivatedPlan, setLocallyActivatedPlan] = useState<PlanName | null>(null)
+    const currentPlan = locallyActivatedPlan ?? getCurrentPlan(user, isLoggedIn)
     const recommendedPlan = getRecommendedPlan(currentPlan)
 
     const handleSelectPlan = (planName: PlanName) => {
         if (!isLoggedIn) return
 
-        if (currentPlan === 'Creator' && planName === 'Pro') {
-            setPlanChangeModalVariant('upgrade')
+        if (planName !== 'Free' && currentPlan === 'Free') {
+            setPaymentPlan(planName)
             return
         }
 
-        if (planPriority[planName] < planPriority[currentPlan]) {
-            setPlanChangeModalVariant('downgrade')
+        setPendingPlanChange(planName)
+        setPlanChangeModalVariant(planPriority[planName] > planPriority[currentPlan] ? 'upgrade' : 'downgrade')
+    }
+
+    const closePlanChangeModal = () => {
+        setPlanChangeModalVariant(null)
+        setPendingPlanChange(null)
+    }
+
+    const handleConfirmPlanChange = () => {
+        if (pendingPlanChange && pendingPlanChange !== 'Free') setPaymentPlan(pendingPlanChange)
+        closePlanChangeModal()
+    }
+
+    const handlePaymentSubmit = async (request: SubscribeRequest) => {
+        setIsPaymentSubmitting(true)
+
+        try {
+            const result = await subscribe(request)
+
+            if (result.status === 'PAYMENT_FAILED' || result.status === 'SAVE_FAILED') {
+                setIsPaymentFailureOpen(true)
+                return false
+            }
+
+            if (result.status !== 'RESERVED' && paymentPlan) setLocallyActivatedPlan(paymentPlan)
+
+            setPaymentPlan(null)
+            void queryClient.invalidateQueries({ queryKey: ['subscription', 'me'] })
+            return true
+        } catch {
+            setIsPaymentFailureOpen(true)
+            return false
+        } finally {
+            setIsPaymentSubmitting(false)
         }
     }
 
@@ -77,10 +126,30 @@ export default function PricingPage() {
             {planChangeModalVariant && (
                 <PricingPlanChangeModal
                     isOpen
-                    onClose={() => setPlanChangeModalVariant(null)}
+                    onClose={closePlanChangeModal}
+                    onConfirm={handleConfirmPlanChange}
                     variant={planChangeModalVariant}
                 />
             )}
+
+            {paymentPlan && (
+                <PricingCardPaymentModal
+                    billingCycle={billingCycle}
+                    isOpen
+                    isSubmitting={isPaymentSubmitting}
+                    onClose={() => {
+                        if (!isPaymentSubmitting) setPaymentPlan(null)
+                    }}
+                    onSubmit={handlePaymentSubmit}
+                    planName={paymentPlan}
+                    planId={subscriptionPlanId[paymentPlan]}
+                />
+            )}
+
+            <PricingPaymentFailureModal
+                isOpen={isPaymentFailureOpen}
+                onClose={() => setIsPaymentFailureOpen(false)}
+            />
         </main>
     )
 }

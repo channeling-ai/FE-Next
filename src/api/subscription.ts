@@ -32,6 +32,32 @@ export interface CancelSubscriptionResult {
     accessUntil: string
 }
 
+export interface SubscribeRequest {
+    planId: Exclude<SubscriptionPlan, 'FREE'>
+    billingCycle: SubscriptionBillingCycle
+    cardNo: string
+    expYear: string
+    expMonth: string
+    idNo: string
+    cardPw: string
+}
+
+export type SubscribeStatus =
+    | 'SUCCESS'
+    | 'RESERVED'
+    | 'REACTIVATED'
+    | 'PAYMENT_FAILED'
+    | 'SAVE_FAILED'
+    | 'NO_CHANGE'
+
+export interface SubscribeResult {
+    status: SubscribeStatus
+    orderId: string | null
+    amount: number
+    receiptUrl: string | null
+    message: string
+}
+
 export async function getSubscriptionPage(): Promise<SubscriptionPageData> {
     const { data } = await api.get<ApiResponse<SubscriptionPageData>>('/subscriptions/me')
     return {
@@ -48,5 +74,18 @@ export async function getSubscriptionPage(): Promise<SubscriptionPageData> {
 
 export async function cancelSubscription(): Promise<CancelSubscriptionResult> {
     const { data } = await api.delete<ApiResponse<CancelSubscriptionResult>>('/subscriptions')
+    return data.result
+}
+
+export async function subscribe(request: SubscribeRequest): Promise<SubscribeResult> {
+    if (typeof window !== 'undefined' && process.env.NODE_ENV === 'production') {
+        const apiUrl = new URL(api.defaults.baseURL ?? window.location.origin, window.location.origin)
+
+        if (apiUrl.protocol !== 'https:') {
+            throw new Error('Payment requests require HTTPS.')
+        }
+    }
+
+    const { data } = await api.post<ApiResponse<SubscribeResult>>('/subscriptions', request)
     return data.result
 }
