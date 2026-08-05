@@ -4,6 +4,7 @@ import SummaryCard from './SummaryCard'
 import { ReportOverviewresponse, ReportSummaryResponse } from '@/types/reports'
 import { formatKoreanNumber } from '@/utils/format'
 import CommentSummarySection from './CommentSummarySection'
+import OverviewTabSkeleton from './OverviewTabSkeleton'
 
 interface OverviewProps {
     overview?: ReportOverviewresponse
@@ -14,6 +15,8 @@ export default function OverviewTab({ overview, summary, isPending }: OverviewPr
     const overviewSummary = summary?.overviewSummary
     const analysisSummary = summary?.analysisSummary
     const seoSummary = summary?.seoSummary
+
+    if (isPending) return <OverviewTabSkeleton />
     return (
         <div className="flex flex-col pt-8 gap-8">
             {overviewSummary && seoSummary && analysisSummary && (

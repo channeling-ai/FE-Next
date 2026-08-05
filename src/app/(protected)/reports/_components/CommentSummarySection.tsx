@@ -106,6 +106,8 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
 
     const selectedTab = commentTabs.find((tab) => tab.id === activeTab) ?? commentTabs[0]
 
+    const filteredComments = overview.comments.filter((comment) => comment.category === activeTab)
+
     return (
         <section id="comments" className="flex flex-col gap-2">
             <p className="font-body-16sb text-text-primary">댓글 반응</p>
@@ -175,10 +177,9 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
                             <p className="py-4 font-body-14r text-text-secondary">해당 유형의 주요 댓글이 없습니다.</p>
                         )}
 
-                        {overview.comments.map((comment, index) => (
+                        {filteredComments.map((comment, index) => (
                             <Fragment key={`${comment.author}-${comment.publishedAt}-${index}`}>
                                 <Comment
-                                    tag={comment.category}
                                     comment={comment.content}
                                     profileImageUrl={comment.authorProfileImageUrl}
                                     nickname={comment.author}
@@ -186,7 +187,7 @@ export default function CommentSummarySection({ overview }: CommentReactionSecti
                                     like={comment.likeCount}
                                 />
 
-                                {index !== overview.comments.length - 1 && (
+                                {index !== filteredComments.length - 1 && (
                                     <div className="h-px w-full bg-border-default" />
                                 )}
                             </Fragment>

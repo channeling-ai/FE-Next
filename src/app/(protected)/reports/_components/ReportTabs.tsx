@@ -5,7 +5,6 @@ import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import AnalysisTab from './AnalysisTab'
 import OverviewTab from './OverviewTab'
-import OverviewTabSkeleton from './OverviewTabSkeleton'
 import ReportTabBar, { type ReportTabType } from './ReportTabBar'
 
 interface ReportTabsProps {
@@ -36,7 +35,7 @@ export default function ReportTabs({ isProcessing = false, reportId }: ReportTab
         <div className="flex flex-col gap-4">
             <ReportTabBar activeTab={activeTab} onChange={setActiveTab} />
 
-            {isProcessing && activeTab === 'overview' && <OverviewTabSkeleton />}
+            {isProcessing && activeTab === 'overview' && <OverviewTab isPending={true} />}
 
             {isProcessing && activeTab === 'analysis' && <AnalysisTab isPending={true} isError={false} />}
 
