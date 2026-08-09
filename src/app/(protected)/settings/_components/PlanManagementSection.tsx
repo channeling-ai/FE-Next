@@ -9,7 +9,7 @@ interface PlanManagementSectionProps {
 
 const PLAN_LABEL: Record<SubscriptionPageData['plan'], string> = {
     FREE: 'Free 플랜',
-    PRO: 'Creator 플랜',
+    BASIC: 'Creator 플랜',
     ENTERPRISE: 'Pro 플랜',
 }
 
