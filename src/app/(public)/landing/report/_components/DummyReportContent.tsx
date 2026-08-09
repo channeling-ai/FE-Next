@@ -29,6 +29,7 @@ export default function DummyReportContent({ data, requestedAt }: { data: DummyR
                                 isPending={false}
                                 isError={false}
                                 lockViewerRetentionDetails
+                                lockAlgorithmImprovements
                             />
                         )}
                     </div>

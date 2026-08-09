@@ -387,9 +387,11 @@ function AnalysisTabError({ onRetry }: { onRetry?: () => void }) {
 function AnalysisTabContent({
     analysis,
     lockViewerRetentionDetails = false,
+    lockAlgorithmImprovements = false,
 }: {
     analysis: ReportAnalysis
     lockViewerRetentionDetails?: boolean
+    lockAlgorithmImprovements?: boolean
 }) {
     const { retentionGraph, viewerRetentionAnalysis, algorithmOptimization } = analysis
     const parsedRetentionPoints = parseRetentionGraph(retentionGraph)
@@ -508,21 +510,45 @@ function AnalysisTabContent({
                                                 </span>
                                             }
                                         >
-                                            {item.issues.map((issue, issueIndex) => (
-                                                <div key={`${issue.type}-${issueIndex}`} className="flex flex-col gap-2">
-                                                    <Bullet label={ISSUE_LABELS[issue.type] ?? issue.type}>
-                                                        {issue.content}
-                                                    </Bullet>
-                                                    {issue.examples
-                                                        ?.split('\n')
-                                                        .filter(Boolean)
-                                                        .map((example, exampleIndex) => (
-                                                            <Bullet key={`${example}-${exampleIndex}`} secondary>
-                                                                {example}
-                                                            </Bullet>
-                                                        ))}
-                                                </div>
-                                            ))}
+                                            {item.issues.map((issue, issueIndex) => {
+                                                const isLockedImprovement =
+                                                    lockAlgorithmImprovements && issue.type === 'IMPROVEMENT'
+
+                                                return (
+                                                    <div
+                                                        key={`${issue.type}-${issueIndex}`}
+                                                        className="flex flex-col gap-2"
+                                                    >
+                                                        <Bullet label={ISSUE_LABELS[issue.type] ?? issue.type}>
+                                                            <span
+                                                                className={
+                                                                    isLockedImprovement
+                                                                        ? 'select-none blur-[5px]'
+                                                                        : undefined
+                                                                }
+                                                            >
+                                                                {issue.content}
+                                                            </span>
+                                                        </Bullet>
+                                                        {issue.examples
+                                                            ?.split('\n')
+                                                            .filter(Boolean)
+                                                            .map((example, exampleIndex) => (
+                                                                <Bullet key={`${example}-${exampleIndex}`} secondary>
+                                                                    <span
+                                                                        className={
+                                                                            isLockedImprovement
+                                                                                ? 'select-none blur-[5px]'
+                                                                                : undefined
+                                                                        }
+                                                                    >
+                                                                        {example}
+                                                                    </span>
+                                                                </Bullet>
+                                                            ))}
+                                                    </div>
+                                                )
+                                            })}
                                         </AnalysisItem>
                                     </div>
                                 )
@@ -557,6 +583,7 @@ interface AnalysisTabProps {
     isPending: boolean
     isError: boolean
     lockViewerRetentionDetails?: boolean
+    lockAlgorithmImprovements?: boolean
     onRetry?: () => void
 }
 
@@ -565,6 +592,7 @@ export default function AnalysisTab({
     isPending,
     isError,
     lockViewerRetentionDetails = false,
+    lockAlgorithmImprovements = false,
     onRetry,
 }: AnalysisTabProps) {
     if (isError) {
@@ -579,6 +607,7 @@ export default function AnalysisTab({
         <AnalysisTabContent
             analysis={analysis}
             lockViewerRetentionDetails={lockViewerRetentionDetails}
+            lockAlgorithmImprovements={lockAlgorithmImprovements}
         />
     )
 }
