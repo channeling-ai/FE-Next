@@ -8,7 +8,7 @@ import type {
     RetentionPoint,
     ViewerRetentionAnalysis,
 } from '@/api/report'
-import { SkeletonBase } from '@/components/skeletonbase'
+import { SkeletonBase } from '@/components/Skeletonbase'
 import type { ReactNode } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'

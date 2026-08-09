@@ -17,30 +17,24 @@ export function formatKoreanNumber(value: number, suffix: string = ''): string {
 }
 
 /**
- * 영상 평가 지표를 천/만 단위로 축약해 백만·천만 단위까지 자연스럽게 표시합니다.
+ * 영상 평가 지표를 만 단위로 축약합니다.
  * 10만 미만은 소수점 한 자리까지 표시하고, 10만 이상은 소수점을 버립니다.
- * 예: 2,000 → 2천, 15,000 → 1.5만, 240,000 → 24만, 1,000,000 → 100만
+ * 예: 2,000 → 2,000, 15,000 → 1.5만, 240,000 → 24만, 1,000,000 → 100만
  */
 export function formatReportMetric(value: number): string {
     if (!Number.isFinite(value)) return '0'
 
     const absoluteValue = Math.abs(value)
     const sign = value < 0 ? '-' : ''
-    const units = [
-        { minimum: 10_000, divisor: 10_000, suffix: '만' },
-        { minimum: 1_000, divisor: 1_000, suffix: '천' },
-    ]
-    const unit = units.find(({ minimum }) => absoluteValue >= minimum)
+    if (absoluteValue < 10_000) return value.toLocaleString('ko-KR')
 
-    if (!unit) return value.toLocaleString('ko-KR')
-
-    const scaledValue = absoluteValue / unit.divisor
+    const scaledValue = absoluteValue / 10_000
     const formattedValue =
         absoluteValue >= 100_000
             ? Math.floor(scaledValue).toString()
             : (Math.floor(scaledValue * 10) / 10).toFixed(1).replace(/\.0$/, '')
 
-    return `${sign}${formattedValue}${unit.suffix}`
+    return `${sign}${formattedValue}만`
 }
 
 /**

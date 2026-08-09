@@ -3,7 +3,7 @@
 import { getVideoInfo } from '@/api/video'
 import PageContent from '@/components/layout/PageContent'
 import Scroll from '@/components/Scroll'
-import { SkeletonBase } from '@/components/skeletonbase'
+import { SkeletonBase } from '@/components/Skeletonbase'
 import { useReportProgress } from '@/hooks/useReportProgress'
 import { useReportGenerationStore } from '@/stores/reportGenerationStore'
 import { useVideoStore } from '@/stores/videoStore'

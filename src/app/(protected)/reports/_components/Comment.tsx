@@ -16,7 +16,7 @@ export default function Comment({
     nickname,
     time,
     like,
-    appendHourSuffix = true,
+    appendHourSuffix = false,
 }: CommentProps) {
     return (
         <div className="flex flex-col gap-3 py-2">

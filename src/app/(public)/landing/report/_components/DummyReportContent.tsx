@@ -2,13 +2,13 @@
 
 import type { DummyReportData } from '@/api/dummy-report'
 import AnalysisTab from '@/app/(protected)/reports/_components/AnalysisTab'
-import OverviewTab from '@/app/(protected)/reports/_components/OverviewTab'
 import ReportTabBar, { type ReportTabType } from '@/app/(protected)/reports/_components/ReportTabBar'
 import ReportVideoInfo from '@/app/(protected)/reports/_components/ReportVideoInfo'
 import ReportDetailHeader from '@/app/(protected)/reports/[id]/_components/ReportDetailHeader'
 import PageContent from '@/components/layout/PageContent'
 import Scroll from '@/components/Scroll'
 import { useState } from 'react'
+import DummyOverviewTab from './DummyOverviewTab'
 
 export default function DummyReportContent({ data, requestedAt }: { data: DummyReportData; requestedAt: Date }) {
     const [activeTab, setActiveTab] = useState<ReportTabType>('overview')
@@ -22,7 +22,7 @@ export default function DummyReportContent({ data, requestedAt }: { data: DummyR
                     <div className="flex flex-col gap-4">
                         <ReportTabBar activeTab={activeTab} onChange={setActiveTab} />
                         {activeTab === 'overview' ? (
-                            <OverviewTab data={data.overview} lockRestrictedSections />
+                            <DummyOverviewTab data={data.overview} />
                         ) : (
                             <AnalysisTab
                                 analysis={data.analysis}

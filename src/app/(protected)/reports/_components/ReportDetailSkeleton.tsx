@@ -1,6 +1,6 @@
 import Header from '@/components/layout/Header'
 import PageContent from '@/components/layout/PageContent'
-import { SkeletonBase } from '@/components/skeletonbase'
+import { SkeletonBase } from '@/components/Skeletonbase'
 import type { ReactNode } from 'react'
 import OverviewTabSkeleton from './OverviewTabSkeleton'
 import ReportProgressBar from './ReportProgressBar'
