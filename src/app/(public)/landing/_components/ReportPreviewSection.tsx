@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import ArrowRightIcon from '@/assets/icons/arrow_right.svg'
 import SearchIcon from '@/assets/icons/search.svg'
+import AnalysisTab from '@/app/(protected)/reports/_components/AnalysisTab'
 
 type ReportTab = 'overview' | 'analysis'
 
@@ -29,6 +30,13 @@ const reportSummaries = [
         description: '제목과 해시태그 개선을 통해 검색 유입률을 더 높일 수 있어요.',
     },
 ]
+
+const previewAnalysis = {
+    reportId: 0,
+    retentionGraph: '',
+    viewerRetentionAnalysis: '',
+    algorithmOptimization: '',
+}
 
 export default function ReportPreviewSection() {
     const router = useRouter()
@@ -148,12 +156,13 @@ export default function ReportPreviewSection() {
                         </div>
                     </div>
                 ) : (
-                    <div className="flex min-h-[445px] flex-col gap-2 desktop:min-h-[432px]">
-                        <h4 className="text-[16px] font-semibold leading-[1.4] text-text-primary">심층 반응 분석</h4>
-                        <div className="flex flex-col gap-4 rounded-[20px] bg-bg-1 p-5 font-body-14r text-text-secondary">
-                            <p>댓글과 시청 지표를 기반으로 영상의 핵심 반응을 분석합니다.</p>
-                            <p>가장 높은 호감 키워드: 힐링, 요리, 음악</p>
-                        </div>
+                    <div className="h-[445px] overflow-hidden desktop:h-[432px]">
+                        <AnalysisTab
+                            analysis={previewAnalysis}
+                            isPending={false}
+                            isError={false}
+                            lockViewerRetentionDetails
+                        />
                     </div>
                 )}
 
