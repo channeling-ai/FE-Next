@@ -30,8 +30,8 @@ interface SidebarItemProps {
 
 const planNameBySubscriptionPlan: Record<SubscriptionPlan, string> = {
     FREE: 'Free',
-    BASIC: 'Pro',
-    ENTERPRISE: 'Enterprise',
+    PRO: 'Creator',
+    ENTERPRISE: 'Pro',
 }
 
 function SidebarItem({

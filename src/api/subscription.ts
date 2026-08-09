@@ -1,7 +1,7 @@
 import api from '@/lib/axios'
 import type { ApiResponse } from '@/types'
 
-export type SubscriptionPlan = 'FREE' | 'BASIC' | 'ENTERPRISE'
+export type SubscriptionPlan = 'FREE' | 'PRO' | 'ENTERPRISE'
 export type SubscriptionStatus = 'ACTIVE' | 'CANCEL_SCHEDULED' | 'PAST_DUE' | 'NONE'
 export type SubscriptionBillingCycle = 'MONTHLY' | 'YEARLY'
 

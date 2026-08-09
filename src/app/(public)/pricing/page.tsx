@@ -32,13 +32,13 @@ const planPriority: Record<PlanName, number> = {
 }
 
 const subscriptionPlanId: Record<PaidPlanName, SubscribeRequest['planId']> = {
-    Creator: 'BASIC',
+    Creator: 'PRO',
     Pro: 'ENTERPRISE',
 }
 
 const pricingPlanNameBySubscriptionPlan: Record<SubscriptionPlan, PlanName> = {
     FREE: 'Free',
-    BASIC: 'Creator',
+    PRO: 'Creator',
     ENTERPRISE: 'Pro',
 }
 

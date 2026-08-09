@@ -9,8 +9,8 @@ interface PlanManagementSectionProps {
 
 const PLAN_LABEL: Record<SubscriptionPageData['plan'], string> = {
     FREE: 'Free 플랜',
-    BASIC: 'Pro 플랜',
-    ENTERPRISE: 'Enterprise 플랜',
+    PRO: 'Creator 플랜',
+    ENTERPRISE: 'Pro 플랜',
 }
 
 const BILLING_CYCLE_LABEL: Record<NonNullable<SubscriptionPageData['billingCycle']>, string> = {
