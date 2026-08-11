@@ -14,12 +14,12 @@ export default function DashboardTooltip({ label }: TooltipProps) {
         '업로드 주기': '‘업로드 주기’는 업로드의 규칙성 지표입니다.',
     }
     const style: Record<string, string> = {
-        '채널 성장': '-left-0',
-        알고리즘: '-left-0',
-        '시청 몰입': '-right-0',
-        '반응 밀도': '-left-0',
-        '유입 활력': '-left-0',
-        '업로드 주기': '-right-0',
+        '채널 성장': 'top-9 -left-0',
+        알고리즘: 'top-9 -left-0',
+        '시청 몰입': 'top-9 -right-0',
+        '반응 밀도': 'top-9 -left-0',
+        '유입 활력': 'top-9 -left-0',
+        '업로드 주기': 'top-9 -right-0',
     }
 
     return (
